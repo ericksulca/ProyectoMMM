@@ -1,0 +1,6 @@
+*.pyc
+apps/deposito/migrations/
+apps/pago/migrations/
+apps/principal/migrations/
+apps/solicitud/migrations/
+apps/usuario/migrations/

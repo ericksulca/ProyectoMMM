@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %} {% block header %} {% endblock %} {% block content %}
+<div class="container">
+    <div class="row">
+
+      
+        <div class="col-md-8 box-body">
+          {% include 'home/body.html'%}
+        </div>
+
+
+
+        <div class="col-md-4 box-login small">
+            <h4>Registrar Usuario</h4>
+            <hr>
+            <form enctype="multipart/form-data" method="POST" action="">
+
+                {% csrf_token %} {{ formUsuario.as_p }}
+                <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                <a href="{% url 'home:index' %}">Ya tengo una cuenta</a>
+            </form>
+            <hr>
+            <h6>
+                <b>Búsqueda de usuario referencia</b>
+            </h6>
+
+            <input type="text" id="busqueda" name="busqueda" class="form-control-p">
+
+
+
+            <ul id="resultados-busqueda">
+
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<!-- div col-md-4 -->
+
+
+
+<script>
+    $(function () {
+        $('#busqueda').keyup(function () {
+            var txt = $(this).val();
+            if (txt === '') { }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/Usuario/buscar-usuario/",
+                    data: {
+                        'busqueda': $('#busqueda').val(),
+                        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+                    },
+                    success: searchSuccess,
+                    dataType: 'html'
+                });
+            }
+        });
+    });
+
+    function searchSuccess(data, textStatus, jqXHR) {
+        $('#resultados-busqueda').html(data);
+    };
+
+
+    var busq = document.getElementById("busqueda")
+    busq.onchange = function() {selectorDNIreferido()};
+
+    function selectorDNIreferido() {
+        var dni = document.getElementById("usuario-buscado-dni");
+        var dniFormField = document.getElementById("id_dni_referido");
+        dniFormField.value = dni.text;
+    };
+
+
+
+</script>
+
+{% endblock %}

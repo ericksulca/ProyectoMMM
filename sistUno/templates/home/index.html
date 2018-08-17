@@ -1,0 +1,39 @@
+{% extends 'base/base.html'%}
+{% load staticfiles%}
+{%block content%}
+<div class="container">
+  <div class="row">
+    <!-- <div class="col-md-1">
+
+    </div> -->
+  <div class="col-md-9 box-body">
+  {% include 'home/body.html'%}
+  </div>
+    <!-- LOGIN FORM -->
+    <div class="col-md-3 box-login small">
+      <h4>Ingresar</h4>
+      <hr>
+      <form class="" method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="id_correo">Correo electrónico</label>
+          <input type="email" id="id_correo" name="email" placeholder="Correo electrónico" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="id_contrasena">Contraseña</label>
+          <input type="password" id="id_contrasena" name="email" placeholder="Contraseña" class="form-control">
+        </div>
+
+        <button type="submit" name="button" class="btn btn-primary btn-sm">Ingresar</button>
+        <a href="{% url 'usuario:registrar_usuario'%}">¿No tienes una cuenta? Registrate</a>
+      </form>
+    </div>
+    <!-- END LOGIN FORM -->
+  </div>
+
+
+
+  
+
+{%endblock%}

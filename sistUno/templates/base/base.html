@@ -1,0 +1,91 @@
+{% load staticfiles%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ titulo }}</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.css'%}">
+    <link rel="stylesheet" href="{% static 'css/personalizados/global.css'%}">
+    <!-- SLIDER -->
+    <link rel="stylesheet" href="{% static 'css/estilos.css'%}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css'%}">
+
+    <script src="{% static 'js/jquery-3.1.0.min.js'%}"></script>
+  	<script src="{% static 'js/main.js'%}"></script>
+
+    <!-- END SLIDER -->
+
+    <!-- TESTIMONIOS -->
+    <link rel="stylesheet" href="{% static 'css/testimonios/owl.carousel.css'%}">
+    <link rel="stylesheet" href="{% static 'css/testimonios/owl.theme.css'%}">
+    <link rel="stylesheet" href="{% static 'css/testimonios/owl.transitions.css'%}">
+    <link rel="stylesheet" href="{% static 'css/testimonios/style.css'%}">
+    <!-- END TESTIMONIOS -->
+
+</head>
+<body>
+  <div class="">
+    {% include 'home/slider.html' %}
+  </div>
+
+    {% block menu %}
+    <div class="menu-principal">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto pull-center navbar-center">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Legalidad</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Quiénes somos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Testimonios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Ed. Financiera</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contáctenos</a>
+            </li>
+          </ul>
+
+        </div>
+      </nav>
+
+    </div>
+
+    {% endblock %}
+
+    {% block content %}
+    <!-- CONTENIDO -->
+    {% endblock %}
+
+    {% block footer %}
+    {% include 'home/testimonios.html'%}
+    {% endblock %}
+
+<script src="{% static 'js/bootstrap/bootstrap.min.js'%}"></script>
+<script src="{% static 'js/testimonios/owl.carousel.min.js'%}"></script>
+<script src="{% static 'js/testimonios/jquery.nivo.slider.pack.js'%}"></script>
+<script src="{% static 'js/testimonios/jquery.meanmenu.min.js'%}"></script>
+<script src="{% static 'js/testimonios/wow.min.js'%}"></script>
+<script src="{% static 'js/testimonios/jquery-price-slider.js'%}"></script>
+<script src="{% static 'js/testimonios/jquery.simpleLens.min.js'%}"></script>
+<script src="{% static 'js/testimonios/jquery.scrollUp.min.js'%}"></script>
+<script src="{% static 'js/testimonios/main.js'%}"></script>
+
+
+</body>
+</html>

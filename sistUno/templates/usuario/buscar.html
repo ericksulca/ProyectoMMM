@@ -1,0 +1,14 @@
+{% if usuarios.count > 0 %}
+
+{% for usuario in usuarios %}
+<div>
+    <li>DNI del usuario de referencia: <a id="usuario-buscado-dni" href="#id_dni_referido">{{ usuario.dni }}</a></li>
+    <li>Nombre(s): {{ usuario.nombres }}</li>
+    <li>Apellido: {{ usuario.apellido_paterno }} {{ usuario.apellido_materno }}</li>
+    <br>
+</div>
+{% endfor %}
+
+{% else %}
+    <li>No existe tal usuario</li>
+{% endif %}

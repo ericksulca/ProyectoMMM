@@ -1,0 +1,29 @@
+{% load staticfiles%}
+<div class="slideshow">
+  <ul class="slider">
+    {% for ban in banner%}
+    <li>
+      <img src="{% static ''%}media/{{ban.banner}}" alt="">
+      <section class="caption">
+
+      </section>
+    </li>
+    {% endfor%}
+
+  </ul>
+
+  <!-- <ol class="pagination">
+
+  </ol> -->
+
+
+
+  <div class="left">
+    <span class="fa fa-chevron-left"></span>
+  </div>
+
+  <div class="right">
+    <span class="fa fa-chevron-right"></span>
+  </div>
+
+</div>
