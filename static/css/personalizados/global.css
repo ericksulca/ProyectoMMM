@@ -6,8 +6,13 @@ label, a{
   font-size: 12px;
 }
 ul>li>a{
-  font-size: 15px;
+  font-size: 18px;
 }
+
+/* .row{
+  background-color: #FFFFFF;
+} */
+
 .form-control-p {
   display: block;
   width: 100%;
@@ -21,6 +26,7 @@ ul>li>a{
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 
 .box-body{
   margin-top: 10px;
@@ -53,7 +59,8 @@ ul>li>a{
 
 .panel-body {
     padding: 15px;
-    font-size: 12px;
+    font-size: 15px;
+    text-align: justify;
 }
 
 .panel-heading{
@@ -61,7 +68,7 @@ ul>li>a{
   border-bottom: 1px solid transparent;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .panel-primary>.panel-heading {
@@ -128,4 +135,5 @@ ul>li>a{
 .testimonio-date{
   text-align: center;
   font-size: 11px;
+  font-weight: bold;
 }
