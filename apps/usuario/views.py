@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.db import IntegrityError
+from django.shortcuts import render, redirect, render_to_response
 
 from .forms import NuevoUsuarioForm
 from .models import Usuario
@@ -16,14 +18,28 @@ def editar_usuario(request):
 def registrar_usuario(request):
     if request.method == 'POST':
         formUsuario = NuevoUsuarioForm(request.POST, request.FILES)
-        if formUsuario.is_valid():
-            formUsuario.save()
+        username = request.POST['username']
+        email = request.POST['email']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        
+        if password1 == password2 and formUsuario.is_valid():
+            try:
+                user = User.objects.create_user(username, email, password1)
+            except IntegrityError as e:
+                return e.__cause__
+            usuario = formUsuario.save(commit=False)
+            usuario.usuario_login = user
+            usuario.save()
+
             return redirect('home:index')
     else:
         formUsuario = NuevoUsuarioForm()
+
     banner = Banner.objects.all()
     context = {
-        'formUsuario': formUsuario,'banner':banner,
+        'formUsuario': formUsuario,
+        'banner':banner,
     }
 
     return render(request, 'usuario/registrar.html', context=context)

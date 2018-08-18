@@ -14,7 +14,24 @@
             <hr>
             <form enctype="multipart/form-data" method="POST" action="">
 
-                {% csrf_token %} {{ formUsuario.as_p }}
+                {% csrf_token %}
+                <p>
+                    <label for="username">Nombre de Usuario:</label> 
+                    <input type="text" name="username" class="form-control-p" required id="username">
+                </p>
+                {{ formUsuario.as_p }}
+                <p>
+                    <label for="email">Dirección de correo electrónico:</label> 
+                    <input type="email" name="email" class="form-control-p" required id="email">
+                </p>
+                <p>
+                    <label for="password1">Contraseña:</label> 
+                    <input type="password" name="password1" class="form-control-p" required id="password1">
+                </p>
+                <p>
+                    <label for="password2">Confirmar Contraseña:</label> 
+                    <input type="password" name="password2" class="form-control-p" required id="password2">
+                </p>
                 <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
                 <a href="{% url 'home:index' %}">Ya tengo una cuenta</a>
             </form>
