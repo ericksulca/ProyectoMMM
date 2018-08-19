@@ -46,22 +46,22 @@ class OperacionesBackUp(models.Model):
         ('deposito', 'Depósito'),
     )
 
-    monto = models.DecimalField(max_digits=10, decimal_places=2) # Quizas? este monto es el mismo en solicitud
-    fecha = models.DateTimeField(auto_now=True)
-    estado = models.BooleanField(default=True)
-    tipo_movimiento = models.CharField(max_length=8, choices=TIPO_MOVIMIENTO)
+    monto_backup = models.DecimalField(max_digits=10, decimal_places=2) # Quizas? este monto es el mismo en solicitud
+    fecha_backup = models.DateTimeField(auto_now=True)
+    estado_backup = models.BooleanField(default=True)
+    tipo_movimiento_backup = models.CharField(max_length=8, choices=TIPO_MOVIMIENTO)
 
-    usuario_asignado = models.ForeignKey(
-        Usuario, related_name='UsuarioAsignado',
+    usuario_asignado_backup = models.ForeignKey(
+        Usuario, related_name='UsuarioAsignadoBackUp',
         blank=True,
         null=True,
         on_delete=models.PROTECT
         )
-    usuario = models.ForeignKey(
-        Usuario, related_name='UsuarioPaga',
+    usuario_backup = models.ForeignKey(
+        Usuario, related_name='UsuarioPagaBackUp',
         on_delete=models.PROTECT
         )
-    solicitud = models.ForeignKey(
+    solicitud_backup = models.ForeignKey(
         Solicitud,
         blank=True,
         null=True,
@@ -69,7 +69,7 @@ class OperacionesBackUp(models.Model):
         )
     
     def __str__(self):
-        return self.usuario + self.tipo_movimiento + self.monto
+        return self.usuario_backup + self.tipo_movimiento_backup + self.monto_backup
     
     def movimiento(self):
-        return self.tipo_movimiento
+        return self.tipo_movimiento_backup

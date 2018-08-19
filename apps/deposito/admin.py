@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Deposito
-# Register your models here.
+from .models import Operaciones
+# # Register your models here.
 
-admin.site.register(Deposito)
+admin.site.register(Operaciones)
