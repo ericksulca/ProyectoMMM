@@ -9,7 +9,11 @@ from apps.home.models import Banner
 # Create your views here.
 
 def login_usuario(request):
-    return render(request, 'usuario/login.html')
+    context = {"titulo": "Página principal de usuario"}
+    return render(request, 'usuario/login.html', context)
+
+def principal_usuario(request):
+    return render(request, 'usuario/principal.html')
 
 def editar_usuario(request):
     return render(request, 'usuario/editar.html')

@@ -8,4 +8,5 @@ def confirmar_pago(request):
 
 
 def registrar_pago(request):
-    return render(request, 'pago/registrar.html')
+    context = {"titulo": "Registrar Pago"}
+    return render(request, 'pago/registrar.html', context)
