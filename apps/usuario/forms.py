@@ -33,12 +33,12 @@ class NuevoUsuarioForm(forms.ModelForm):
         }
 
         widgets = {
-            'dni': forms.NumberInput(attrs={'class': 'form-control-p'}),
-            'nombres': forms.TextInput(attrs={'class': 'form-control-p'}),
-            'apellido_paterno': forms.TextInput(attrs={'class': 'form-control-p'}),
-            'apellido_materno': forms.TextInput(attrs={'class': 'form-control-p'}),
+            'dni': forms.NumberInput(attrs={'class': 'form-control-p', 'placeholder':'DNI','onKeyPress':'if(this.value.length==8) return false;'}),
+            'nombres': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Nombres'}),
+            'apellido_paterno': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Apellido paterno'}),
+            'apellido_materno': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Apellido materno'}),
             'foto_perfil': forms.FileInput(),
-            'dni_referido': forms.NumberInput(attrs={'class': 'form-control-p'}),
-            'numero_cuenta': forms.NumberInput(attrs={'class': 'form-control-p'}),
+            'dni_referido': forms.NumberInput(attrs={'class': 'form-control-p', 'placeholder':'DNI del referente','onKeyPress':'if(this.value.length==8) return false;'}),
+            'numero_cuenta': forms.NumberInput(attrs={'class': 'form-control-p', 'placeholder':'Número de cuenta'}),
             'entidad_bancaria': forms.Select(attrs={'class': 'form-control-p'}),
         }

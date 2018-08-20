@@ -2,45 +2,99 @@
 <div class="container">
     <div class="row">
 
-      
-        <div class="col-md-8 box-body">
-          {% include 'home/body.html'%}
+
+        <div class="col-md-1 box-body">
+
         </div>
 
 
 
-        <div class="col-md-4 box-login small">
+        <div class="col-md-10 box-login small">
+
             <h4>Registrar Usuario</h4>
             <hr>
-            <form enctype="multipart/form-data" method="POST" action="">
 
-                {% csrf_token %}
-                <p>
-                    <label for="username">Nombre de Usuario:</label> 
-                    <input type="text" name="username" class="form-control-p" required id="username">
-                </p>
-                {{ formUsuario.as_p }}
-                <p>
-                    <label for="email">Dirección de correo electrónico:</label> 
-                    <input type="email" name="email" class="form-control-p" required id="email">
-                </p>
-                <p>
-                    <label for="password1">Contraseña:</label> 
-                    <input type="password" name="password1" class="form-control-p" required id="password1">
-                </p>
-                <p>
-                    <label for="password2">Confirmar Contraseña:</label> 
-                    <input type="password" name="password2" class="form-control-p" required id="password2">
-                </p>
+
+
+            <form enctype="multipart/form-data" method="POST" action="" class="col-md-12">
+            <div class="row">
+              {% csrf_token %}
+              <div class="col-md-4">
+                <label for="">Nombres:</label>
+                {{ formUsuario.nombres }}
+              </div>
+
+              <div class="col-md-4">
+                <label for="">Apellido paterno:</label>
+                {{ formUsuario.apellido_paterno }}
+              </div>
+
+              <div class="col-md-4">
+                <label for="">Apellido materno:</label>
+                {{ formUsuario.apellido_materno }}
+              </div>
+
+              <div class="col-md-4">
+                <label for="">DNI:</label>
+                {{ formUsuario.dni }}
+              </div>
+
+              <div class="col-md-4">
+                <label for="">DNI del referente:</label>
+                {{ formUsuario.dni_referido }}
+              </div>
+
+              <div class="col-md-4">
+                <label for="">Entidad bancaria:</label>
+                {{ formUsuario.entidad_bancaria }}
+              </div>
+
+              <div class="col-md-4">
+                <label for="">Número de cuenta:</label>
+                {{ formUsuario.numero_cuenta }}
+              </div>
+
+              <div class="col-md-4">
+                <label for="">Nombre de usuario:</label>
+                <input type="text" name="username" class="form-control-p" required id="username" placeholder="Nombre de usuario">
+              </div>
+
+              <div class="col-md-4">
+                <label for="">Foto de perfil</label>
+                {{ formUsuario.foto_perfil }}
+              </div>
+
+              <div class="col-md-4">
+                <label for="email">Dirección de correo electrónico:</label>
+                <input type="email" name="email" class="form-control-p" required placeholder="Dirección de correo electrónico" id="email">
+              </div>
+
+              <div class="col-md-4">
+                <label for="password1">Contraseña:</label>
+                <input type="password" name="password1" class="form-control-p" required placeholder="Contraseña" id="password1">
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="password2">Confirmar Contraseña:</label>
+                <input type="password" name="password2" class="form-control-p" required placeholder="Confirmar contraseña" id="password2">
+              </div>
+
+
+
+            </div>
+
+              <div class="form-group col-md-12">
                 <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
                 <a href="{% url 'home:index' %}">Ya tengo una cuenta</a>
+              </div>
             </form>
+
             <hr>
             <h6>
-                <b>Búsqueda de usuario referencia</b>
+                <b>Búsqueda de usuario referente</b>
             </h6>
 
-            <input type="text" id="busqueda" name="busqueda" class="form-control-p">
+            <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="DNI del referente" onkeypress="if(this.value.length==8) return false;" onk>
 
 
 

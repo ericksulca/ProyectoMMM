@@ -14,10 +14,10 @@ ul>li>a{
 } */
 
 .form-control-p {
-  display: block;
+  /* display: block; */
   width: 100%;
   padding: 0.20rem 0.55rem;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
   color: #495057;
   background-color: #fff;
@@ -25,6 +25,7 @@ ul>li>a{
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-bottom: 20px;
 }
 
 
@@ -46,6 +47,8 @@ ul>li>a{
 
 .box-login label{
   font-weight: bold;
+  font-size: 14px;
+  margin-bottom: -10px;
 }
 
 .panel {
@@ -136,4 +139,12 @@ ul>li>a{
   text-align: center;
   font-size: 11px;
   font-weight: bold;
+}
+
+#resultados-busqueda{
+  font-size: 14px;
+}
+
+input[type="file"]{
+  font-size: 12px;
 }
