@@ -20,12 +20,29 @@
     <!-- END SLIDER -->
 
     <!-- TESTIMONIOS -->
-    <link rel="stylesheet" href="{% static 'css/testimonios/owl.carousel.css'%}">
+    <!-- <link rel="stylesheet" href="{% static 'css/testimonios/owl.carousel.css'%}">
     <link rel="stylesheet" href="{% static 'css/testimonios/owl.theme.css'%}">
     <link rel="stylesheet" href="{% static 'css/testimonios/owl.transitions.css'%}">
     <link rel="stylesheet" href="{% static 'css/testimonios/style.css'%}">
-    <!-- END TESTIMONIOS -->
+-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'testimonios/sss/sss.css'%}">
+    <link rel="stylesheet" href="{% static 'testimonios/testimonio-estilos.css'%}">
 
+    <script type="text/javascript" src="{% static 'testimonios/sss/sss.js'%}"></script>
+    <script>
+        jQuery(function($){
+            $('.slider-testimonial').sss({
+              slideShow : true,
+              speed : 3500
+            });
+        });
+    </script>
+
+
+
+
+      <!-- END TESTIMONIOS -->
 </head>
 <body>
   <div class="">
@@ -82,14 +99,16 @@
     {% endblock %}
 
 <script src="{% static 'js/bootstrap/bootstrap.min.js'%}"></script>
-<script src="{% static 'js/testimonios/owl.carousel.min.js'%}"></script>
+<!-- <script src="{% static 'js/testimonios/owl.carousel.min.js'%}"></script>
 <script src="{% static 'js/testimonios/jquery.nivo.slider.pack.js'%}"></script>
 <script src="{% static 'js/testimonios/jquery.meanmenu.min.js'%}"></script>
 <script src="{% static 'js/testimonios/wow.min.js'%}"></script>
 <script src="{% static 'js/testimonios/jquery-price-slider.js'%}"></script>
 <script src="{% static 'js/testimonios/jquery.simpleLens.min.js'%}"></script>
 <script src="{% static 'js/testimonios/jquery.scrollUp.min.js'%}"></script>
-<script src="{% static 'js/testimonios/main.js'%}"></script>
+<script src="{% static 'js/testimonios/main.js'%}"></script> -->
+
+
 
 
 </body>
