@@ -15,18 +15,34 @@
       {% if usuario %}
       <div class="col-md-3 box-login small">
 
+        <div class="row">
           <div class="testimonio-photo">
             <img src="{% static 'media/' %}{{usuario.foto_perfil}}" alt="" class="photo">
           </div>
 
-          <div class="testimonio-name text-center">
+          <div class="testimonio-name text-center col-md-12">
             <h6>Bienvenido {{usuario.nombres}}</h6>
           </div>
 
-          <div class="text-center">
-            <a href="{% url 'usuario:principal'%}" ><span class="fa fa-home" style="font-size:20px; margin-right:30px;"></span></a>
-            <a href="{% url 'logout'%}"><span class="fa fa-sign-out-alt" style="font-size:20px"></span></a>
+          <div class="text-center col-md-12">
+            <div class="row">
+              <div class="col-md-3">
+
+              </div>
+              <div class="col-md-3 text-center">
+                <a href="{% url 'usuario:principal'%}" ><span class="fa fa-home" style="font-size:20px;"></span><br>Home</a>
+              </div>
+              <div class="col-md-3 text-center">
+                <a href="{% url 'logout'%}"><span class="fa fa-sign-out-alt" style="font-size:20px"></span><br>Salir</a>
+              </div>
+            </div>
+
+
+
           </div>
+        </div>
+
+
 
 
 
