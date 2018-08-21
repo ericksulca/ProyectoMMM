@@ -37,7 +37,7 @@ class NuevoUsuarioForm(forms.ModelForm):
             'nombres': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Nombres'}),
             'apellido_paterno': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Apellido paterno'}),
             'apellido_materno': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Apellido materno'}),
-            'foto_perfil': forms.FileInput(),
+            'foto_perfil': forms.FileInput(attrs={'class': 'form-control-p'}),
             'dni_referido': forms.NumberInput(attrs={'class': 'form-control-p', 'placeholder':'DNI del referente','onKeyPress':'if(this.value.length==8) return false;'}),
             'numero_cuenta': forms.NumberInput(attrs={'class': 'form-control-p', 'placeholder':'Número de cuenta'}),
             'entidad_bancaria': forms.Select(attrs={'class': 'form-control-p'}),
