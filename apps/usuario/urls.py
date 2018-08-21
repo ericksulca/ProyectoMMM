@@ -12,6 +12,7 @@ urlpatterns = [
     path('editar/', login_required(views.editar_usuario), name='editar_usuario'),
     # path('login/', views.login_usuario, name='login'),
     path('principal/', login_required(views.principal_usuario), name='principal'),
-    path('registrar/', views.registrar_usuario, name='registrar_usuario'),
+    path('registrar/', views.registrar_usuario, name='registrar_usuario'),    
+    path('registrar/<int:dni_referido>/', views.registrar_usuario, name='registrar_usuario_ref'),
 
 ]

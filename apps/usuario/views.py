@@ -1,26 +1,28 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, render_to_response
-from django.contrib.auth import authenticate
+
+from apps.home.models import Banner
 from .forms import NuevoUsuarioForm
 from .models import Usuario
-from apps.home.models import Banner
 
 # Create your views here.
 
 
 def principal_usuario(request):
     if request.user.is_authenticated:
-        oUsuario=Usuario.objects.get(usuario_login_id=request.user.id)
+        oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     else:
-        oUsuario=''
+        oUsuario = ''
     return render(request, 'usuario/principal.html',{'usuario':oUsuario})
 
 def editar_usuario(request):
     return render(request, 'usuario/editar.html')
 
 
-def registrar_usuario(request):
+def registrar_usuario(request, dni_referido=''):
     if request.method == 'POST':
         formUsuario = NuevoUsuarioForm(request.POST, request.FILES)
         username = request.POST['username']
@@ -36,10 +38,13 @@ def registrar_usuario(request):
             usuario = formUsuario.save(commit=False)
             usuario.usuario_login = user
             usuario.save()
+            messages.info(request, "Gracias por registrarte")
+            usuario = authenticate(request, username=username, password=password1)
+            login(request, usuario)
 
-            return redirect('home:index')
+            return redirect('usuario:principal')
     else:
-        formUsuario = NuevoUsuarioForm()
+        formUsuario = NuevoUsuarioForm(initial={'dni_referido': dni_referido})
 
     banner = Banner.objects.all()
     context = {
