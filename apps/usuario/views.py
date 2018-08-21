@@ -8,9 +8,6 @@ from apps.home.models import Banner
 
 # Create your views here.
 
-def login_usuario(request):
-    context = {"titulo": "Página principal de usuario"}
-    return render(request, 'usuario/login.html', context)
 
 def principal_usuario(request):
     return render(request, 'usuario/principal.html')
@@ -26,7 +23,7 @@ def registrar_usuario(request):
         email = request.POST['email']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
-        
+
         if password1 == password2 and formUsuario.is_valid():
             try:
                 user = User.objects.create_user(username, email, password1)

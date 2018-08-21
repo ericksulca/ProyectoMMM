@@ -12,12 +12,15 @@ def index(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
+                # usuario=request.session['username']
+
                 return redirect('usuario:principal')
+
             else:
                 redirect('home:index')
         else:
             username = 'no hay usuario'
-            password = 'no hay password'        
+            password = 'no hay password'
 
     banner = Banner.objects.all()
 
