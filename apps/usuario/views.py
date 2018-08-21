@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, render_to_response
-
+from django.contrib.auth import authenticate
 from .forms import NuevoUsuarioForm
 from .models import Usuario
 from apps.home.models import Banner
@@ -10,7 +10,11 @@ from apps.home.models import Banner
 
 
 def principal_usuario(request):
-    return render(request, 'usuario/principal.html')
+    if request.user.is_authenticated:
+        oUsuario=Usuario.objects.get(usuario_login_id=request.user.id)
+    else:
+        oUsuario=''
+    return render(request, 'usuario/principal.html',{'usuario':oUsuario})
 
 def editar_usuario(request):
     return render(request, 'usuario/editar.html')

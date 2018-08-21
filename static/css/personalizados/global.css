@@ -148,3 +148,15 @@ ul>li>a{
 input[type="file"]{
   font-size: 12px;
 }
+
+/* USUARIO/PRINCIPAL */
+.main-box-welcome{
+  height:auto;
+  padding-top:15px;
+  padding-bottom:10px;
+  background-color: rgb(50, 48, 48)
+}
+
+.main-welcome{
+  color:white;
+}
