@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.solicitud',
     'apps.usuario',
     'apps.home',
+    'apps.testimonio',
 ]
 
 MIDDLEWARE = [

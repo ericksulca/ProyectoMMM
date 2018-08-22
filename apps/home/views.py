@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from apps.usuario.forms import NuevoUsuarioForm
 from apps.home.models import Banner
 from apps.usuario.models import Usuario
+from apps.testimonio.models import Testimonio
 
 def index(request):
     if request.method == 'POST':
@@ -23,10 +24,17 @@ def index(request):
             password = 'no hay password'
 
     banner = Banner.objects.all()
+    testimonio=Testimonio.objects.all()
 
     if request.user.is_authenticated:
         oUsuario=Usuario.objects.get(usuario_login_id=request.user.id)
     else:
         oUsuario=''
 
-    return render(request, 'home/index.html',{'banner':banner,'usuario':oUsuario})
+    context={
+        'banner':banner,
+        'usuario':oUsuario,
+        'testimonio':testimonio,
+    }
+
+    return render(request, 'home/index.html',context)
