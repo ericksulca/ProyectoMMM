@@ -114,38 +114,24 @@
 
 <div class="wrapper">
   <div class="slider-testimonial">
-    <div class="testimonial-item">
-      <div class="testimonial-client">
-        <div class="testimonio-photo">
-          <img src="{% static 'img/fotos-usuario/5.jpg' %}" alt="" class="photo">
-        </div>
-        <p class="client-name">Usuario 1</p>
+
+  {% if testimonio %}
+  {% for test in testimonio %}
+  <div class="testimonial-item">
+    <div class="testimonial-client">
+      <div class="testimonio-photo">
+        <img src="{% static 'media/' %}{{test.usuario.foto_perfil}}" alt="" class="photo">
       </div>
-      <div class="testimonial-text">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, veritatis, similique! Ipsa quam vel repellendus, autem fugiat doloribus? Quam, velit.</p>
-      </div>
+      <p class="client-name">{{test.usuario.nombres}} {{test.usuario.apellido_paterno}} {{test.usuario.apellido_materno}}</p>
     </div>
-    <div class="testimonial-item">
-      <div class="testimonial-client">
-        <div class="testimonio-photo">
-          <img src="{% static 'img/fotos-usuario/6.jpg' %}" alt="" class="photo">
-        </div>
-        <p class="client-name">Usuario 2</p>
-      </div>
-      <div class="testimonial-text">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae ad hic, consectetur excepturi vero odio quae eos ratione ipsum aliquid.</p>
-      </div>
+    <div class="testimonial-text">
+      <p>{{test.contenido}}</p>
     </div>
-    <div class="testimonial-item">
-      <div class="testimonial-client">
-        <div class="testimonio-photo">
-          <img src="{% static 'img/fotos-usuario/7.jpg' %}" alt="" class="photo">
-        </div>
-        <p class="client-name">Usuario 3</p>
-      </div>
-      <div class="testimonial-text">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non voluptate provident eum, itaque nihil. Minus eius nostrum, veritatis eos eum.</p>
-      </div>
-    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+
+
   </div>
 </div>
