@@ -189,17 +189,12 @@
 
     function searchSuccess(data, textStatus, jqXHR) {
         $('#resultados-busqueda').html(data);
+        $(document).on('click', '#usuario-buscado-dni', function() {
+          var dni = this.text;
+          $('#id_dni_referido')[0].value = dni;
+          });
     };
-
-    var busq = document.getElementById("busqueda");
-    busq.onchange = function() {selectorDNIreferido()};
-
-    function selectorDNIreferido() {
-        var dni = document.getElementById("usuario-buscado-dni");
-        var dniFormField = document.getElementById("id_dni_referido");
-        dniFormField.value = dni.text;
-    };
-
+    
     // Validación de username
     $(function() {
       $('#username').keyup(function() {
@@ -229,21 +224,6 @@
         $('#boton')[0].disabled = true;
       }
     };
-
-    var divUsername = document.getElementById('mensaje-username');
-    divUsername.onchange = function() {botonEnabler()};
-
-    function botonEnabler() {
-      var mensajeUsername = document.getElementById('mensaje-username').textContent;
-      var boton = getElementById("boton");
-      if (mensajeUsername === "El nombre de usuario ya está tomado") {
-        boton.disabled = false;
-      } else {
-        boton.disabled = true;
-      }
-    }    
-
-
 
 </script>
 
