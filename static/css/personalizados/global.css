@@ -109,8 +109,8 @@ ul>li>a{
 }
 
 .testimonio-photo{
-  width:100px;
-  height: 100px;
+  width:80px;
+  height:80px;
   border-radius: 100%;
   margin: 0 auto;
   margin-bottom: 20px;
@@ -159,4 +159,9 @@ input[type="file"]{
 
 .main-welcome{
   color:white;
+}
+
+.usuario-perfil .label-perfil{
+  font-weight: bold;
+
 }

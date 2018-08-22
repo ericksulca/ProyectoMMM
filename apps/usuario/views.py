@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, render_to_response
 
 from apps.home.models import Banner
 from .forms import NuevoUsuarioForm
-from .models import Usuario
+from .models import Usuario, Entidad_bancaria
 
 # Create your views here.
 
@@ -17,6 +17,16 @@ def principal_usuario(request):
     else:
         oUsuario = ''
     return render(request, 'usuario/principal.html',{'usuario':oUsuario})
+
+def perfil_usuario(request):
+    if request.user.is_authenticated:
+        oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+        oUser=request.user
+        oEntidad=Entidad_bancaria.objects.all()
+    else:
+        oUsuario = ''
+    return render(request, 'usuario/perfil.html',{'usuario':oUsuario,'user':oUser,'entidad':oEntidad})
+
 
 def editar_usuario(request):
     return render(request, 'usuario/editar.html')
