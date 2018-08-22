@@ -81,3 +81,17 @@ def buscar_usuario(request):
     }
 
     return render(request, 'usuario/buscar.html', context)
+
+
+def validar_username(request):
+    if request.method == 'POST':
+        if 'username' in request.POST:
+            username = request.POST['username']
+        else:
+            username = ''
+    else:
+        username = ''
+    
+    users = User.objects.filter(username=username)
+    
+    return render(request, 'usuario/validar_username.html', {'users': users})

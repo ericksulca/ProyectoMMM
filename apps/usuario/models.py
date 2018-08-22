@@ -34,3 +34,7 @@ class Usuario(models.Model):
     
     def __str__(self):
         return self.nombres
+    
+    @property
+    def nombre_completo(self):
+        return '%s %s %s' % (self.nombres, self.apellido_paterno, self.apellido_materno)

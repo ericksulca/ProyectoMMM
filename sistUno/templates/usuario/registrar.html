@@ -45,6 +45,7 @@
                 <div class="">
                   <label for="">Nombre de usuario:</label>
                   <input type="text" name="username" class="form-control-p" required id="username" placeholder="Nombre de usuario">
+                  <div id="mensaje-username"></div>
                 </div>
                 <div class="">
                   <label for="">Foto de perfil</label>
@@ -53,6 +54,7 @@
                 <div class="">
                   <label for="email">Dirección de correo electrónico:</label>
                   <input type="email" name="email" class="form-control-p" required placeholder="Dirección de correo electrónico" id="email">
+                  <div id="mensaje-email"></div>
                 </div>
                 <div class="">
                   <label for="password1">Contraseña:</label>
@@ -154,24 +156,18 @@
             </div>
 
               <div class="form-group col-md-12">
-                <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                <button id="boton" type="submit" class="btn btn-primary btn-sm" disabled>Guardar</button>
                 <a href="{% url 'home:index' %}">Ya tengo una cuenta</a>
               </div>
             </form>
-
-
-
 
         </div>
     </div>
 
 </div>
 
-<!-- div col-md-4 -->
-
-
-
 <script>
+  // busqueda de Referente
     $(function () {
         $('#busqueda').keyup(function () {
             var txt = $(this).val();
@@ -195,8 +191,7 @@
         $('#resultados-busqueda').html(data);
     };
 
-
-    var busq = document.getElementById("busqueda")
+    var busq = document.getElementById("busqueda");
     busq.onchange = function() {selectorDNIreferido()};
 
     function selectorDNIreferido() {
@@ -204,6 +199,49 @@
         var dniFormField = document.getElementById("id_dni_referido");
         dniFormField.value = dni.text;
     };
+
+    // Validación de username
+    $(function() {
+      $('#username').keyup(function() {
+        var txt = $(this).val();
+        if (txt === '') { }
+        else {
+          $.ajax({
+            type: "POST",
+            url: "/Usuario/validar-username/",
+            data: {
+              'username': $('#username').val(),
+              'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+            },
+            success: validacionUsername,
+            dataType: 'html'
+          });
+        }
+      });
+    });
+
+    function validacionUsername(data, textStatus, jqXHR) {
+      $('#mensaje-username').html(data);
+      var msjUsername = $('#mensaje-username')[0].children[0].id;
+      if (msjUsername === "msj-libre") {
+        $('#boton')[0].disabled = false;
+      } else {        
+        $('#boton')[0].disabled = true;
+      }
+    };
+
+    var divUsername = document.getElementById('mensaje-username');
+    divUsername.onchange = function() {botonEnabler()};
+
+    function botonEnabler() {
+      var mensajeUsername = document.getElementById('mensaje-username').textContent;
+      var boton = getElementById("boton");
+      if (mensajeUsername === "El nombre de usuario ya está tomado") {
+        boton.disabled = false;
+      } else {
+        boton.disabled = true;
+      }
+    }    
 
 
 

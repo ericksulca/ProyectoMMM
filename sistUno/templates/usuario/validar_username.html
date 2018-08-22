@@ -1,0 +1,7 @@
+{% if users.count > 0 %}
+<p id='msj-tomado' class="text-danger">El nombre de usuario ya está tomado</p>
+
+{% else %}
+<p id='msj-libre' class="text-success">Nombre de usuario válido</p>
+
+{% endif %}
