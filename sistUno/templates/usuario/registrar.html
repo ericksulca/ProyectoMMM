@@ -19,7 +19,79 @@
             <form enctype="multipart/form-data" method="POST" action="" class="col-md-12">
             <div class="row">
               {% csrf_token %}
+
               <div class="col-md-4">
+                <h5 class="text-primary">Datos Personales</h5>
+                <div class="">
+                  <label for="">Nombres:</label>
+                  {{ formUsuario.nombres }}
+                </div>
+                <div class="">
+                  <label for="">Apellido paterno:</label>
+                  {{ formUsuario.apellido_paterno }}
+                </div>
+                <div class="">
+                  <label for="">Apellido materno:</label>
+                  {{ formUsuario.apellido_materno }}
+                </div>
+                <div class="">
+                  <label for="">DNI:</label>
+                  {{ formUsuario.dni }}
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <h5 class="text-primary">Datos de la Cuenta</h5>
+                <div class="">
+                  <label for="">Nombre de usuario:</label>
+                  <input type="text" name="username" class="form-control-p" required id="username" placeholder="Nombre de usuario">
+                  <div id="mensaje-username"></div>
+                </div>
+                <div class="">
+                  <label for="">Foto de perfil</label>
+                  {{ formUsuario.foto_perfil }}
+                </div>
+                <div class="">
+                  <label for="email">Dirección de correo electrónico:</label>
+                  <input type="email" name="email" class="form-control-p" required placeholder="Dirección de correo electrónico" id="email">
+                  <div id="mensaje-email"></div>
+                </div>
+                <div class="">
+                  <label for="password1">Contraseña:</label>
+                  <input type="password" name="password1" class="form-control-p" required placeholder="Contraseña" id="password1">
+                </div>
+                <div class="">
+                  <label for="password2">Confirmar Contraseña:</label>
+                  <input type="password" name="password2" class="form-control-p" required placeholder="Confirmar contraseña" id="password2">
+                </div>
+                <div class="">
+                  <label for="">Entidad bancaria:</label>
+                  {{ formUsuario.entidad_bancaria }}
+                </div>
+                <div class="">
+                  <label for="">Número de cuenta:</label>
+                  {{ formUsuario.numero_cuenta }}
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <h5 class="text-primary">Datos del Referente</h5>
+                <div>
+                  <label for="">Buscar usuario referente:</label>
+                  <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="DNI del referente">
+                  <ul id="resultados-busqueda">
+                  </ul>
+                </div>
+
+                <div class="">
+                  <label for="">DNI del referente:</label>
+                  {{ formUsuario.dni_referido }}
+                </div>
+
+              </div>
+
+<hr>
+              <!-- <div class="col-md-4">
                 <label for="">Nombres:</label>
                 {{ formUsuario.nombres }}
               </div>
@@ -78,39 +150,24 @@
                 <label for="password2">Confirmar Contraseña:</label>
                 <input type="password" name="password2" class="form-control-p" required placeholder="Confirmar contraseña" id="password2">
               </div>
-
+ -->
 
 
             </div>
 
               <div class="form-group col-md-12">
-                <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                <button id="boton" type="submit" class="btn btn-primary btn-sm" disabled>Guardar</button>
                 <a href="{% url 'home:index' %}">Ya tengo una cuenta</a>
               </div>
             </form>
 
-            <hr>
-            <h6>
-                <b>Búsqueda de usuario referente</b>
-            </h6>
-
-            <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="DNI del referente" onkeypress="if(this.value.length==8) return false;" onk>
-
-
-
-            <ul id="resultados-busqueda">
-
-            </ul>
         </div>
     </div>
 
 </div>
 
-<!-- div col-md-4 -->
-
-
-
 <script>
+  // busqueda de Referente
     $(function () {
         $('#busqueda').keyup(function () {
             var txt = $(this).val();
@@ -132,19 +189,41 @@
 
     function searchSuccess(data, textStatus, jqXHR) {
         $('#resultados-busqueda').html(data);
+        $(document).on('click', '#usuario-buscado-dni', function() {
+          var dni = this.text;
+          $('#id_dni_referido')[0].value = dni;
+          });
     };
+    
+    // Validación de username
+    $(function() {
+      $('#username').keyup(function() {
+        var txt = $(this).val();
+        if (txt === '') { }
+        else {
+          $.ajax({
+            type: "POST",
+            url: "/Usuario/validar-username/",
+            data: {
+              'username': $('#username').val(),
+              'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+            },
+            success: validacionUsername,
+            dataType: 'html'
+          });
+        }
+      });
+    });
 
-
-    var busq = document.getElementById("busqueda")
-    busq.onchange = function() {selectorDNIreferido()};
-
-    function selectorDNIreferido() {
-        var dni = document.getElementById("usuario-buscado-dni");
-        var dniFormField = document.getElementById("id_dni_referido");
-        dniFormField.value = dni.text;
+    function validacionUsername(data, textStatus, jqXHR) {
+      $('#mensaje-username').html(data);
+      var msjUsername = $('#mensaje-username')[0].children[0].id;
+      if (msjUsername === "msj-libre") {
+        $('#boton')[0].disabled = false;
+      } else {        
+        $('#boton')[0].disabled = true;
+      }
     };
-
-
 
 </script>
 

@@ -1,0 +1,93 @@
+{% extends 'base/base_login.html'%}
+{% load staticfiles %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{% url 'usuario:principal' %}">Principal</a>
+  </li>
+  <li class="breadcrumb-item active">Perfil</li>
+</ol>
+{% endblock %}
+{% block content %}
+<h4><b>PERFIL</b></h4>
+
+<form class="" action="index.html" method="post">
+  <div class="row usuario-perfil">
+
+    <div class="col-md-3">
+      <div class="">
+        <label class="label-perfil" for="foto_perfil">Foto de perfil:</label>
+        <input type="file" name="foto_perfil" value="foto_perfil" id="foto_perfil" class="form-control-p">
+      </div>
+      <div class="">
+        <label class="label-perfil" for="username">Nombre de usuario:</label>
+        <input type="text" name="username" value="{{user.username}}" id="username" class="form-control-p">
+      </div>
+      <div class="">
+        <label class="label-perfil" for="email">Dirección de correo electrónico:</label>
+        <input type="text" name="email" value="{{user.email}}" id="email" class="form-control-p">
+      </div>
+      <div class="">
+        <label class="label-perfil" for="password">Nueva contraseña:</label>
+        <input type="text" name="password" id="password" class="form-control-p" placeholder="Nueva contraseña">
+      </div>
+      <div class="">
+        <label class="label-perfil" for="password2">Confirmar contraseña:</label>
+        <input type="text" name="password2" id="password2" class="form-control-p" placeholder="Confirmar contraseña">
+      </div>
+
+    </div>
+
+    <div class="col-md-3">
+      <div class="">
+        <label class="label-perfil" for="dni">DNI:</label>
+        <input type="text" name="dni" value="{{usuario.dni}}" class="form-control-p" id="dni">
+      </div>
+      <div class="">
+        <label class="label-perfil" for="nombre">Nombres:</label>
+        <input type="text" name="nombre" value="{{usuario.nombres}}" class="form-control-p" id="nombre">
+      </div>
+      <div class="">
+        <label class="label-perfil" for="apellido_paterno">Apellido paterno:</label>
+        <input type="text" name="apellido_paterno" value="{{usuario.apellido_paterno}}" class="form-control-p" id="apellido_paterno">
+      </div>
+      <div class="">
+        <label class="label-perfil" for="apellido_materno">Apellido materno:</label>
+        <input type="text" name="apellido_materno" value="{{usuario.apellido_materno}}" class="form-control-p" id="apellido_materno">
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="">
+        <label class="label-perfil" for="entidad_bancaria">Entidad Bancaria:</label>
+        <!-- <input type="text" name="entidad_bancaria" value="{{usuario.entidad_bancaria}}" class="form-control-p" id="entidad_bancaria"> -->
+        <select name="entidad_bancaria_id" class="form-control-p" id="entidad_bancaria_id">
+          {% if entidad%}
+          {% for en in entidad %}
+          <option value="{{en.id}}">{{en.nombre}}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+      <div class="">
+        <label class="label-perfil" for="numero_cuenta">Número de cuenta:</label>
+        <input type="text" name="numero_cuenta" value="{{usuario.numero_cuenta}}" class="form-control-p" id="numero_cuenta">
+      </div>
+    </div>
+  </div>
+
+  <input type="submit" name="" value="Guardar" class="btn btn-primary btn-sm">
+</form>
+
+
+{% endblock %}
+
+{% block scripts%}
+
+
+<script type="text/javascript">
+      $("#entidad_bancaria_id").val('{{usuario.entidad_bancaria_id}}')
+</script>
+
+{% endblock %}

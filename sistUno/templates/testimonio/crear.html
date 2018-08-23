@@ -1,0 +1,31 @@
+{% extends 'base/base_login.html' %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{% url 'usuario:principal' %}">Principal</a>
+  </li>
+  <li class="breadcrumb-item active">Testimonio</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+
+<!-- {% if respuesta %}
+<label for="">{{respuesta}}</label>
+{% endif %} -->
+<form class="" method="post">
+  {% csrf_token %}
+
+  {% if testimonio%}
+    <input type="hidden" name="action" value="edit">
+    <textarea required name="contenido" rows="8" cols="80" placeholder="Escriba su testimonio aquí." class="form-control-p">{{testimonio.contenido}}</textarea>
+  {% else %}
+    <input type="hidden" name="action" value="create">
+    <textarea required name="contenido" rows="8" cols="80" placeholder="Escriba su testimonio aquí." class="form-control-p"></textarea>
+  {% endif %}
+
+  <input type="submit" name="" value="Enviar" class="btn btn-primary btn-sm">
+</form>
+
+{% endblock %}

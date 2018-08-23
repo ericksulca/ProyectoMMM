@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {%block content%}
-          
+
 <h1>Página principal usuario</h1>
 
 <!-- Area Chart Example-->
@@ -20,7 +20,7 @@
 <div class="card mb-3">
   <div class="card-header">
     <i class="fas fa-table"></i>
-    Data Table Example</div>
+    Data Table Example {% if username is None %}Sesion no iniciada {% else %} {{username}} {% endif %}</div>
   <div class="card-body">
     <div class="table-responsive">
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
