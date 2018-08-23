@@ -36,6 +36,7 @@ class Operaciones(models.Model):
     def __str__(self):
         return self.usuario + self.tipo_movimiento + self.monto
     
+    @property
     def movimiento(self):
         return self.tipo_movimiento
 
@@ -71,5 +72,6 @@ class OperacionesBackUp(models.Model):
     def __str__(self):
         return self.usuario_backup + self.tipo_movimiento_backup + self.monto_backup
     
+    @property
     def movimiento(self):
         return self.tipo_movimiento_backup

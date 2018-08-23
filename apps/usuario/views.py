@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db import IntegrityError
+from django.db.models import Q
 from django.shortcuts import render, redirect, render_to_response
 
 from apps.home.models import Banner
@@ -68,13 +69,21 @@ def registrar_usuario(request, dni_referido=''):
 def buscar_usuario(request):
     if request.method == 'POST':
         if 'busqueda' in request.POST:
-            busqueda = request.POST['busqueda']
+            palabras_busqueda = request.POST['busqueda'].split()
         else:
-            busqueda = ''
+            palabras_busqueda = ['']
     else:
-        busqueda = ''
-
-    usuarios = Usuario.objects.filter(nombres__contains=busqueda)
+        palabras_busqueda = ['']
+    
+    # Función Q importada para hacer consultas complejas, en este caso una consulta con 'OR'
+    for busqueda in palabras_busqueda:
+        usuarios = Usuario.objects.filter(
+            Q(nombres__contains = busqueda) |
+            Q(apellido_paterno__contains = busqueda) |
+            Q(apellido_materno__contains = busqueda) |
+            Q(dni__contains = busqueda)
+            )
+        print(usuarios)
 
     context = {
         'usuarios': usuarios
