@@ -218,12 +218,42 @@
     function validacionUsername(data, textStatus, jqXHR) {
       $('#mensaje-username').html(data);
       var msjUsername = $('#mensaje-username')[0].children[0].id;
-      if (msjUsername === "msj-libre") {
+      if (msjUsername === "msj-username-libre") {
         $('#boton')[0].disabled = false;
       } else {        
         $('#boton')[0].disabled = true;
       }
     };
+
+    // Validación de email
+    $(function() {
+      $('#email').keyup(function() {
+        var email = $(this).val();
+        if(email === '') { }
+        else {
+          $.ajax({
+            type: "POST",
+            url: "/Usuario/validar-email/",
+            data: {
+              'email': $('#email').val(),
+              'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken").val()
+            },
+            success: validacionEmail,
+            dataType: 'html'
+          });
+        }
+      });
+    });
+
+    function validacionEmail(data, textStatus, jqXHR) {
+      $('#mensaje-email').html(data);
+      var msjEmail = $('#mensaje-email')[0].children[0].id;
+      if (msjEmail === 'msj-email-libre') {
+        $('#boton')[0],disabled = false;
+      } else {
+        $('#boton')[0],disabled = true;
+      }
+    }
 
 </script>
 

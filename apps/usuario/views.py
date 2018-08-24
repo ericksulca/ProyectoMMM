@@ -104,3 +104,17 @@ def validar_username(request):
     users = User.objects.filter(username=username)
     
     return render(request, 'usuario/validar_username.html', {'users': users})
+
+
+def validar_email(request):
+    if request.method == 'POST':
+        if 'email' in request.POST:
+            email = request.POST['email']
+        else:
+            username = ''
+    else:
+        username = ''
+    
+    emails = User.objects.values_list('email', flat=True).filter(email=email)
+
+    return render(request, 'usuario/validar_email.html', {'emails': emails})
