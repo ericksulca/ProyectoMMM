@@ -12,13 +12,13 @@
 {% block content %}
 <h4><b>PERFIL</b></h4>
 
-<form class="" action="index.html" method="post">
+<form class="" action="index.html" method="POST">
   <div class="row usuario-perfil">
 
     <div class="col-md-3">
       <div class="">
         <label class="label-perfil" for="foto_perfil">Foto de perfil:</label>
-        <input type="file" name="foto_perfil" value="foto_perfil" id="foto_perfil" class="form-control-p">
+        <input type="file" name="foto_perfil" value="{{ user.foto_perfil }}" id="foto_perfil" class="form-control-p">
       </div>
       <div class="">
         <label class="label-perfil" for="username">Nombre de usuario:</label>
