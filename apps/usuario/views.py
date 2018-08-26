@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, render_to_response
 
 from apps.home.models import Banner
-from .forms import NuevoUsuarioForm
+from .forms import NuevoUsuarioForm, EditarPerfilForm
 from .models import Usuario, Entidad_bancaria
 
 # Create your views here.
@@ -18,15 +18,38 @@ def principal_usuario(request):
         oUsuario = ''
     return render(request, 'usuario/principal.html',{'usuario':oUsuario})
 
+
 def perfil_usuario(request):
     if request.user.is_authenticated:
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
         oUser = request.user
-        oEntidad = Entidad_bancaria.objects.all()
+        # formUsuario = EditarPerfilForm(instance=oUsuario)
+
+        if request.method == 'POST':
+            formUsuario = EditarPerfilForm(request.POST, instance=oUsuario)
+            if formUsuario.is_valid():
+                usuario = formUsuario.save(commit=False)
+
+            if 'foto_perfil' in request.FILES:
+                usuario.foto_perfil = request.FILES['foto_perfil']
+
+            usuario.save()
+
+        else:
+            formUsuario = EditarPerfilForm(instance=oUsuario)
+
     else:
         oUsuario = ''
-    return render(request, 'usuario/perfil.html',{'usuario':oUsuario,'user':oUser,'entidad':oEntidad})
 
+    context = {
+        'usuario': oUsuario,
+        'user': oUser,
+        'formUsuario': formUsuario
+    }
+    return render(request, 'usuario/perfil/perfil.html',context)
+
+def cambio_contraseña(request):
+    return render(request, 'usuario/perfil/cambio_contraseña.html')
 
 def editar_usuario(request):
     return render(request, 'usuario/editar.html')
@@ -61,7 +84,7 @@ def registrar_usuario(request, dni_referido=''):
         'banner':banner,
     }
 
-    return render(request, 'usuario/registrar.html', context=context)
+    return render(request, 'usuario/registrar/registrar.html', context=context)
 
 
 def buscar_usuario(request):
@@ -72,7 +95,7 @@ def buscar_usuario(request):
             palabras_busqueda = ['']
     else:
         palabras_busqueda = ['']
-    
+
     # Función Q importada para hacer consultas complejas, en este caso una consulta con 'OR'
     for busqueda in palabras_busqueda:
         usuarios = Usuario.objects.filter(
@@ -87,7 +110,7 @@ def buscar_usuario(request):
         'usuarios': usuarios
     }
 
-    return render(request, 'usuario/buscar.html', context)
+    return render(request, 'usuario/registrar/buscar_usuario.html', context)
 
 
 def validar_email(request):
@@ -98,10 +121,10 @@ def validar_email(request):
             email = ''
     else:
         email = ''
-    
+
     emails = User.objects.values_list('email', flat=True).filter(email=email)
 
-    return render(request, 'usuario/validar_email.html', {'emails': emails})
+    return render(request, 'usuario/registrar/validar_email.html', {'emails': emails})
 
 
 def validar_username(request):
@@ -112,7 +135,7 @@ def validar_username(request):
             username = ''
     else:
         username = ''
-    
+
     users = User.objects.filter(username=username)
-    
-    return render(request, 'usuario/validar_username.html', {'users': users})
+
+    return render(request, 'usuario/registrar/validar_username.html', {'users': users})

@@ -38,7 +38,43 @@ class NuevoUsuarioForm(forms.ModelForm):
             'apellido_paterno': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Apellido paterno'}),
             'apellido_materno': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Apellido materno'}),
             'foto_perfil': forms.FileInput(attrs={'class': 'form-control-p'}),
-            'dni_referido': forms.NumberInput(attrs={'class': 'form-control-p', 'placeholder':'DNI del referente','onKeyPress':'if(this.value.length==8) return false;'}),
+            'dni_referido': forms.NumberInput(attrs={'class': 'form-control-p'}),
             'numero_cuenta': forms.NumberInput(attrs={'class': 'form-control-p', 'placeholder':'Número de cuenta'}),
             'entidad_bancaria': forms.Select(attrs={'class': 'form-control-p'}),
+        }
+
+
+class EditarPerfilForm(forms.ModelForm):
+
+    class Meta:
+        model = Usuario
+
+        fields = [
+            'foto_perfil',
+            'nombres',
+            'apellido_paterno',
+            'apellido_materno',
+            'dni',
+            'entidad_bancaria',
+            'numero_cuenta',
+        ]
+
+        labels = {
+            'foto_perfil': 'Nueva foto de perfil',
+            'nombres': 'Nombres',
+            'apellido_paterno': 'Apellido Paterno',
+            'apellido_materno': 'Apellido Materno',
+            'dni': 'DNI',
+            'entidad_bancaria': 'Entidad Bancaria',
+            'numero_cuenta': 'Numero de cuenta'
+        }
+
+        widgets = {
+            'foto_perfil': forms.FileInput(attrs={'class': 'form-control'}),
+            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellido_paterno': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellido_materno': forms.TextInput(attrs={'class': 'form-control'}),
+            'dni': forms.NumberInput(attrs={'class': 'form-control'}),
+            'entidad_bancaria': forms.Select(attrs={'class': 'form-control'}),
+            'numero_cuenta': forms.NumberInput(attrs={'class': 'form-control'})
         }
