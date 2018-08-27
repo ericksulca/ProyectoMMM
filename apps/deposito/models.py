@@ -3,9 +3,9 @@ from django.db import models
 from apps.usuario.models import Usuario
 from apps.solicitud.models import  Solicitud
 
-# # Create your models here.
+# Create your models here.
 
-class Operaciones(models.Model):
+class Operacion(models.Model):
     TIPO_MOVIMIENTO = (
         ('retiro', 'Retiro'),
         ('deposito', 'Depósito'),
@@ -16,32 +16,37 @@ class Operaciones(models.Model):
     estado = models.BooleanField(default=True)
     tipo_movimiento = models.CharField(max_length=8, choices=TIPO_MOVIMIENTO)
 
-    usuario_asignado = models.ForeignKey(
-        Usuario, related_name='UsuarioAsignado',
-        blank=True,
-        null=True,
+    usuario_emisor = models.ForeignKey(
+        Usuario, related_name='UsuarioEmisor',
         on_delete=models.PROTECT
-        )
-    usuario = models.ForeignKey(
-        Usuario, related_name='UsuarioPaga',
-        on_delete=models.PROTECT
-        )
+    )
     solicitud = models.ForeignKey(
         Solicitud,
         blank=True,
         null=True,
         on_delete=models.PROTECT
-        )
+    )
     
     def __str__(self):
-        return self.usuario + self.tipo_movimiento + self.monto
+        return '%s %s %s' % (self.usuario_emisor, self.movimiento, self.monto)
     
     @property
     def movimiento(self):
         return self.tipo_movimiento
 
 
-class OperacionesBackUp(models.Model):
+class Operacion_Usuario(models.Model):
+    usuario_receptor = models.ForeignKey(
+        Usuario, related_name='UsuarioReceptor',
+        on_delete=models.PROTECT
+    )
+    operacion = models.ForeignKey(
+        Operacion,
+        on_delete=models.PROTECT
+    )
+
+
+class Operacion_backup(models.Model):
     TIPO_MOVIMIENTO = (
         ('retiro', 'Retiro'),
         ('deposito', 'Depósito'),
@@ -52,26 +57,31 @@ class OperacionesBackUp(models.Model):
     estado_backup = models.BooleanField(default=True)
     tipo_movimiento_backup = models.CharField(max_length=8, choices=TIPO_MOVIMIENTO)
 
-    usuario_asignado_backup = models.ForeignKey(
-        Usuario, related_name='UsuarioAsignadoBackUp',
-        blank=True,
-        null=True,
+    usuario_emisor_backup = models.ForeignKey(
+        Usuario, related_name='UsuarioEmisorBackup',
         on_delete=models.PROTECT
-        )
-    usuario_backup = models.ForeignKey(
-        Usuario, related_name='UsuarioPagaBackUp',
-        on_delete=models.PROTECT
-        )
+    )
     solicitud_backup = models.ForeignKey(
         Solicitud,
         blank=True,
         null=True,
         on_delete=models.PROTECT
-        )
+    )
     
     def __str__(self):
-        return self.usuario_backup + self.tipo_movimiento_backup + self.monto_backup
+        return '%s %s %s' % (self.usuario_emisor_backup, self.movimiento_backup, self.monto_backup)
     
     @property
-    def movimiento(self):
+    def movimiento_backup(self):
         return self.tipo_movimiento_backup
+
+
+class Operacion_Usuario_backup(models.Model):
+    usuario_receptor_backup = models.ForeignKey(
+        Usuario, related_name='UsuarioReceptorBackup',
+        on_delete=models.PROTECT
+    )
+    operacion_backup = models.ForeignKey(
+        Operacion,
+        on_delete=models.PROTECT
+    )

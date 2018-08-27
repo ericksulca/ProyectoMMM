@@ -2,13 +2,16 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.core import serializers
 from django.db import IntegrityError
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from apps.home.models import Banner
+from apps.deposito.models import Operacion, Operacion_Usuario
 from .forms import NuevoUsuarioForm, EditarPerfilForm
-from .models import Usuario, Entidad_bancaria
+from .models import Usuario, Entidad_bancaria, Saldo
 
 # Create your views here.
 
@@ -96,6 +99,8 @@ def registrar_usuario(request, dni_referido=''):
             usuario = formUsuario.save(commit=False)
             usuario.usuario_login = user
             usuario.save()
+            saldo_usuario = Saldo(saldo=0.00, usuario=usuario)
+            saldo_usuario.save()
             usuario = authenticate(request, username=username, password=password1)
             login(request, usuario)
 
@@ -164,3 +169,14 @@ def validar_username(request):
     users = User.objects.filter(username=username)
 
     return render(request, 'usuario/registrar/validar_username.html', {'users': users})
+
+
+def saldos_usuario(request):
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    oSaldos = Saldo.objects.filter(usuario=oUsuario)
+    lista = serializers.serialize(
+        'json',
+        oSaldos,
+        fields=['saldo', 'fecha_creacion']
+    )
+    return HttpResponse(lista, content_type='application/json')

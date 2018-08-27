@@ -18,4 +18,5 @@ urlpatterns = [
     path('registrar/<int:dni_referido>/', views.registrar_usuario, name='registrar_usuario_ref'),
     path('validar-username/', views.validar_username, name='validar_username'),
     path('validar-email/', views.validar_email, name='validar_email'),
+    path('saldo/listar/', views.saldos_usuario, name='saldos_usuario')
 ]
