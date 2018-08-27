@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 from django.db import IntegrityError
 from django.db.models import Q
 from django.shortcuts import render, redirect, render_to_response
@@ -50,24 +52,25 @@ def perfil_usuario(request):
 
 def cambio_contraseña(request):
     if request.user.is_authenticated:
+        oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
         oUser = request.user
-
         if request.method == 'POST':
-            contraseña_vieja = request.POST['password']
-            contraseña_nueva = request.POST['nuevo-password']
-            contraseña_nueva_confirm = request.POST['nuevo-password2']
+            form = PasswordChangeForm(data=request.POST, user=oUser)
 
-            if contraseña_nueva == contraseña_nueva_confirm and oUser.password == contraseña_vieja:
-                oUser.set_password(contraseña_nueva)
-                oUser.save()
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request, form.user)
                 return redirect('usuario:principal')
+            
             else:
                 return redirect('usuario:cambio_contraseña')
-    else:
-        return redirect('home:index')
+        else:
+            form = PasswordChangeForm(user=oUser)
     
     context = {
-        'user': oUser
+        'usuario': oUsuario,
+        'user': oUser,
+        'form': form
     }
 
     return render(request, 'usuario/perfil/cambio_contraseña.html', context)

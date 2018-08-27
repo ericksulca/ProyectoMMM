@@ -1,5 +1,6 @@
 {% extends 'base/base_login.html'%}
 {% load staticfiles %}
+<!-- falta validar las nuevas contraseñas -->
 {% block breadcrumb %}
 <ol class="breadcrumb">
   <li class="breadcrumb-item">
@@ -19,25 +20,30 @@
 <h5><strong>Usuario: {{ user.username }}</strong></h5>
 <form action="{% url 'usuario:cambio_contraseña' %}" method="POST">
 {% csrf_token %}
-    <div class="col-md-5">
-        <!-- CAMBIO DE EMAIL -->
-        <!-- <div class="">
-            <label class="label-perfil" for="email">Dirección de correo electrónico:</label>
-            <input type="text" name="email" value="{{user.email}}" id="email" class="form-control-p">
-        </div> -->
+    <div class="">
+        <div class="col-md-12">
         <div class="">
-            <label class="label-perfil" for="password">Contraseña actual:</label>
-            <input type="password" name="password" id="password" class="form-control-p" placeholder="Contraseña actual">
+            <label class="label-perfil" for="id_old_password">Contraseña actual:</label>
+            {{ form.old_password }}
         </div>
         <div class="">
-            <label class="label-perfil" for="nuevo-password">Nueva contraseña:</label>
-            <input type="password" name="nuevo-password" id="nuevo-password" class="form-control-p" placeholder="Confirmar contraseña">
+            <label class="label-perfil" for="id_new_password1">Nueva contraseña:</label>
+            {{ form.new_password1 }}
+            <ul>
+                <li>Su contraseña no puede asemejarse tanto a su otra información personal.</li>
+                <li>Su contraseña debe contener al menos 8 caracteres.</li>
+                <li>Su contraseña no puede ser una clave utilizada comunmente.</li>
+                <li>Su contraseña no puede ser completamente numérica.</li>
+            </ul>
         </div>
         <div class="">
-            <label class="label-perfil" for="nuevo-password2">Confirmar nueva contraseña:</label>
-            <input type="password" name="nuevo-password2" id="nuevo-password2" class="form-control-p" placeholder="Confirmar contraseña">
+            <label class="label-perfil" for="id_new_password2">Confirmar nueva contraseña:</label>
+            {{ form.new_password2 }}
         </div>
-
+        <hr>
+        <input type="submit" name="" value="Guardar" class="btn btn-primary btn-sm">
+        </div>
     </div>
 </form>
+
 {% endblock %}
