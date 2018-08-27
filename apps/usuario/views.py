@@ -34,7 +34,7 @@ def perfil_usuario(request):
                 usuario.foto_perfil = request.FILES['foto_perfil']
 
             usuario.save()
-
+            # Redirect
         else:
             formUsuario = EditarPerfilForm(instance=oUsuario)
 
@@ -49,7 +49,29 @@ def perfil_usuario(request):
     return render(request, 'usuario/perfil/perfil.html',context)
 
 def cambio_contraseña(request):
-    return render(request, 'usuario/perfil/cambio_contraseña.html')
+    if request.user.is_authenticated:
+        oUser = request.user
+
+        if request.method == 'POST':
+            contraseña_vieja = request.POST['password']
+            contraseña_nueva = request.POST['nuevo-password']
+            contraseña_nueva_confirm = request.POST['nuevo-password2']
+
+            if contraseña_nueva == contraseña_nueva_confirm and oUser.password == contraseña_vieja:
+                oUser.set_password(contraseña_nueva)
+                oUser.save()
+                return redirect('usuario:principal')
+            else:
+                return redirect('usuario:cambio_contraseña')
+    else:
+        return redirect('home:index')
+    
+    context = {
+        'user': oUser
+    }
+
+    return render(request, 'usuario/perfil/cambio_contraseña.html', context)
+
 
 def editar_usuario(request):
     return render(request, 'usuario/editar.html')
