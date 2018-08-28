@@ -174,9 +174,21 @@ def validar_username(request):
 def saldos_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     oSaldos = Saldo.objects.filter(usuario=oUsuario)
-    lista = serializers.serialize(
+    data = serializers.serialize(
         'json',
         oSaldos,
-        fields=['saldo', 'fecha_creacion']
+        fields = ['fecha_creacion', 'saldo']
     )
-    return HttpResponse(lista, content_type='application/json')
+    return HttpResponse(data, content_type='application/json')
+
+
+
+def saldos_usuario_chart(request):
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    oSaldos = Saldo.objects.filter(usuario=oUsuario)[:10]
+    data = serializers.serialize(
+        'json',
+        oSaldos,
+        fields = ['fecha_creacion', 'saldo']
+    )
+    return HttpResponse(data, content_type='application/json')
