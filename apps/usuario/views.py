@@ -9,9 +9,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from apps.home.models import Banner
-from apps.deposito.models import Operacion, Operacion_Usuario
+from apps.deposito.models import Operacion
 from .forms import NuevoUsuarioForm, EditarPerfilForm
-from .models import Usuario, Entidad_bancaria, Saldo
+from .models import Usuario, Entidad_bancaria
 
 # Create your views here.
 
@@ -100,7 +100,7 @@ def registrar_usuario(request, dni_referido=''):
             usuario = formUsuario.save(commit=False)
             usuario.usuario_login = user
             usuario.save()
-            saldo_usuario = Saldo(saldo=0.00, usuario=usuario)
+            saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='deposito')
             saldo_usuario.save()
             usuario = authenticate(request, username=username, password=password1)
             login(request, usuario)
@@ -172,24 +172,24 @@ def validar_username(request):
     return render(request, 'usuario/registrar/validar_username.html', {'users': users})
 
 
-def saldos_usuario(request):
+def operaciones_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oSaldos = Saldo.objects.filter(usuario=oUsuario).order_by('-fecha_creacion')
+    oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha')
     data = serializers.serialize(
         'json',
-        oSaldos,
-        fields = ['fecha_creacion', 'saldo']
+        oOperaciones,
+        fields = ['monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final']
     )
     return HttpResponse(data, content_type='application/json')
 
 
 
-def saldos_usuario_chart(request):
+def operaciones_usuario_chart(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oSaldos = Saldo.objects.filter(usuario=oUsuario).order_by('fecha_creacion')[:10]
+    oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha')[:10]
     data = serializers.serialize(
         'json',
-        oSaldos,
-        fields = ['fecha_creacion', 'saldo']
+        oOperaciones,
+        fields = ['fecha', 'saldo_final']
     )
     return HttpResponse(data, content_type='application/json')

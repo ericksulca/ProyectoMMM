@@ -11,13 +11,19 @@ class Operacion(models.Model):
         ('deposito', 'Depósito'),
     )
 
-    monto = models.DecimalField(max_digits=10, decimal_places=2) # Quizas? este monto es el mismo en solicitud
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    saldo_inicial = models.DecimalField(max_digits=10, decimal_places=2)
+    saldo_final = models.DecimalField(max_digits=10, decimal_places=2)
     fecha = models.DateTimeField(auto_now=True)
     estado = models.BooleanField(default=True)
     tipo_movimiento = models.CharField(max_length=8, choices=TIPO_MOVIMIENTO)
 
     usuario_emisor = models.ForeignKey(
         Usuario, related_name='UsuarioEmisor',
+        on_delete=models.PROTECT
+    )
+    usuario_receptor = models.ForeignKey(
+        Usuario, related_name='UsuarioReceptor',
         on_delete=models.PROTECT
     )
     solicitud = models.ForeignKey(
@@ -35,30 +41,23 @@ class Operacion(models.Model):
         return self.tipo_movimiento
 
 
-class Operacion_Usuario(models.Model):
-    usuario_receptor = models.ForeignKey(
-        Usuario, related_name='UsuarioReceptor',
-        on_delete=models.PROTECT
-    )
-    operacion = models.ForeignKey(
-        Operacion,
-        on_delete=models.PROTECT
-    )
-
-
 class Operacion_backup(models.Model):
     TIPO_MOVIMIENTO = (
         ('retiro', 'Retiro'),
         ('deposito', 'Depósito'),
     )
 
-    monto_backup = models.DecimalField(max_digits=10, decimal_places=2) # Quizas? este monto es el mismo en solicitud
+    monto_backup = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_backup = models.DateTimeField(auto_now=True)
     estado_backup = models.BooleanField(default=True)
     tipo_movimiento_backup = models.CharField(max_length=8, choices=TIPO_MOVIMIENTO)
 
     usuario_emisor_backup = models.ForeignKey(
         Usuario, related_name='UsuarioEmisorBackup',
+        on_delete=models.PROTECT
+    )
+    usuario_receptor_backup = models.ForeignKey(
+        Usuario, related_name='UsuarioReceptorBackup',
         on_delete=models.PROTECT
     )
     solicitud_backup = models.ForeignKey(
@@ -74,14 +73,3 @@ class Operacion_backup(models.Model):
     @property
     def movimiento_backup(self):
         return self.tipo_movimiento_backup
-
-
-class Operacion_Usuario_backup(models.Model):
-    usuario_receptor_backup = models.ForeignKey(
-        Usuario, related_name='UsuarioReceptorBackup',
-        on_delete=models.PROTECT
-    )
-    operacion_backup = models.ForeignKey(
-        Operacion,
-        on_delete=models.PROTECT
-    )

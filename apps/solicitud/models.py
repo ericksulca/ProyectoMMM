@@ -10,6 +10,7 @@ class Solicitud(models.Model):
     fecha_confirmacion = models.DateTimeField(auto_now=True, blank=True)
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     confirmacion = models.BooleanField(default=False)
+    pagado = models.BooleanField(default=False)
     estado = models.BooleanField(default=True)
 
     def __str__(self):

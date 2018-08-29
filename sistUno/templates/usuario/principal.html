@@ -26,8 +26,12 @@
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th>Saldo</th>
             <th>Fecha</th>
+            <th>DNI emisor</th>
+            <th>Operacion</th>
+            <th>Monto</th>
+            <th>Saldo inicial</th>
+            <th>Saldo final</th>
           </tr>
         </thead>
         <tfoot>
@@ -45,20 +49,24 @@
 <script>
 
   $(document).ready(function() {
-    saldos_listar();
+    detalles_operaciones();
   });
 
-  var saldos_listar = function() {
+  var detalles_operaciones = function() {
     var table = $('#dataTable').DataTable({
       "processing": true,
       "ajax": {
         method: "GET",
-        url: "/Usuario/saldo/listar/",
+        url: "/Usuario/operaciones/listar/",
         "dataSrc": "",
       },
       "columns":[
-        {"data": "fields.saldo"},
-        {"data": "fields.fecha_creacion"}
+        {"data": "fields.fecha"},
+        {"data": "fields.usuario_emisor"},
+        {"data": "fields.tipo_movimiento"},
+        {"data": "fields.monto"},
+        {"data": "fields.saldo_inicial"},
+        {"data": "fields.saldo_final"}
       ]
     });
   }
@@ -93,12 +101,12 @@ window.onload = function() {
   var ctx = document.getElementById("MyChart");
   $.ajax({
     method: 'GET',
-    url: '/Usuario/saldo/listar-chart/',
+    url: '/Usuario/operaciones/listar-chart/',
     success: function(data) {
       console.log(labels);
       data.forEach(element => {
-        fechas.push(element.fields.fecha_creacion);
-        saldos.push(element.fields.saldo);
+        fechas.push(element.fields.fecha);
+        saldos.push(element.fields.saldo_final);
       });
       // console.log(fechas);
       // console.log(saldos);
