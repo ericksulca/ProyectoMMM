@@ -21,12 +21,9 @@ class Usuario(models.Model):
     nombres = models.CharField(max_length=50)
     apellido_paterno = models.CharField(max_length=50)
     apellido_materno = models.CharField(max_length=50)
-    foto_perfil = models.ImageField(blank=True, upload_to='usuario')
+    foto_perfil = models.ImageField(blank=True, upload_to='usuario', default='usuario/Koala.jpg')
     numero_cuenta = models.IntegerField(unique=True)
-    saldo = models.DecimalField(
-        max_digits=10, decimal_places=2,
-        blank=True, default=0
-        )
+    activo = models.BooleanField(default=True)
 
     usuario_login = models.OneToOneField(User, on_delete=models.PROTECT)    
     entidad_bancaria = models.ForeignKey(Entidad_bancaria, on_delete=models.PROTECT)
@@ -38,3 +35,42 @@ class Usuario(models.Model):
     @property
     def nombre_completo(self):
         return '%s %s %s' % (self.nombres, self.apellido_paterno, self.apellido_materno)
+
+
+class Saldo(models.Model):
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    saldo = models.DecimalField(
+        max_digits=10, decimal_places=2,
+        blank=True, default=0
+        )
+
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return 'El saldo es de %s en la fecha %s' % (self.saldo, self.fecha_creacion)
+
+
+class Mensaje(models.Model):
+    asunto = models.CharField(max_length=50)
+    fecha_redaccion = models.DateTimeField(auto_now_add=True)
+    texto_mensaje = models.TextField()
+
+    emisor = models.ForeignKey(
+        Usuario,
+        related_name='emisor',
+        on_delete=models.PROTECT
+        )
+
+
+class Mensaje_Usuario(models.Model):
+    leido = models.BooleanField(default=True)
+
+    receptor = models.ForeignKey(
+        Usuario,
+        related_name='receptor',
+        on_delete=models.PROTECT
+        )
+    mensaje = models.ForeignKey(
+        Mensaje,
+        on_delete=models.PROTECT
+        )

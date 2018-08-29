@@ -1,0 +1,7 @@
+{% if users.exists %}
+<p id='msj-username-tomado' class="text-danger"><i class="fas fa-times-circle"></i> El nombre de usuario ya está tomado</p>
+
+{% else %}
+<p id='msj-username-libre' class="text-success"><i class="far fa-check-circle"></i> Nombre de usuario válido</p>
+
+{% endif %}

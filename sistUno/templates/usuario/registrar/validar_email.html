@@ -1,0 +1,7 @@
+{% if emails.exists %}
+<p id='msj-email-tomado' class="text-danger"><i class="fas fa-times-circle"></i> Esta dirección ya está tomada</p>
+
+{% else %}
+<p id='msj-email-libre' class="text-success"><i class="far fa-check-circle"></i> Dirección válida</p>
+
+{% endif %}

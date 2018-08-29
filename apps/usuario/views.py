@@ -1,13 +1,17 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.core import serializers
 from django.db import IntegrityError
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from apps.home.models import Banner
-from .forms import NuevoUsuarioForm
-from .models import Usuario, Entidad_bancaria
+from apps.deposito.models import Operacion, Operacion_Usuario
+from .forms import NuevoUsuarioForm, EditarPerfilForm
+from .models import Usuario, Entidad_bancaria, Saldo
 
 # Create your views here.
 
@@ -17,16 +21,63 @@ def principal_usuario(request):
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     else:
         oUsuario = ''
+    
     return render(request, 'usuario/principal.html',{'usuario':oUsuario})
+
 
 def perfil_usuario(request):
     if request.user.is_authenticated:
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-        oUser=request.user
-        oEntidad=Entidad_bancaria.objects.all()
+        oUser = request.user
+        # formUsuario = EditarPerfilForm(instance=oUsuario)
+
+        if request.method == 'POST':
+            formUsuario = EditarPerfilForm(request.POST, instance=oUsuario)
+            if formUsuario.is_valid():
+                usuario = formUsuario.save(commit=False)
+
+            if 'foto_perfil' in request.FILES:
+                usuario.foto_perfil = request.FILES['foto_perfil']
+
+            usuario.save()
+            # Redirect
+        else:
+            formUsuario = EditarPerfilForm(instance=oUsuario)
+
     else:
         oUsuario = ''
-    return render(request, 'usuario/perfil.html',{'usuario':oUsuario,'user':oUser,'entidad':oEntidad})
+
+    context = {
+        'usuario': oUsuario,
+        'user': oUser,
+        'formUsuario': formUsuario
+    }
+    return render(request, 'usuario/perfil/perfil.html',context)
+
+def cambio_contraseña(request):
+    if request.user.is_authenticated:
+        oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+        oUser = request.user
+        if request.method == 'POST':
+            form = PasswordChangeForm(data=request.POST, user=oUser)
+
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request, form.user)
+                return redirect('usuario:principal')
+            
+            else:
+                return redirect('usuario:cambio_contraseña')
+        else:
+            form = PasswordChangeForm(user=oUser)
+    
+    context = {
+        'usuario': oUsuario,
+        'user': oUser,
+        'form': form
+    }
+
+    return render(request, 'usuario/perfil/cambio_contraseña.html', context)
 
 
 def editar_usuario(request):
@@ -49,7 +100,8 @@ def registrar_usuario(request, dni_referido=''):
             usuario = formUsuario.save(commit=False)
             usuario.usuario_login = user
             usuario.save()
-            messages.info(request, "Gracias por registrarte")
+            saldo_usuario = Saldo(saldo=0.00, usuario=usuario)
+            saldo_usuario.save()
             usuario = authenticate(request, username=username, password=password1)
             login(request, usuario)
 
@@ -63,7 +115,7 @@ def registrar_usuario(request, dni_referido=''):
         'banner':banner,
     }
 
-    return render(request, 'usuario/registrar.html', context=context)
+    return render(request, 'usuario/registrar/registrar.html', context=context)
 
 
 def buscar_usuario(request):
@@ -74,14 +126,14 @@ def buscar_usuario(request):
             palabras_busqueda = ['']
     else:
         palabras_busqueda = ['']
-    
+
     # Función Q importada para hacer consultas complejas, en este caso una consulta con 'OR'
     for busqueda in palabras_busqueda:
         usuarios = Usuario.objects.filter(
-            Q(nombres__contains = busqueda) |
-            Q(apellido_paterno__contains = busqueda) |
-            Q(apellido_materno__contains = busqueda) |
-            Q(dni__contains = busqueda)
+            Q(nombres__startswith = busqueda) |
+            Q(apellido_paterno__startswith = busqueda) |
+            Q(apellido_materno__startswith = busqueda) |
+            Q(dni__startswith = busqueda)
             )
         print(usuarios)
 
@@ -89,7 +141,21 @@ def buscar_usuario(request):
         'usuarios': usuarios
     }
 
-    return render(request, 'usuario/buscar.html', context)
+    return render(request, 'usuario/registrar/buscar_usuario.html', context)
+
+
+def validar_email(request):
+    if request.method == 'POST':
+        if 'email' in request.POST:
+            email = request.POST['email']
+        else:
+            email = ''
+    else:
+        email = ''
+
+    emails = User.objects.values_list('email', flat=True).filter(email=email)
+
+    return render(request, 'usuario/registrar/validar_email.html', {'emails': emails})
 
 
 def validar_username(request):
@@ -100,7 +166,30 @@ def validar_username(request):
             username = ''
     else:
         username = ''
-    
+
     users = User.objects.filter(username=username)
-    
-    return render(request, 'usuario/validar_username.html', {'users': users})
+
+    return render(request, 'usuario/registrar/validar_username.html', {'users': users})
+
+
+def saldos_usuario(request):
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    oSaldos = Saldo.objects.filter(usuario=oUsuario).order_by('-fecha_creacion')
+    data = serializers.serialize(
+        'json',
+        oSaldos,
+        fields = ['fecha_creacion', 'saldo']
+    )
+    return HttpResponse(data, content_type='application/json')
+
+
+
+def saldos_usuario_chart(request):
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    oSaldos = Saldo.objects.filter(usuario=oUsuario).order_by('fecha_creacion')[:10]
+    data = serializers.serialize(
+        'json',
+        oSaldos,
+        fields = ['fecha_creacion', 'saldo']
+    )
+    return HttpResponse(data, content_type='application/json')

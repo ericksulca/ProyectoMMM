@@ -1,0 +1,82 @@
+{% extends 'base/base_login.html'%}
+{% load staticfiles %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{% url 'usuario:principal' %}">Principal</a>
+  </li>
+  <li class="breadcrumb-item active">
+    Perfil
+  </li>
+  <li class="breadcrumb-item">
+    <a href="{% url 'usuario:cambio_contraseña' %}">Cambiar contraseña</a>
+  </li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<h4><b>PERFIL</b></h4>
+
+<h5><strong>Usuario: {{ user.username }}</strong></h5>
+
+<div class="col-md-10">
+  <div class="col-md-4">
+    <img src="{% static 'media/' %}{{usuario.foto_perfil}}" alt="" class="photo testimonio-photo">
+  </div>
+  
+</div>
+</form>
+<hr>
+<form class="" action="{% url 'usuario:perfil' %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="row usuario-perfil">
+    <div class="col-md-4">
+      <div class="">
+        <label class="label-perfil" for="nombres">Nombres:</label>
+        {{ formUsuario.nombres }}
+      </div>
+      <div class="">
+        <label class="label-perfil" for="apellido_paterno">Apellido Paterno:</label>
+        {{ formUsuario.apellido_paterno}}
+      </div>
+      <div class="">
+        <label class="label-perfil" for="apellido_materno">Apellido Materno:</label>
+        {{ formUsuario.apellido_materno}}
+      </div>
+      <div class="">
+        <label class="label-perfil" for="dni">DNI:</label>
+        {{ formUsuario.dni }}
+      </div>
+    </div>
+    
+
+    <div class="col-md-4">  
+      <div class="">
+          <label class="label-perfil" for="foto_perfil">Foto de perfil:</label>
+          {{ formUsuario.foto_perfil }}
+      </div>
+      <div class="">
+          <label for="">Entidad bancaria:</label>
+          {{ formUsuario.entidad_bancaria }}
+      </div>
+      <div class="">
+        <label class="label-perfil" for="numero_cuenta">Número de cuenta:</label>
+        {{ formUsuario.numero_cuenta }}
+      </div>
+    </div>
+  </div>
+
+  <input type="submit" name="" value="Guardar" class="btn btn-primary btn-sm">
+</form>
+
+{% endblock %}
+
+{% block scripts%}
+
+
+<script type="text/javascript">
+      $("#entidad_bancaria_id").val('{{usuario.entidad_bancaria_id}}')
+</script>
+
+{% endblock %}
