@@ -21,6 +21,7 @@ def principal_usuario(request):
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     else:
         oUsuario = ''
+    
     return render(request, 'usuario/principal.html',{'usuario':oUsuario})
 
 
@@ -173,7 +174,7 @@ def validar_username(request):
 
 def saldos_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oSaldos = Saldo.objects.filter(usuario=oUsuario)
+    oSaldos = Saldo.objects.filter(usuario=oUsuario).order_by('-fecha_creacion')
     data = serializers.serialize(
         'json',
         oSaldos,
@@ -185,7 +186,7 @@ def saldos_usuario(request):
 
 def saldos_usuario_chart(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oSaldos = Saldo.objects.filter(usuario=oUsuario)[:10]
+    oSaldos = Saldo.objects.filter(usuario=oUsuario).order_by('fecha_creacion')[:10]
     data = serializers.serialize(
         'json',
         oSaldos,

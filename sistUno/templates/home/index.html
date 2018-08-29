@@ -14,7 +14,6 @@
 
       {% if usuario %}
       <div class="col-md-3 box-login small">
-
         <div class="row">
           <div class="testimonio-photo">
             <img src="{% static 'media/' %}{{usuario.foto_perfil}}" alt="" class="photo">
@@ -36,17 +35,10 @@
                 <a href="{% url 'logout'%}"><span class="fa fa-sign-out-alt" style="font-size:20px"></span><br>Salir</a>
               </div>
             </div>
-
-
-
           </div>
         </div>
-
-
-
-
-
       </div>
+      
       {% else %}
       <div class="col-md-3 box-login small">
         <h4>Ingresar</h4>

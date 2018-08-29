@@ -43,32 +43,49 @@
 {% block scripts %}
 
 <script>
-  var endpoint = '/Usuario/saldo/listar/'
 
-  // $(document).ready(function() {
-  //   saldos_listar();
-  // });
+  $(document).ready(function() {
+    saldos_listar();
+  });
 
-  // var saldos_listar = function() {
-  //   var table = $('#dataTable').DataTable({
-  //     "processing": true,
-  //     "ajax": {
-  //       method: "GET",
-  //       url: "/Usuario/saldo/listar/",
-  //       "dataSrc": "",
-  //     },
-  //     "columns":[
-  //       {"data": "fields.saldo"},
-  //       {"data": "fields.fecha_creacion"}
-  //     ]
-  //   });
-  // }
+  var saldos_listar = function() {
+    var table = $('#dataTable').DataTable({
+      "processing": true,
+      "ajax": {
+        method: "GET",
+        url: "/Usuario/saldo/listar/",
+        "dataSrc": "",
+      },
+      "columns":[
+        {"data": "fields.saldo"},
+        {"data": "fields.fecha_creacion"}
+      ]
+    });
+  }
 
-// window.onload = function() {
-//   var ctx = document.getElementById("myChart");
-//   console.log(ctx);
-//   alert('evento load detectado!');
-// }
+var fecha = function(mes) {
+    var meses = {
+        '01': 'Enero',
+        '02': 'Febrero',
+        '03': 'Marzo',
+        '04': 'Abril',
+        '05': 'Mayo',
+        '06': 'Junio',
+        '07': 'Julio',
+        '08': 'Agosto',
+        '09': 'Setiembre',
+        '10': 'Octubre',
+        '11': 'Noviembre',
+        '12': 'Diciembre',
+    };
+    return meses[mes] || 'Mes';
+}
+
+var arrTiempoAFecha = function(fecha) {
+    const partes = fecha.split(/[-, T, :]/);
+    return partes;
+}
+
 
 window.onload = function() {
   var fechas = [];
@@ -76,26 +93,57 @@ window.onload = function() {
   var ctx = document.getElementById("MyChart");
   $.ajax({
     method: 'GET',
-    url: endpoint,
+    url: '/Usuario/saldo/listar-chart/',
     success: function(data) {
+      console.log(labels);
       data.forEach(element => {
         fechas.push(element.fields.fecha_creacion);
         saldos.push(element.fields.saldo);
       });
-      console.log(fechas);
-      console.log(saldos);
-      console.log(ctx);
+      // console.log(fechas);
+      // console.log(saldos);
+      // console.log(ctx);            
+      var respuesta = [];      
+      var labels = [];
+
+      fechas.forEach(function(element, index, array) {
+          res = arrTiempoAFecha(element);
+          respuesta.push(res);
+      });
+
+      respuesta.forEach(function(element, index, array) {
+          año = element[0];
+          mes = fecha(element[1]) + ' ';
+          dia = element[2] + ' ';
+          label = dia + 'de ' + mes + 'del ' + año;
+          labels.push(label);
+      });
+
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: fechas,
+            labels: labels,
             datasets: [{
-                label: 'Saldo respecto al tiempo',
+                label: 'Saldo',
                 data: saldos,
+                borderColor: 'rgb(28, 106, 216)',
+                backgroundColor: 'rgba(28, 106, 216, 0.8)',
                 borderWidth: 1
-            }]
+            }],
         },
         options: {
+            title: {
+              display: true,
+              text: 'Saldo reciente',
+            },
+            tooltips: {
+              mode: 'index',
+              intersect: false,
+            },
+            hover: {
+              mode: 'nearest',
+              intersect: true,
+            },
             scales: {
                 yAxes: [{
                     ticks: {
@@ -113,24 +161,6 @@ window.onload = function() {
 });
 
 }
-
-// $.ajax({
-//       method: 'GET',
-//       url: endpoint,
-//       success: function(data) {
-//         data.forEach(element => {
-//           labels.push(element.fields.fecha_creacion)
-//           saldos.push(element.fields.saldo)
-//         });
-//       },
-//       error: function(error_data) {
-//         console.log("error");
-//         console.log(error_data)
-//     }
-//   });
-
-//   console.log(labels);
-//   console.log(saldos);
   
 </script>
 
