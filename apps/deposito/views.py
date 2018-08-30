@@ -23,7 +23,7 @@ def index(request):
 
 def operaciones_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha')
+    oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('-fecha')
     data = serializers.serialize(
         'json',
         oOperaciones,

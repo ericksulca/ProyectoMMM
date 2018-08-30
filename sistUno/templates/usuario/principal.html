@@ -7,13 +7,13 @@
 
 <!-- Area Chart Example-->
 <div class="card mb-3">
-  <div class="card-header">
-    <i class="fas fa-chart-area"></i>
-    Saldo reciente</div>
+  <div class="card-header" id="saldoActual">
+    <i class="fas fa-chart-area"></i>    
+  </div>
   <div class="card-body">
     <canvas id="MyChart" width="100%" height="30"></canvas>
   </div>
-  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+  <div class="card-footer small text-muted">Actualizado ayer a las 11:59 PM</div>
 </div>
 
 <!-- DataTables Example -->
@@ -39,7 +39,9 @@
       </table>
     </div>
   </div>
-  <div class="card-footer small text-muted">Actualizado ayer 11:59 PM</div>
+  <div class="row">
+    <div class="card-footer small text-muted">Actualizado ayer 11:59 PM</div>
+  </div>
 </div>
 
 {%endblock%}
@@ -47,6 +49,30 @@
 {% block scripts %}
 
 <script>
+  var español = {
+    "sProcessing":     "Procesando...",
+    "sLengthMenu":     "Mostrar _MENU_ registros",
+    "sZeroRecords":    "No se encontraron resultados",
+    "sEmptyTable":     "Ningún dato disponible en esta tabla",
+    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+    "sInfoPostFix":    "",
+    "sSearch":         "Buscar:",
+    "sUrl":            "",
+    "sInfoThousands":  ",",
+    "sLoadingRecords": "Cargando...",
+    "oPaginate": {
+        "sFirst":    "Primero",
+        "sLast":     "Último",
+        "sNext":     "Siguiente",
+        "sPrevious": "Anterior"
+    },
+    "oAria": {
+        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+    }
+  }
 
   $(document).ready(function() {
     detalles_operaciones();
@@ -59,6 +85,9 @@
         method: "GET",
         url: "/Deposito/operaciones/listar/",
         "dataSrc": "",
+        // success: function(data) {
+        //   console.log(data[0].fields.tipo_movimiento);
+        // }
       },
       "columns":[
         {"data": "fields.fecha"},
@@ -67,7 +96,17 @@
         {"data": "fields.monto"},
         {"data": "fields.saldo_inicial"},
         {"data": "fields.saldo_final"}
-      ]
+      ],                  
+      "createdRow": function(row, data, dataIndex) {
+        if (data.fields.tipo_movimiento == 'deposito') {
+          $(row).addClass('text-success');
+        }
+        if (data.fields.tipo_movimiento == 'retiro') {
+          $(row).addClass('text-danger');
+        }
+      },
+      "language": español
+      
     });
   }
 
@@ -103,14 +142,16 @@ window.onload = function() {
     method: 'GET',
     url: '/Deposito/operaciones/listar-chart/',
     success: function(data) {
-      console.log(labels);
       data.forEach(element => {
         fechas.push(element.fields.fecha);
         saldos.push(element.fields.saldo_final);
       });
-      // console.log(fechas);
-      // console.log(saldos);
-      // console.log(ctx);            
+
+      // SALDO ACTUAL---------------------------------------------------------------------
+      const lastIdx = data.length - 1;
+      $('#saldoActual')[0].innerText = 'Saldo actual: ' + data[lastIdx].fields.saldo_final;
+      // ---------------------------------------------------------------------------------
+      
       var respuesta = [];      
       var labels = [];
 

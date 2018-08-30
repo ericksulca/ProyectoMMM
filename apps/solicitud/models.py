@@ -15,4 +15,4 @@ class Solicitud(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.usuario + self.monto
+        return '%s %s' % (self.usuario, self.monto)
