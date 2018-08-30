@@ -4,7 +4,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 # from django.core import serializers
 from django.db import IntegrityError
-# from django.db.models import Q
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 
@@ -106,6 +106,9 @@ def registrar_usuario(request, dni_referido=''):
             login(request, usuario)
 
             return redirect('usuario:principal')
+        
+        else: 
+            return redirect('usuario:registrar_usuario')
     else:
         formUsuario = NuevoUsuarioForm(initial={'dni_referido': dni_referido})
 

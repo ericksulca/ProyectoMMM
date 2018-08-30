@@ -1,15 +1,14 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from .forms import NuevaSolicitudForm
 from apps.usuario.models import Usuario
 
 # Create your views here.
 
 def index_solicitud(request):
-    if request.user.is_authenticated:
-        oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    else:
-        oUsuario = ''
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    
     context = {
         'usuario': oUsuario
     }
@@ -17,10 +16,8 @@ def index_solicitud(request):
     return render(request, 'solicitud/index.html', context)
 
 def editar_solicitud(request):
-    if request.user.is_authenticated:
-        oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    else:
-        oUsuario = ''
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    
     context = {
         'usuario': oUsuario
     }
@@ -29,12 +26,22 @@ def editar_solicitud(request):
 
 
 def nueva_solicitud(request):
-    if request.user.is_authenticated:
-        oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    if request.method == 'POST':
+        form = NuevaSolicitudForm(request.POST)
+        if form.is_valid():
+            solicitud = form.save(commit=False)
+            solicitud.usuario = oUsuario
+            solicitud.save()
+            return redirect('solicitud:index')
+        else:
+            return redirect('solicitud:nueva_solicitud')
     else:
-        oUsuario = ''
+        form = NuevaSolicitudForm()
+
     context = {
-        'usuario': oUsuario
+        'usuario': oUsuario,
+        'form': form
     }
 
     return render(request, 'solicitud/nueva.html', context)

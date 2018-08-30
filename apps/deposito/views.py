@@ -9,7 +9,15 @@ from .models import Operacion
 # Create your views here.
 
 def index(request):
-    return render(request, 'deposito/index.html')
+    if request.user.is_authenticated:
+        oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    else:
+        oUsuario = ''
+    context = {
+        'usuario': oUsuario
+    }
+
+    return render(request, 'deposito/index.html', context)
 
 
 
