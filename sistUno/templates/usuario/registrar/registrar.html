@@ -19,72 +19,79 @@
             <div class="row">
               {% csrf_token %}
 
-              <div class="col-md-4">
+              <div class="col-md-12">
                 <h5 class="text-primary">Datos Personales</h5>
-                <div class="">
-                  <label for="">Nombres:</label>
-                  {{ formUsuario.nombres }}
+                <div class="row">
+                  <div class="col-md-3">
+                    <label for="">Nombres:</label>
+                    {{ formUsuario.nombres }}
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">Apellido paterno:</label>
+                    {{ formUsuario.apellido_paterno }}
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">Apellido materno:</label>
+                    {{ formUsuario.apellido_materno }}
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">DNI:</label>
+                    {{ formUsuario.dni }}
+                  </div>
                 </div>
-                <div class="">
-                  <label for="">Apellido paterno:</label>
-                  {{ formUsuario.apellido_paterno }}
-                </div>
-                <div class="">
-                  <label for="">Apellido materno:</label>
-                  {{ formUsuario.apellido_materno }}
-                </div>
-                <div class="">
-                  <label for="">DNI:</label>
-                  {{ formUsuario.dni }}
-                </div>
+
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-12">
                 <h5 class="text-primary">Datos de la Cuenta</h5>
-                <div class="">
-                  <label for="">Nombre de usuario:</label>
-                  <input type="text" name="username" class="form-control-p" required id="username" placeholder="Nombre de usuario">
-                  <div id="mensaje-username"></div>
-                </div>
-                <div class="">
-                  <label for="">Foto de perfil</label>
-                  {{ formUsuario.foto_perfil }}
-                </div>
-                <div class="">
-                  <label for="email">Dirección de correo electrónico:</label>
-                  <input type="email" name="email" class="form-control-p" required placeholder="Dirección de correo electrónico" id="email">
-                  <div id="mensaje-email"></div>
-                </div>
-                <div class="">
-                  <label for="password1">Contraseña:</label>
-                  <input type="password" name="password1" class="form-control-p" required placeholder="Contraseña" id="password1">
-                </div>
-                <div class="">
-                  <label for="password2">Confirmar Contraseña:</label>
-                  <input type="password" name="password2" class="form-control-p" required placeholder="Confirmar contraseña" id="password2">
-                </div>
-                <div class="">
-                  <label for="">Entidad bancaria:</label>
-                  {{ formUsuario.entidad_bancaria }}
-                </div>
-                <div class="">
-                  <label for="">Número de cuenta:</label>
-                  {{ formUsuario.numero_cuenta }}
+                <div class="row">
+                  <div class="col-md-3">
+                    <label for="">Nombre de usuario:</label>
+                    <input type="text" name="username" class="form-control-p" required id="username" placeholder="Nombre de usuario">
+                    <div id="mensaje-username"></div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="email">Dirección de correo electrónico:</label>
+                    <input type="email" name="email" class="form-control-p" required placeholder="Dirección de correo electrónico" id="email">
+                    <div id="mensaje-email"></div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="password1">Contraseña:</label>
+                    <input type="password" name="password1" class="form-control-p" required placeholder="Contraseña" id="password1">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="password2">Confirmar Contraseña:</label>
+                    <input type="password" name="password2" class="form-control-p" required placeholder="Confirmar contraseña" id="password2">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">Foto de perfil</label>
+                    {{ formUsuario.foto_perfil }}
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">Entidad bancaria:</label>
+                    {{ formUsuario.entidad_bancaria }}
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">Número de cuenta:</label>
+                    {{ formUsuario.numero_cuenta }}
+                  </div>
                 </div>
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-12">
                 <h5 class="text-primary">Datos del Referente</h5>
-                <div>
-                  <label for="">Buscar usuario referente:</label>
-                  <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="DNI del referente">
-                  <ul id="resultados-busqueda">
-                  </ul>
-                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <label for="">Buscar usuario referente:</label>
+                    <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="DNI del referente">
+                    <ul id="resultados-busqueda">
+                    </ul>
+                  </div>
 
-                <div class="">
-                  <label for="">DNI del referente:</label>
-                  {{ formUsuario.dni_referido }}
+                  <div class="col-md-3">
+                    <label for="">DNI del referente:</label>
+                    {{ formUsuario.dni_referido }}
+                  </div>
                 </div>
 
               </div>
@@ -193,7 +200,7 @@
           $('#id_dni_referido')[0].value = dni;
           });
     };
-    
+
     // Validación de username
     $(function() {
       $('#username').keyup(function() {
@@ -219,7 +226,7 @@
       var msjUsername = $('#mensaje-username')[0].children[0].id;
       if (msjUsername === "msj-username-libre") {
         $('#boton')[0].disabled = false;
-      } else {        
+      } else {
         $('#boton')[0].disabled = true;
       }
     };
