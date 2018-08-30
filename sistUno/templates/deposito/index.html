@@ -1,1 +1,28 @@
-<h1>Index depósito</h1>
+{% extends 'base/base_login.html' %}
+{% load staticfiles %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{% url 'usuario:principal' %}">Principal</a>
+  </li>
+  <li class="breadcrumb-item active">
+    Depósitos
+  <!-- </li>
+  <li class="breadcrumb-item">
+    <a href="{% url 'solicitud:nueva_solicitud' %}">Nueva solicitud</a>
+  </li>
+  <li class="breadcrumb-item active">
+    <a href="{% url 'solicitud:editar_solicitud' %}">Editar solicitud</a>
+  </li> -->
+</ol>
+{% endblock %}
+
+{% block content %}
+
+<h1>Index Depósito</h1>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

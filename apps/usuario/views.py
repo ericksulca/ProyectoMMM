@@ -2,9 +2,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from django.core import serializers
+# from django.core import serializers
 from django.db import IntegrityError
-from django.db.models import Q
+# from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 
@@ -172,24 +172,24 @@ def validar_username(request):
     return render(request, 'usuario/registrar/validar_username.html', {'users': users})
 
 
-def operaciones_usuario(request):
-    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha')
-    data = serializers.serialize(
-        'json',
-        oOperaciones,
-        fields = ['monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final']
-    )
-    return HttpResponse(data, content_type='application/json')
+# def operaciones_usuario(request):
+#     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+#     oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha')
+#     data = serializers.serialize(
+#         'json',
+#         oOperaciones,
+#         fields = ['monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final']
+#     )
+#     return HttpResponse(data, content_type='application/json')
 
 
 
-def operaciones_usuario_chart(request):
-    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha')[:10]
-    data = serializers.serialize(
-        'json',
-        oOperaciones,
-        fields = ['fecha', 'saldo_final']
-    )
-    return HttpResponse(data, content_type='application/json')
+# def operaciones_usuario_chart(request):
+#     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+#     oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha')[:10]
+#     data = serializers.serialize(
+#         'json',
+#         oOperaciones,
+#         fields = ['fecha', 'saldo_final']
+#     )
+#     return HttpResponse(data, content_type='application/json')

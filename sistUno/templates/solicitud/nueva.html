@@ -9,19 +9,18 @@
   <li class="breadcrumb-item active">
     <a href="{% url 'solicitud:index' %}">Solicitudes</a>
   </li>
-  <li class="breadcrumb-item">
-    <a href="{% url 'solicitud:nueva_solicitud' %}">Nueva solicitud</a>
+  <li class="breadcrumb-item active">
+    Nueva solicitud
   </li>
   <li class="breadcrumb-item active">
-    Editar solicitud
+    <a href="{% url 'solicitud:editar_solicitud' %}">Editar solicitud</a>
   </li>
 </ol>
 {% endblock %}
 
 {% block content %}
 
-<h1>Editar Solicitud</h1>
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio quasi, deserunt libero, quo accusantium doloribus vel magnam dolorum quae facere aut repellendus voluptatem nostrum quos modi adipisci nihil. Provident, magnam!</p>
+<h1>Registrar Solicitud</h1>
 
 {% endblock %}
 
