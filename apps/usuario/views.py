@@ -2,13 +2,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-# from django.core import serializers
+from django.core import serializers
 from django.db import IntegrityError
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from apps.home.models import Banner
+from apps.testimonio.models import Testimonio
 from apps.deposito.models import Operacion
 from .forms import NuevoUsuarioForm, EditarPerfilForm
 from .models import Usuario, Entidad_bancaria
@@ -21,7 +22,7 @@ def principal_usuario(request):
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     else:
         oUsuario = ''
-    
+
     return render(request, 'usuario/principal.html',{'usuario':oUsuario})
 
 
@@ -65,12 +66,12 @@ def cambio_contraseña(request):
                 form.save()
                 update_session_auth_hash(request, form.user)
                 return redirect('usuario:principal')
-            
+
             else:
                 return redirect('usuario:cambio_contraseña')
         else:
             form = PasswordChangeForm(user=oUser)
-    
+
     context = {
         'usuario': oUsuario,
         'user': oUser,
@@ -106,16 +107,18 @@ def registrar_usuario(request, dni_referido=''):
             login(request, usuario)
 
             return redirect('usuario:principal')
-        
-        else: 
+
+        else:
             return redirect('usuario:registrar_usuario')
     else:
         formUsuario = NuevoUsuarioForm(initial={'dni_referido': dni_referido})
 
     banner = Banner.objects.all()
+    testimonio=Testimonio.objects.all()
     context = {
         'formUsuario': formUsuario,
         'banner':banner,
+        'testimonio':testimonio,
     }
 
     return render(request, 'usuario/registrar/registrar.html', context=context)
@@ -143,8 +146,38 @@ def buscar_usuario(request):
     context = {
         'usuarios': usuarios
     }
+    data = serializers.serialize(
+                'json',
+                usuarios,
+                fields = ['nombres','apellido_paterno','apellido_materno']
+            )
+    return HttpResponse(data, content_type='application/json')
+    # return render(request, 'usuario/registrar/buscar_usuario.html', context)
 
-    return render(request, 'usuario/registrar/buscar_usuario.html', context)
+# def buscar_usuario(request):
+#     if request.method == 'POST':
+#         usuarios = Usuario.objects.filter(
+#             Q(nombres__startswith = request.POST['busqueda']) |
+#             Q(apellido_paterno__startswith = request.POST['busqueda']) |
+#             Q(apellido_materno__startswith = request.POST['busqueda']) |
+#             Q(dni__startswith = request.POST['busqueda'])
+#             )
+#
+#     else:
+#         palabras_busqueda = ['']
+#
+#     context = {
+#         'usuarios': usuarios
+#     }
+#     data = serializers.serialize(
+#             'json',
+#             usuarios,
+#             fields = ['nombres','apellido_paterno','apellido_materno']
+#         )
+#     return HttpResponse(data, content_type='application/json')
+
+
+
 
 
 def validar_email(request):

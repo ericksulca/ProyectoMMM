@@ -6,15 +6,9 @@
         <div class="col-md-1 box-body">
 
         </div>
-
-
-
         <div class="col-md-10 box-login small">
             <h4>Registrar Usuario</h4>
             <hr>
-
-
-
             <form enctype="multipart/form-data" method="POST" action="" class="col-md-12">
             <div class="row">
               {% csrf_token %}
@@ -83,9 +77,15 @@
                 <div class="row">
                   <div class="col-md-3">
                     <label for="">Buscar usuario referente:</label>
-                    <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="DNI del referente">
-                    <ul id="resultados-busqueda">
-                    </ul>
+                    <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="Nombres del referente">
+                    <!-- <ul id="resultados-busqueda">
+                    </ul> -->
+
+                    <div class="" id="result-bsqd">
+
+                    </div>
+
+
                   </div>
 
                   <div class="col-md-3">
@@ -97,66 +97,6 @@
               </div>
 
 <hr>
-              <!-- <div class="col-md-4">
-                <label for="">Nombres:</label>
-                {{ formUsuario.nombres }}
-              </div>
-
-              <div class="col-md-4">
-                <label for="">Apellido paterno:</label>
-                {{ formUsuario.apellido_paterno }}
-              </div>
-
-              <div class="col-md-4">
-                <label for="">Apellido materno:</label>
-                {{ formUsuario.apellido_materno }}
-              </div>
-
-              <div class="col-md-4">
-                <label for="">DNI:</label>
-                {{ formUsuario.dni }}
-              </div>
-
-              <div class="col-md-4">
-                <label for="">DNI del referente:</label>
-                {{ formUsuario.dni_referido }}
-              </div>
-
-              <div class="col-md-4">
-                <label for="">Entidad bancaria:</label>
-                {{ formUsuario.entidad_bancaria }}
-              </div>
-
-              <div class="col-md-4">
-                <label for="">Número de cuenta:</label>
-                {{ formUsuario.numero_cuenta }}
-              </div>
-
-              <div class="col-md-4">
-                <label for="">Nombre de usuario:</label>
-                <input type="text" name="username" class="form-control-p" required id="username" placeholder="Nombre de usuario">
-              </div>
-
-              <div class="col-md-4">
-                <label for="">Foto de perfil</label>
-                {{ formUsuario.foto_perfil }}
-              </div>
-
-              <div class="col-md-4">
-                <label for="email">Dirección de correo electrónico:</label>
-                <input type="email" name="email" class="form-control-p" required placeholder="Dirección de correo electrónico" id="email">
-              </div>
-
-              <div class="col-md-4">
-                <label for="password1">Contraseña:</label>
-                <input type="password" name="password1" class="form-control-p" required placeholder="Contraseña" id="password1">
-              </div>
-
-              <div class="form-group col-md-4">
-                <label for="password2">Confirmar Contraseña:</label>
-                <input type="password" name="password2" class="form-control-p" required placeholder="Confirmar contraseña" id="password2">
-              </div>
- -->
 
 
             </div>
@@ -173,9 +113,37 @@
 </div>
 
 <script>
-  // busqueda de Referente
+  // // busqueda de Referente
+  //   $(function () {
+  //       $('#busqueda').keyup(function () {
+  //           var txt = $(this).val();
+  //           if (txt === '') { }
+  //           else {
+  //               $.ajax({
+  //                   type: "POST",
+  //                   url: "/Usuario/buscar-usuario/",
+  //                   data: {
+  //                       'busqueda': $('#busqueda').val(),
+  //                       'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+  //                   },
+  //                   success: searchSuccess,
+  //                   dataType: 'html'
+  //               });
+  //           }
+  //       });
+  //   });
+  //
+  //   function searchSuccess(data, textStatus, jqXHR) {
+  //       $('#resultados-busqueda').html(data);
+  //       $(document).on('click', '#usuario-buscado-dni', function() {
+  //         var dni = this.text;
+  //         $('#id_dni_referido')[0].value = dni;
+  //         });
+  //   };
+
+  // busqueda de Referente v2
     $(function () {
-        $('#busqueda').keyup(function () {
+        $('#busqueda').on('change',function () {
             var txt = $(this).val();
             if (txt === '') { }
             else {
@@ -186,20 +154,36 @@
                         'busqueda': $('#busqueda').val(),
                         'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
                     },
-                    success: searchSuccess,
-                    dataType: 'html'
+                    success: function(data){
+                      console.log(data);
+                      // $('#resultados-busqueda').html(data[0].fields.nombres);
+                      $('#result-bsqd').html("")
+
+                      for (let i in data) {
+                        $('#result-bsqd').append("<p>"+data[i].fields.nombres+" "+data[i].fields.apellido_paterno+"</p>");
+                        // $('#result-bsqd').append("<p>"+data[i].fields.apellido_paterno+"</p>");
+                      }
+
+
+                    },
+                    // success:searchSuccess,
+                    dataType: 'json'
                 });
             }
         });
     });
 
     function searchSuccess(data, textStatus, jqXHR) {
-        $('#resultados-busqueda').html(data);
+       $('#resultados-busqueda').html(data);
+        $('#result-bsqd').html(data);
         $(document).on('click', '#usuario-buscado-dni', function() {
           var dni = this.text;
           $('#id_dni_referido')[0].value = dni;
           });
     };
+// ------------ fin busqueda de Referente v2------------
+
+
 
     // Validación de username
     $(function() {
