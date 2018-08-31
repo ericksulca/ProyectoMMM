@@ -5,6 +5,7 @@ from apps.usuario.forms import NuevoUsuarioForm
 from apps.home.models import Banner
 from apps.usuario.models import Usuario
 from apps.testimonio.models import Testimonio
+from apps.articulo.models import Articulo
 
 def index(request):
     if request.method == 'POST':
@@ -31,10 +32,12 @@ def index(request):
     else:
         oUsuario=''
 
+    oArticulo=Articulo.objects.all()[:4]
     context={
         'banner':banner,
         'usuario':oUsuario,
         'testimonio':testimonio,
+        'articulo':oArticulo,
     }
 
     return render(request, 'home/index.html',context)

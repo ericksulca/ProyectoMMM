@@ -74,7 +74,17 @@ ul>li>a{
   font-size: 17px;
 }
 
-.panel-primary>.panel-heading {
+.panel-heading-secundario{
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  font-size: 17px;
+  color: #fff;
+  background-color: #337ab7;
+}
+
+.panel-primary>.panel-heading{
     color: #fff;
     background-color: #337ab7;
     border-color: #337ab7;

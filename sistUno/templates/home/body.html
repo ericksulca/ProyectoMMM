@@ -1,19 +1,49 @@
 
+        {% for arti in articulo%}
+          {% ifequal arti.tipo 'principal' %}
+          <div class="panel panel-primary">
+          <div class="panel-heading">{{arti.titulo}} </div>
+         <div class="panel-body">
+            {{arti.contenido}} <a href="#">... Ver más</a>
+          </div>
+          </div>
+          {% endifequal %}
 
-  <div class="panel panel-primary">
-       <div class="panel-heading">Lorem ipsum dolor</div>
-      <div class="panel-body">
+        {% endfor %}
 
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+
+          <div class="row">
+        {% for arti in articulo%}
+
+
+
+          {% ifequal arti.tipo 'secundario' %}
+
+          <div class="col-md-4">
+            <div class="panel panel-primary">
+            <div class="panel-heading">{{arti.titulo}}</div>
+           <div class="panel-body">
+              {{arti.contenido}} <a href="#">... Ver más</a>
+            </div>
+            </div>
+          </div>
+
+
+
+          {% endifequal %}
+
+        {% endfor %}
       </div>
-    </div>
 
-    <div class="panel panel-primary">
+
+
+
+    <!-- <div class="panel panel-primary">
          <div class="panel-heading">Lorem ipsum dolor</div>
         <div class="panel-body">
 
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
         </div>
-      </div>
+      </div> -->
