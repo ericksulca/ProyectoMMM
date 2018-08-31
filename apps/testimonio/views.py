@@ -21,20 +21,20 @@ def testimonio_registrar(request):
             form=Testimonio(contenido=request.POST['contenido'],
                             usuario_id=oUsuario.dni)
             form.save()
-            # success='El testimonio fue guardado correctamente.'
+            success='El testimonio fue guardado correctamente.'
         else:
             oTestimonio.contenido=request.POST['contenido']
             oTestimonio.save()
-            # success='El testimonio fue modificado correctamente.'
-        return redirect('testimonio:testimonio_registrar')
+            success='El testimonio fue modificado correctamente.'
+        # return redirect('testimonio:testimonio_registrar')
     else:
         form=''
-        # success=''
+        success=''
 
     context = {
         'usuario':oUsuario,
         'testimonio':oTestimonio,
-        # 'respuesta':success
+        'respuesta':success
     }
 
     return render(request, 'testimonio/crear.html',context)

@@ -11,9 +11,13 @@
 
 {% block content %}
 
-<!-- {% if respuesta %}
-<label for="">{{respuesta}}</label>
-{% endif %} -->
+{% if respuesta != '' %}
+<div class="alert-success">
+  <label for="">{{respuesta}}</label>
+</div>
+{% endif %}
+
+
 <form class="" method="post">
   {% csrf_token %}
 
