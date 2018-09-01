@@ -8,7 +8,7 @@
 
 .menu-principal{
 	margin-top: -16px;
-	
+
 }
 
 /* ul,ol{
@@ -21,11 +21,13 @@ body{
 
 .slideshow{
 	width: 100%;
+	height: 300px;
 	position: relative;
 }
 
 .slider li, ul{
 	width: 100%;
+	height: 100%;
 }
 
 .slider li{

@@ -150,7 +150,7 @@
   // busqueda de Referente v2
 
     $(function () {
-        $('#busqueda').on('change',function () {
+        $('#busqueda').keyup(function () {
             var txt = $(this).val();
             if (txt === '') { }
             else {
