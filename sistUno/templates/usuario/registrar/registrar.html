@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% block header %} {% endblock %} {% block content %}
+{% extends 'base/base.html' %} {% load staticfiles%}{% block header %} {% endblock %} {% block content %}
 <div class="container">
     <div class="row">
 
@@ -81,11 +81,6 @@
                     <!-- <ul id="resultados-busqueda">
                     </ul> -->
 
-                    <div class="" id="result-bsqd">
-
-                    </div>
-
-
                   </div>
 
                   <div class="col-md-3">
@@ -96,11 +91,22 @@
 
               </div>
 
-<hr>
+              <div class="col-md-5" id="result-bsqd">
+                <!-- <div class="row">
+                  <div class="col-md-1" style="border:1px solid red">
+                    fotoo
+                  </div>
+                  <div class="col-md-3" style="border:1px solid red">
+                    <p>nombres y apellidos</p>
+                    <p>DNI</p>
+                  </div>
 
+                </div> -->
+
+              </div>
 
             </div>
-
+<hr>
               <div class="form-group col-md-12">
                 <button id="boton" type="submit" class="btn btn-primary btn-sm" disabled>Guardar</button>
                 <a href="{% url 'home:index' %}">Ya tengo una cuenta</a>
@@ -142,6 +148,7 @@
   //   };
 
   // busqueda de Referente v2
+
     $(function () {
         $('#busqueda').on('change',function () {
             var txt = $(this).val();
@@ -154,19 +161,7 @@
                         'busqueda': $('#busqueda').val(),
                         'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
                     },
-                    success: function(data){
-                      console.log(data);
-                      // $('#resultados-busqueda').html(data[0].fields.nombres);
-                      $('#result-bsqd').html("")
-
-                      for (let i in data) {
-                        $('#result-bsqd').append("<p>"+data[i].fields.nombres+" "+data[i].fields.apellido_paterno+"</p>");
-                        // $('#result-bsqd').append("<p>"+data[i].fields.apellido_paterno+"</p>");
-                      }
-
-
-                    },
-                    // success:searchSuccess,
+                    success:searchSuccess,
                     dataType: 'json'
                 });
             }
@@ -174,13 +169,39 @@
     });
 
     function searchSuccess(data, textStatus, jqXHR) {
-       $('#resultados-busqueda').html(data);
-        $('#result-bsqd').html(data);
-        $(document).on('click', '#usuario-buscado-dni', function() {
-          var dni = this.text;
-          $('#id_dni_referido')[0].value = dni;
-          });
+      console.log(data);
+
+      $('#result-bsqd').html("")
+
+      for (let i in data) {
+
+        result='<div class="bsqd-card" id="card-'+data[i].pk+'">'+
+                '<div class="row">'+
+                    '<div class="col-md-4 col-xs-4" style="width: 200px;">'+
+                      '<img src="{% static "media/" %}'+data[i].fields.foto_perfil+'" alt="" style="width: 100px; height: 100px;">'+
+                    '</div>'+
+                    '<div class="col-md-8 col-xs-8">'+
+                      '<div class="modal-header-p small">'+
+                      '<a onclick="elegirReferente('+data[i].pk+')" class="select-p" style="color:blue">Seleccionar</a><a class="close-p" onclick="removeCard('+data[i].pk+')">x</a>'+
+                      '</div>'+
+                      '<p><b>'+data[i].fields.nombres+' '+data[i].fields.apellido_paterno+' '+data[i].fields.apellido_materno+'</b></p>'+
+                      '<p><b>'+data[i].pk+'</b></p>'+
+                    '</div>'+
+                 '</div>'+
+                '</div>';
+
+        $('#result-bsqd').append(result);
+      }
+
     };
+
+    function removeCard(idCard){
+      $("#card-"+idCard).remove();
+    }
+    function elegirReferente(dni){
+      $('#id_dni_referido')[0].value = dni;
+      $(".bsqd-card").remove();
+    }
 // ------------ fin busqueda de Referente v2------------
 
 

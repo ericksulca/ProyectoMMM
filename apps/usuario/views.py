@@ -149,7 +149,7 @@ def buscar_usuario(request):
     data = serializers.serialize(
                 'json',
                 usuarios,
-                fields = ['nombres','apellido_paterno','apellido_materno']
+                fields = ['nombres','apellido_paterno','apellido_materno','foto_perfil']
             )
     return HttpResponse(data, content_type='application/json')
     # return render(request, 'usuario/registrar/buscar_usuario.html', context)

@@ -175,3 +175,69 @@ input[type="file"]{
   font-weight: bold;
 
 }
+
+/* ESTILOS CARD */
+.bsqd-card{
+  background-color: rgb(103, 205, 212);
+  border-radius: 3px;
+  border:1px solid rgb(14, 128, 164);
+  margin-bottom: 2px;
+  padding-right: 5px;
+}
+
+.modal-header-p {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #e9ecef;
+
+}
+
+.close-p {
+  float: right;
+  font-size: 20px;
+  margin-left: -13px;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .5;
+}
+
+.close-p:hover, .close-p:focus {
+  color: #000;
+  text-decoration: none;
+  opacity: .75;
+}
+
+.close-p:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+
+.modal-header-p .close-p {
+  padding: 1rem;
+  margin: -1rem -1rem -1rem auto;
+}
+
+.select-p {
+  float: left;
+  color: blue;
+
+
+}
+
+.select-p:hover{
+  cursor: pointer;
+  
+}
+
+.modal-header-p .select-p {
+  color: red;
+}
