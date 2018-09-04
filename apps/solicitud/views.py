@@ -1,8 +1,11 @@
-
+from django.core import serializers
+from django.db.models import Sum
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import NuevaSolicitudForm
 from apps.usuario.models import Usuario
+from apps.solicitud.models import Solicitud
 
 # Create your views here.
 
@@ -45,3 +48,9 @@ def nueva_solicitud(request):
     }
 
     return render(request, 'solicitud/nueva.html', context)
+
+
+# Función que da como respuesta monto de las solicitudes de prestamo activas
+def total_monto_solicitudes():
+    monto_prestamo = Solicitud.objects.filter(estado=True, pagado=False).aggregate(Sum('monto_faltante'))
+    return monto_prestamo['monto_faltante__sum']

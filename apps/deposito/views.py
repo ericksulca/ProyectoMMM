@@ -3,18 +3,17 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render
 
-
+from apps.solicitud.views import total_monto_solicitudes
 from apps.usuario.models import Usuario
 from .models import Operacion
 # Create your views here.
 
 def index(request):
-    if request.user.is_authenticated:
-        oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    else:
-        oUsuario = ''
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    monto = total_monto_solicitudes()
     context = {
-        'usuario': oUsuario
+        'usuario': oUsuario,
+        'monto': monto
     }
 
     return render(request, 'deposito/index.html', context)
