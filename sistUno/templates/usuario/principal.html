@@ -3,12 +3,22 @@
 
 {%block content%}
 
-<h1>Página principal usuario</h1>
+<!-- <h1><b>Principal</b></h1> -->
 
+<div class="row">
+  <div class="col-md-4">
+    <label style="font-size:20px;"><b>Invitar a más personas</b></label>
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#linkModal">
+      Compartir
+    </button>
+
+  </div>
+
+</div>
 <!-- Area Chart Example-->
 <div class="card mb-3">
   <div class="card-header" id="saldoActual">
-    <i class="fas fa-chart-area"></i>    
+    <i class="fas fa-chart-area"></i>
   </div>
   <div class="card-body">
     <canvas id="MyChart" width="100%" height="30"></canvas>
@@ -44,11 +54,52 @@
   </div>
 </div>
 
+
+
+
+<!-- MODAL INVITACION -->
+
+<div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enlace de invitación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input  type="text" id="invitacion" value="http://localhost:8000/Usuario/registrar/{{usuario.dni}}" class="form-control">
+        <label id="copiado" style="color:green;"></label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="copiarLink()">Copiar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIN MODAL INVITACION -->
+
 {%endblock%}
 
 {% block scripts %}
 
 <script>
+// COPIAR LINK DE INVITACION
+function copiarLink(){
+  var linka=document.getElementById("invitacion");
+  linka.select();
+  document.execCommand("copy");
+
+$("#copiado").html("Enlace de invitación copiado");
+
+
+}
+//FIN COPIAR LINK DE INVITACION
+
+
   var español = {
     "sProcessing":     "Procesando...",
     "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -96,7 +147,7 @@
         {"data": "fields.monto"},
         {"data": "fields.saldo_inicial"},
         {"data": "fields.saldo_final"}
-      ],                  
+      ],
       "createdRow": function(row, data, dataIndex) {
         if (data.fields.tipo_movimiento == 'deposito') {
           $(row).addClass('text-success');
@@ -106,7 +157,7 @@
         }
       },
       "language": español
-      
+
     });
   }
 
@@ -151,8 +202,8 @@ window.onload = function() {
       const lastIdx = data.length - 1;
       $('#saldoActual')[0].innerText = 'Saldo actual: ' + data[lastIdx].fields.saldo_final;
       // ---------------------------------------------------------------------------------
-      
-      var respuesta = [];      
+
+      var respuesta = [];
       var labels = [];
 
       fechas.forEach(function(element, index, array) {
@@ -210,7 +261,7 @@ window.onload = function() {
 });
 
 }
-  
+
 </script>
 
 {% endblock %}

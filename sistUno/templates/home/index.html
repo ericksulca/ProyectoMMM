@@ -38,11 +38,14 @@
           </div>
         </div>
       </div>
-      
+
       {% else %}
       <div class="col-md-3 box-login small">
         <h4>Ingresar</h4>
         <hr>
+        {% if mensaje %}
+        <span for="" class="alert-danger">{{mensaje}}</span>
+        {% endif %}
         <form class="" method="POST" action="{% url 'home:index' %}">
           {% csrf_token %}
 
@@ -54,9 +57,11 @@
             <label for="contrasena">Contraseña</label>
             <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" class="form-control-p">
           </div>
-
-          <button type="submit" name="button" class="btn btn-primary btn-sm">Ingresar</button>
-          <a href="{% url 'usuario:registrar_usuario'%}">¿No tienes una cuenta? Registrate</a>
+          <div class="">
+            <button type="submit" name="button" class="btn btn-primary btn-sm">Ingresar</button>
+            <a href="{% url 'usuario:registrar_usuario'%}">Registrate</a><br>
+          </div>
+          <a href="{% url 'usuario:registrar_usuario'%}">Recuperar contraseña</a>
         </form>
       </div>
       {% endif %}

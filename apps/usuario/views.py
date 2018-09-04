@@ -55,7 +55,7 @@ def perfil_usuario(request):
     }
     return render(request, 'usuario/perfil/perfil.html',context)
 
-def cambio_contraseña(request):
+def cambio_contrasena(request):
     if request.user.is_authenticated:
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
         oUser = request.user
