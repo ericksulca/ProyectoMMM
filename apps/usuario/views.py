@@ -4,7 +4,6 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.core import serializers
 from django.db import IntegrityError
-from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 
@@ -146,7 +145,7 @@ def buscar_usuario(request):
                 oUsuarios
             )
     return HttpResponse(data, content_type='application/json')
-    # return render(request, 'usuario/registrar/buscar_usuario.html', context)
+   
 
 # def buscar_usuario(request):
 #     if request.method == 'POST':
