@@ -8,6 +8,7 @@ class Solicitud(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     fecha_modificacion = models.DateTimeField(auto_now=True, blank=True)
     monto = models.DecimalField(max_digits=10, decimal_places=2)
+    monto_completado = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     confirmacion = models.BooleanField(default=False)
     pagado = models.BooleanField(default=False)
     estado = models.BooleanField(default=True)

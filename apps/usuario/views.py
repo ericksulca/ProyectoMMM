@@ -135,21 +135,15 @@ def buscar_usuario(request):
 
     # Función Q importada para hacer consultas complejas, en este caso una consulta con 'OR'
     for busqueda in palabras_busqueda:
-        usuarios = Usuario.objects.filter(
-            Q(nombres__startswith = busqueda) |
-            Q(apellido_paterno__startswith = busqueda) |
-            Q(apellido_materno__startswith = busqueda) |
-            Q(dni__startswith = busqueda)
-            )
-        print(usuarios)
+        if busqueda.isnumeric():
+            oUsuarios = Usuario.objects.filter(dni__contains = busqueda).only('nombres','apellido_paterno','apellido_materno','foto_perfil')
+        else:
+            oUser = User.objects.filter(username__contains = busqueda)
+            oUsuarios = Usuario.objects.filter(usuario_login__in = oUser).only('nombres','apellido_paterno','apellido_materno','foto_perfil')
 
-    context = {
-        'usuarios': usuarios
-    }
     data = serializers.serialize(
                 'json',
-                usuarios,
-                fields = ['nombres','apellido_paterno','apellido_materno','foto_perfil']
+                oUsuarios
             )
     return HttpResponse(data, content_type='application/json')
     # return render(request, 'usuario/registrar/buscar_usuario.html', context)
