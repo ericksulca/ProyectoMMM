@@ -1,6 +1,7 @@
 {% extends 'base/base_login.html' %}
 {% load staticfiles %}
 
+
 {% block breadcrumb %}
 <ol class="breadcrumb">
   <li class="breadcrumb-item">
@@ -20,11 +21,20 @@
 
 {% block content %}
 
-<h1>Index Depósito</h1>
+<h1>Nuevo deposito</h1>
 
-Solicitudes no satisfechas valoradas en {{ monto }}
+<form action="{% url 'deposito:deposito_usuario' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Guardar">
+</form>
 
 {% endblock %}
 
 {% block scripts %}
+
+<script>
+
+</script>
+
 {% endblock %}

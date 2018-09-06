@@ -32,9 +32,11 @@ def nueva_solicitud(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     if request.method == 'POST':
         form = NuevaSolicitudForm(request.POST)
+        monto_faltante = request.POST['monto']
         if form.is_valid():
             solicitud = form.save(commit=False)
             solicitud.usuario = oUsuario
+            solicitud.monto_faltante = monto_faltante
             solicitud.save()
             return redirect('solicitud:index')
         else:

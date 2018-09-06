@@ -1,11 +1,12 @@
 from django.db.models import Q
 from django.core import serializers
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from apps.solicitud.views import total_monto_solicitudes
 from apps.usuario.models import Usuario
 from .models import Operacion
+from .forms import  NuevoDeposito
 # Create your views here.
 
 def index(request):
@@ -17,6 +18,30 @@ def index(request):
     }
 
     return render(request, 'deposito/index.html', context)
+
+
+def deposito_usuario(request):
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    if request.method == 'POST':
+        form = NuevoDeposito(request.POST)
+        if form.is_valid():
+            operacion = form.save(commit=False)
+            operacion.tipo_movimiento = 'deposito'
+            operacion.save()
+            return redirect('deposito:index')
+        else:
+            return redirect('deposito:index')
+    else:
+        form = NuevoDeposito()
+    
+    context = {
+        'usuario': oUsuario,
+        'form': form
+    }
+
+    return render(request, 'deposito/nueva.html', context)
+
+
 
 
 
