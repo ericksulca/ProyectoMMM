@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.testimonio',
     'apps.articulo',
+    'apps.reset',
 ]
 
 MIDDLEWARE = [
@@ -86,20 +87,20 @@ WSGI_APPLICATION = 'sistUno.wsgi.application'
 DATABASES = {
     'default': {
         # nube
-        # 'ENGINE': 'mysql_cymysql',
-        # 'NAME': 'admin_ayudammm',
-        # 'USER': 'admin_ayudammm',
-        # 'PASSWORD': 'sQhhhzqrfu',
-        # 'HOST': '138.197.36.187',
-        # 'PORT': '3306'
+        'ENGINE': 'mysql_cymysql',
+        'NAME': 'admin_ayudammm',
+        'USER': 'admin_ayudammm',
+        'PASSWORD': 'sQhhhzqrfu',
+        'HOST': '138.197.36.187',
+        'PORT': '3306'
 
         # local
-        'ENGINE': 'mysql_cymysql',
-        'NAME': 'proyectodb',
-        'USER': 'usuario_proyecto',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        # 'ENGINE': 'mysql_cymysql',
+        # 'NAME': 'proyectodb',
+        # 'USER': 'usuario_proyecto',
+        # 'PASSWORD': '1234',
+        # 'HOST': 'localhost',
+        # 'PORT': '3306',
     }
 }
 
@@ -152,3 +153,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 # LOGIN Y LOGOUT
 
 LOGOUT_REDIRECT_URL=reverse_lazy('home:index')
+
+#CORREO ELECTRONICO
+EMAIL_USE_TLS=True
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=25
+EMAIL_HOST_USER='mariayobeth@gmail.com'
+EMAIL_HOST_PASSWORD='Gustavin24'
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'

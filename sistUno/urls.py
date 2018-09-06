@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include, reverse
 
 from django.contrib.auth.views import logout_then_login
-
+# from password_reset.urls import password_reset, password_reset_done, password_reset_confirm, password_reset_complete
+from apps.reset import views
 
 
 urlpatterns = [
@@ -29,4 +30,16 @@ urlpatterns = [
     path('Testimonio/', include('apps.testimonio.urls')),
     path('', include('apps.home.urls')),
     path('logout', logout_then_login, name='logout'),
+
+    path(r'^recover/(?P<signature>.+)/$', views.recover_done,
+        name='password_reset_sent'),
+    path(r'^recover/$', views.recover, name='password_reset_recover'),
+    path(r'^reset/done/$', views.reset_done, name='password_reset_done'),
+    path(r'^reset/(?P<token>[\w:-]+)/$', views.reset,
+        name='password_reset_reset'),
+    # path('reset/password_reset', password_reset, {'template_name':'reset/password_reset_form.html', 'email_template_name':'reset/password_reset_email.html'}, name='password_reset_recover'),
+    # path('reset/password_reset_done', password_reset_done, {'template_name':'reset/password_reset_done.html'}, name='password_reset_done'),
+    # path('reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', password_reset_confirm, {'template_name':'reset/password_reset_confirm.html'}, name='password_reset_confirm'),
+    # path('reset/done', password_reset_complete, {'template_name':'reset/password_reset_complete.html'}, name='password_reset_complete'),
+
 ]

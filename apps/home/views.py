@@ -7,6 +7,16 @@ from apps.usuario.models import Usuario
 from apps.testimonio.models import Testimonio
 from apps.articulo.models import Articulo
 
+
+def baner_testimonio():
+    banner = Banner.objects.all()
+    testimonio=Testimonio.objects.all()
+    context={
+        'banner':banner,
+        'testimonio':testimonio,
+    }
+    return context
+
 def index(request):
     mensaje=''
     if request.method == 'POST':
@@ -45,3 +55,19 @@ def index(request):
     }
 
     return render(request, 'home/index.html',context)
+
+
+def legalidad(request):
+    return render(request,'home/legalidad.html',baner_testimonio())
+
+def quienes_somos(request):
+    return render(request,'home/quienes_somos.html',baner_testimonio())
+
+def testimonios(request):
+    return render(request,'home/testimonios.html',baner_testimonio())
+
+def ed_financiera(request):
+    return render(request,'home/ed_financiera.html',baner_testimonio())
+
+def contactenos(request):
+    return render(request,'home/contactenos.html',baner_testimonio())

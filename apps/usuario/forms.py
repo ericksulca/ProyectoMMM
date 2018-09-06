@@ -32,7 +32,7 @@ class NuevoUsuarioForm(forms.ModelForm):
 
         widgets = {
             'dni': forms.NumberInput(attrs={'class': 'form-control-p', 'placeholder':'DNI','onKeyPress':'if(this.value.length==8) return false;'}),
-            'nombres': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Nombres'}),
+            'nombres': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Nombres','id':'nombres'}),
             'apellido_paterno': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Apellido paterno'}),
             'apellido_materno': forms.TextInput(attrs={'class': 'form-control-p', 'placeholder':'Apellido materno'}),
             'foto_perfil': forms.FileInput(attrs={'class': 'form-control-p'}),

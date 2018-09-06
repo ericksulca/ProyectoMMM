@@ -1,0 +1,8 @@
+{% extends "reset/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Recuperación de contraseña enviado" %}{% endblock %}
+{% block titlepage %}{% trans "Recuperación de contraseña enviado" %}{% endblock %}
+{% block content %}
+	<p>{% blocktrans with ago=timestamp|timesince %}Se ha enviado un mensaje de correo electrónico a <strong>{{ email }}</strong> hace {{ ago }} . Use el enlace para recuperar su contraseña.{% endblocktrans %}</p>
+{% endblock %}

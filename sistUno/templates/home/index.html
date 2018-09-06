@@ -55,22 +55,23 @@
           </div>
           <div class="">
             <label for="contrasena">Contraseña</label>
-            <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" class="form-control-p">
+            <input type="password" id="contrasena" name="contraseña" placeholder="Contraseña" class="form-control-p">
           </div>
           <div class="">
             <button type="submit" name="button" class="btn btn-primary btn-sm">Ingresar</button>
             <a href="{% url 'usuario:registrar_usuario'%}">Registrate</a><br>
           </div>
-          <a href="{% url 'usuario:registrar_usuario'%}">Recuperar contraseña</a>
+          <a href="{% url 'password_reset_recover'%}" target="_blank">Recuperar contraseña</a>
         </form>
       </div>
       {% endif %}
 
     <!-- END LOGIN FORM -->
   </div>
+  {%endblock%}
 
-
-
-
-
-{%endblock%}
+  {% block scripts %}
+  <script type="text/javascript">
+    $("#username").focus();
+  </script>
+  {% endblock %}

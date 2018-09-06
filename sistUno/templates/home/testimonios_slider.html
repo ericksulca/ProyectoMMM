@@ -1,0 +1,214 @@
+{% load staticfiles%}
+<!-- <div class="brand-logo-area">
+  <div class="container">
+    <div class="brand-logo">
+      <div class="brand-logo-title">
+        <h2><b>Testimonios</b></h2>
+      </div>
+      <div id="brands-logo" >
+        <div class="testimonio-content text-center">
+          <div class="testimonio-header">
+            <div class="testimonio-photo">
+              <img src="{% static 'img/fotos-usuario/7.jpg' %}" alt="" class="photo">
+            </div>
+          </div>
+          <div class="testimonio-name">
+            <h6>Usuario 1</h6>
+          </div>
+          <div class="testimonio-comment">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div class="testimonio-date">
+            <p>17-08-2018</p>
+          </div>
+        </div>
+
+        <div class="testimonio-content text-center">
+          <div class="testimonio-header">
+            <div class="testimonio-photo">
+              <img src="{% static 'img/fotos-usuario/2.jpg' %}" alt="" class="photo">
+            </div>
+          </div>
+          <div class="testimonio-name">
+            <h6>Usuario 2</h6>
+          </div>
+          <div class="testimonio-comment">
+            <p>lorem Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div class="testimonio-date">
+            <p>17-08-2018</p>
+          </div>
+        </div>
+
+        <div class="testimonio-content text-center">
+          <div class="testimonio-header">
+            <div class="testimonio-photo">
+              <img src="{% static 'img/fotos-usuario/3.jpg' %}" alt="" class="photo">
+            </div>
+          </div>
+          <div class="testimonio-name">
+            <h6>Usuario 3</h6>
+          </div>
+          <div class="testimonio-comment">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div class="testimonio-date">
+            <p>17-08-2018</p>
+          </div>
+        </div>
+
+        <div class="testimonio-content text-center">
+          <div class="testimonio-header">
+            <div class="testimonio-photo">
+              <img src="{% static 'img/fotos-usuario/4.jpg' %}" alt="" class="photo">
+            </div>
+          </div>
+          <div class="testimonio-name">
+            <h6>Usuario 4</h6>
+          </div>
+          <div class="testimonio-comment">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div class="testimonio-date">
+            <p>17-08-2018</p>
+          </div>
+        </div>
+        <div class="testimonio-content text-center">
+          <div class="testimonio-header">
+            <div class="testimonio-photo">
+              <img src="{% static 'img/fotos-usuario/5.jpg' %}" alt="" class="photo">
+            </div>
+          </div>
+          <div class="testimonio-name">
+            <h6>Usuario 5</h6>
+          </div>
+          <div class="testimonio-comment">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div class="testimonio-date">
+            <p>17-08-2018</p>
+          </div>
+        </div>
+        <div class="testimonio-content text-center">
+          <div class="testimonio-header">
+            <div class="testimonio-photo">
+              <img src="{% static 'img/fotos-usuario/6.jpg' %}" alt="" class="photo">
+            </div>
+          </div>
+          <div class="testimonio-name">
+            <h6>Usuario 6</h6>
+          </div>
+          <div class="testimonio-comment">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div class="testimonio-date">
+            <p>17-08-2018</p>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9 box-body">
+      <div class="wrapper">
+        <div class="slider-testimonial">
+
+        {% if testimonio %}
+        {% for test in testimonio %}
+        <div class="testimonial-item">
+          <div class="testimonial-client">
+            <div class="testimonio-photo">
+              <img src="{% static 'media/' %}{{test.usuario.foto_perfil}}" alt="" class="photo">
+            </div>
+            <p class="client-name">{{test.usuario.nombres}} {{test.usuario.apellido_paterno}} {{test.usuario.apellido_materno}}</p>
+          </div>
+          <div class="testimonial-text">
+            <p>{{test.contenido}}</p>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <img src="{% static 'img/fotos-usuario/red.jpg' %}" alt="" style="width:100%;">
+    </div>
+  </div>
+
+
+  <!-- <div class="row">
+    <div class="col-md-9 box-body">
+      <div class="container mt-3">
+      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+
+        <ul class="carousel-indicators">
+          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+          <li data-target="#myCarousel" data-slide-to="1"></li>
+          <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ul>
+
+
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+          <div class="row">
+           if testimonio
+             for test in testimonio
+            <div class="col-md-4">
+              <div class="testimonial-item">
+                <div class="testimonial-client">
+                  <div class="testimonio-photo">
+                    <img src="{% static 'media/' %}{{test.usuario.foto_perfil}}" alt="" class="photo">
+                  </div>
+                  <p class="client-name">test.usuario.nombres test.usuario.apellido_paterno test.usuario.apellido_materno</p>
+                </div>
+                <div class="testimonial-text">
+                  <p>test.contenido</p>
+                </div>
+              </div>
+            </div>
+             endfor
+             endif
+
+
+          </div>
+          </div>
+
+
+        </div>
+
+
+        <div class="">
+          <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+            <span class="carousel-control-prev-icon" style="background-color:#949494;"></span>
+          </a>
+        </div>
+
+        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+          <span class="carousel-control-next-icon" style="background-color:#949494;"></span>
+        </a>
+      </div>
+
+      </div>
+    </div>
+-->
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- </div> -->

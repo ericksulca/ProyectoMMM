@@ -63,22 +63,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{% url 'home:index'%}">Inicio <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Legalidad</a>
+              <a class="nav-link" href="{% url 'home:legalidad'%}">Legalidad</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Quiénes somos</a>
+              <a class="nav-link" href="{% url 'home:quienes_somos'%}">Quiénes somos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Testimonios</a>
+              <a class="nav-link" href="{% url 'home:testimonios'%}">Testimonios</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Ed. Financiera</a>
+              <a class="nav-link" href="{% url 'home:ed_financiera'%}">Ed. Financiera</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Contáctenos</a>
+              <a class="nav-link" href="{% url 'home:contactenos'%}">Contáctenos</a>
             </li>
           </ul>
 
@@ -95,7 +95,7 @@
     {% endblock %}
 
     {% block footer %}
-    {% include 'home/testimonios.html'%}
+    {% include 'home/testimonios_slider.html'%}
     {% endblock %}
 
 <script src="{% static 'js/bootstrap/bootstrap.min.js'%}"></script>
@@ -107,7 +107,9 @@
 <script src="{% static 'js/testimonios/jquery.simpleLens.min.js'%}"></script>
 <script src="{% static 'js/testimonios/jquery.scrollUp.min.js'%}"></script>
 <script src="{% static 'js/testimonios/main.js'%}"></script> -->
+{% block scripts %}
 
+{% endblock %}
 
 
 

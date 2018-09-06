@@ -1,0 +1,9 @@
+{% extends "reset/base.html" %}{% load i18n %}
+
+
+{% block title %}{% trans "Nueva contraseña" %}{% endblock %}
+{% block titlepage %}{% trans "Nueva contraseña" %}{% endblock %}
+{% block content %}
+	<p>{% trans "Su contraseña ha sido restablecida con éxito. Puede usarlo ahora mismo en la página de inicio de sesión." %}</p>
+	<p class="text-center"><a href="{% url 'home:index' %}" class="btn btn-primary">Iniciar sesión</a></p>
+{% endblock %}

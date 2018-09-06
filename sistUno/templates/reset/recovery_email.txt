@@ -1,0 +1,9 @@
+{% load i18n %}{% blocktrans %}Estimado {{ username }},{% endblocktrans %}
+
+{% blocktrans with domain=site.domain %}Usted -- o alguien que pretende ser usted -- ha solicitado un reestablecimiento de contraseña en {{ domain }}.{% endblocktrans %}
+
+{% trans "Puede establecer su nueva contraseña en el siguiente enlace:" %}
+
+http{% if secure %}s{% endif %}://{{ site.domain }}{% url "password_reset_reset" token %}
+
+{% trans "Si no desea restablecer su contraseña, simplemente ignore este correo electrónico y no se modificará." %}
