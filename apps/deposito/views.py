@@ -42,9 +42,6 @@ def deposito_usuario(request):
     return render(request, 'deposito/nueva.html', context)
 
 
-
-
-
 def operaciones_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('-fecha').only('monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final')
