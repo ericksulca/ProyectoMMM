@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db.models import Q
 from django.core import serializers
 from django.http import HttpResponse
@@ -5,6 +7,7 @@ from django.shortcuts import render, redirect
 
 from apps.solicitud.views import total_monto_solicitudes
 from apps.usuario.models import Usuario
+from apps.solicitud.models import Solicitud
 from .models import Operacion
 from .forms import  NuevoDeposito
 # Create your views here.
@@ -40,6 +43,31 @@ def deposito_usuario(request):
     }
 
     return render(request, 'deposito/nueva.html', context)
+
+
+def deposito_solicitud(request):
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    oSolicitudes = Solicitud.objects.filter(pagado=False, estado=True).order_by('-fecha')
+    if request.method == 'POST':
+        monto_total = Decimal(request.POST['monto'])
+        for solicitud in oSolicitudes:
+            if monto_total >= solicitud.monto_faltante:
+                monto_total -= solicitud.monto_faltante
+                solicitud.monto_completado = solicitud.monto
+                solicitud.monto_faltante = 0
+                solicitud.pagado = True
+                solicitud.save()
+            else:
+                solicitud.monto_completado += monto_total 
+                solicitud.monto_faltante -= monto_total 
+                solicitud.save()
+                break
+    context = {
+        'usuario': oUsuario
+    }
+
+    return render(request, 'deposito/deposito_solicitud.html', context)
+
 
 
 def operaciones_usuario(request):

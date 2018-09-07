@@ -8,7 +8,7 @@
     <a href="{% url 'usuario:principal' %}">Principal</a>
   </li>
   <li class="breadcrumb-item active">
-    <a href="{% url 'deposito:index' %}"></a> Depósitos
+    <a href="{% url 'deposito:index' %}"></a>Depósitos
   </li>
   <li class="breadcrumb-item">
     <a href="{% url 'deposito:deposito_usuario' %}">Nuevo deposito</a>
@@ -23,9 +23,10 @@
 
 <h1>Nuevo deposito</h1>
 
-<form action="{% url 'deposito:deposito_usuario' %}" method="POST">
+<form action="{% url 'deposito:deposito_solicitud' %}" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    <label for="monto">Monto</label>
+    <input type="number" id="monto" class="form-control-p" name="monto" placeholder="0.00" step="0.01">
     <input type="submit" value="Guardar">
 </form>
 
