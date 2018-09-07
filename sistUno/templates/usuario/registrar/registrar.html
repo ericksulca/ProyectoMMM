@@ -74,36 +74,40 @@
 
               <div class="col-md-12">
                 <h5 class="text-primary">Datos del Referente</h5>
+
+
+                {% if dni_referido %}
                 <div class="row">
+                  <div class="col-md-3">
+                    <input type="hidden" id="id_dni_referido_def" name="dni_referido" value="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-5" id="result-bsqd-def"></div>
+                </div>
+                {% else %}
+                <div class="row">
+
                   <div class="col-md-3">
                     <label for="">Buscar usuario referente:</label>
                     <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="Nombres del referente">
-                    <!-- <ul id="resultados-busqueda">
-                    </ul> -->
-
                   </div>
-
                   <div class="col-md-3">
                     <label for="">DNI del referente:</label>
                     {{ formUsuario.dni_referido }}
                   </div>
+
                 </div>
 
-              </div>
+                <div class="row">
+                  <div class="col-md-5" id="result-bsqd"></div>
+                </div>
 
-              <div class="col-md-5" id="result-bsqd">
-                <!-- <div class="row">
-                  <div class="col-md-1" style="border:1px solid red">
-                    fotoo
-                  </div>
-                  <div class="col-md-3" style="border:1px solid red">
-                    <p>nombres y apellidos</p>
-                    <p>DNI</p>
-                  </div>
-
-                </div> -->
+                {% endif %}
 
               </div>
+
+
 
             </div>
 <hr>
@@ -118,9 +122,27 @@
 
 </div>
 
+
+
 <script>
 
 $("#nombres").focus();
+
+{% if dni_referido %}
+
+  $(function(){
+    $.ajax({
+        type: "POST",
+        url: "/Usuario/buscar-usuario/",
+        data: {
+            'busqueda': {{dni_referido}},
+            'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+        },
+        success:searchSuccess,
+        dataType: 'json'
+    });
+  })
+{% endif %}
   // // busqueda de Referente
   //   $(function () {
   //       $('#busqueda').keyup(function () {
@@ -150,6 +172,8 @@ $("#nombres").focus();
   //   };
 
   // busqueda de Referente v2
+
+
 
     $(function () {
         $('#busqueda').keyup(function () {
@@ -193,15 +217,24 @@ $("#nombres").focus();
                 '</div>';
 
         $('#result-bsqd').append(result);
-      }
 
+
+        $('#result-bsqd-def').append(result);
+
+      }
+      {% if dni_referido %}
+      $('#id_dni_referido_def')[0].value = {{dni_referido}};
+      {% endif %}
     };
 
     function removeCard(idCard){
       $("#card-"+idCard).remove();
+
     }
+
     function elegirReferente(dni){
       $('#id_dni_referido')[0].value = dni;
+
       $(".bsqd-card").remove();
     }
 // ------------ fin busqueda de Referente v2------------

@@ -112,12 +112,14 @@ def registrar_usuario(request, dni_referido=''):
     else:
         formUsuario = NuevoUsuarioForm(initial={'dni_referido': dni_referido})
 
+
     banner = Banner.objects.all()
     testimonio=Testimonio.objects.all()
     context = {
         'formUsuario': formUsuario,
         'banner':banner,
         'testimonio':testimonio,
+        'dni_referido':dni_referido,
     }
 
     return render(request, 'usuario/registrar/registrar.html', context=context)
@@ -145,7 +147,7 @@ def buscar_usuario(request):
                 oUsuarios
             )
     return HttpResponse(data, content_type='application/json')
-   
+
 
 # def buscar_usuario(request):
 #     if request.method == 'POST':
