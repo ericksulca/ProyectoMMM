@@ -1,8 +1,11 @@
 {% extends 'base/base.html' %} {% load staticfiles%}{% block header %} {% endblock %} {% block content %}
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <div class="container">
     <div class="row">
-
-
         <div class="col-md-1 box-body">
 
         </div>
@@ -74,39 +77,43 @@
 
               <div class="col-md-12">
                 <h5 class="text-primary">Datos del Referente</h5>
+
+
+                {% if dni_referido %}
                 <div class="row">
+                  <div class="col-md-3">
+                    <input type="hidden" id="id_dni_referido_def" name="dni_referido" value="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-5" id="result-bsqd-def"></div>
+                </div>
+                {% else %}
+                <div class="row">
+
                   <div class="col-md-3">
                     <label for="">Buscar usuario referente:</label>
                     <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="Nombres del referente">
-                    <!-- <ul id="resultados-busqueda">
-                    </ul> -->
-
                   </div>
-
                   <div class="col-md-3">
                     <label for="">DNI del referente:</label>
                     {{ formUsuario.dni_referido }}
                   </div>
+
                 </div>
 
-              </div>
+                <div class="row">
+                  <div class="col-md-5" id="result-bsqd"></div>
+                </div>
 
-              <div class="col-md-5" id="result-bsqd">
-                <!-- <div class="row">
-                  <div class="col-md-1" style="border:1px solid red">
-                    fotoo
-                  </div>
-                  <div class="col-md-3" style="border:1px solid red">
-                    <p>nombres y apellidos</p>
-                    <p>DNI</p>
-                  </div>
-
-                </div> -->
+                {% endif %}
 
               </div>
+
+
 
             </div>
-<hr>
+            <hr>
               <div class="form-group col-md-12">
                 <button id="boton" type="submit" class="btn btn-primary btn-sm" disabled>Guardar</button>
                 <a href="{% url 'home:index' %}">Ya tengo una cuenta</a>
@@ -118,9 +125,78 @@
 
 </div>
 
+<input type="hidden" name="dni_referente_select" id="id_dni_referente_select" value="">
+
 <script>
 
 $("#nombres").focus();
+
+{% if dni_referido %}
+
+  $(function(){
+    $.ajax({
+        type: "POST",
+        url: "/Usuario/buscar-usuario/",
+        data: {
+            'busqueda': {{dni_referido}},
+            'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+        },
+        success:searchSuccess,
+        dataType: 'json'
+    });
+  })
+{% endif %}
+
+
+//AUTOCOMPLETADO
+$( "#busqueda" ).autocomplete({
+  source: function(request,add){
+    $.ajax({
+      type:'POST',
+      url: "/Usuario/buscar-usuario/",
+      data: {
+          'busqueda': $('#busqueda').val(),
+          'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+      },
+      dataType:'json',
+      dataFilter:function(data){return data;},
+      success:function(data){
+        // console.log(data);
+        // response($.map(data,function(item){
+        //   return {
+        //     value:item.fields.nombres+' '+item.fields.apellido_paterno+' '+item.fields.apellido_materno
+        //   }
+        // }))
+
+        var suggestions = [];
+            $.each(data, function(i, val) {
+                suggestions.push({
+                    label: val.fields.nombres+' '+val.fields.apellido_paterno+' '+val.fields.apellido_materno,
+                    zzz: val.pk
+                });
+            });
+            add(suggestions);
+
+
+      }
+    })
+  },
+  select: function(event, ui) {
+          // alert(ui.item.zzz);
+
+          $("#id_dni_referente_select").val(ui.item.zzz);
+          $('#id_dni_referido').val('');
+          cargarCardSeleccionado(ui.item.zzz);
+
+        },
+  open: function() {
+      $("ul.ui-menu").width($(this).innerWidth());
+      // $("ul.ui-menu").height($(this).innerHeight());
+      $("ul.ui-menu").css("height","auto"); 
+    }
+});
+//FIN AUTOCOMPLETADO
+
   // // busqueda de Referente
   //   $(function () {
   //       $('#busqueda').keyup(function () {
@@ -151,27 +227,38 @@ $("#nombres").focus();
 
   // busqueda de Referente v2
 
-    $(function () {
-        $('#busqueda').keyup(function () {
-            var txt = $(this).val();
-            if (txt === '') { }
-            else {
+
+
+    function cargarCardSeleccionado(dni) {
                 $.ajax({
                     type: "POST",
                     url: "/Usuario/buscar-usuario/",
                     data: {
-                        'busqueda': $('#busqueda').val(),
+                        'busqueda': dni,
                         'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
                     },
                     success:searchSuccess,
                     dataType: 'json'
                 });
-            }
-        });
-    });
+
+    };
 
     function searchSuccess(data, textStatus, jqXHR) {
-      console.log(data);
+      // console.log(data);
+      // var datosAutocomplete=[]
+      // for (let i in data) {
+      //   // if(data[i].fields.nombres!=null){
+      //     datosAutocomplete.push(data[i].fields.nombres+' '+data[i].fields.apellido_paterno+' '+data[i].fields.apellido_materno)
+      //   // }
+      // }
+      // datosAutocomplete = $.grep(datosAutocomplete,function(n){
+      //   return(n);
+      // });
+      // $( "#busqueda" ).autocomplete({
+      //   source: datosAutocomplete
+      // });
+      //
+      // console.log(datosAutocomplete);
 
       $('#result-bsqd').html("")
 
@@ -184,7 +271,7 @@ $("#nombres").focus();
                     '</div>'+
                     '<div class="col-md-8 col-xs-8">'+
                       '<div class="modal-header-p small">'+
-                      '<a onclick="elegirReferente('+data[i].pk+')" class="select-p" style="color:blue">Seleccionar</a><a class="close-p" onclick="removeCard('+data[i].pk+')">x</a>'+
+                      '<a onclick="elegirReferente('+data[i].pk+')" class="select-p" id="link_select" style="color:blue">Seleccionar</a><a class="close-p" onclick="removeCard('+data[i].pk+')">x</a>'+
                       '</div>'+
                       '<p><b>'+data[i].fields.nombres+' '+data[i].fields.apellido_paterno+' '+data[i].fields.apellido_materno+'</b></p>'+
                       '<p><b>'+data[i].pk+'</b></p>'+
@@ -193,15 +280,24 @@ $("#nombres").focus();
                 '</div>';
 
         $('#result-bsqd').append(result);
-      }
 
+
+        $('#result-bsqd-def').append(result);
+
+      }
+      {% if dni_referido %}
+      $('#id_dni_referido_def')[0].value = {{dni_referido}};
+      {% endif %}
     };
 
     function removeCard(idCard){
       $("#card-"+idCard).remove();
+
     }
+
     function elegirReferente(dni){
       $('#id_dni_referido')[0].value = dni;
+
       $(".bsqd-card").remove();
     }
 // ------------ fin busqueda de Referente v2------------
