@@ -14,7 +14,7 @@ from .forms import NuevoUsuarioForm, EditarPerfilForm
 from .models import Usuario, Entidad_bancaria
 
 # Create your views here.
-
+from django.db.models import Q
 
 def principal_usuario(request):
     if request.user.is_authenticated:
@@ -127,20 +127,47 @@ def registrar_usuario(request, dni_referido=''):
 
 def buscar_usuario(request):
     if request.method == 'POST':
-        if 'busqueda' in request.POST:
-            palabras_busqueda = request.POST['busqueda'].split()
+
+        busqueda=request.POST['busqueda'].split()
+        busqueda_reverso=busqueda[::-1]
+        tamanio=len(busqueda)
+
+        if tamanio == 1:
+        # if 'busqueda' in request.POST:
+            # palabras_busqueda = request.POST['busqueda'].split()
+        # oUsuarios = Usuario.objects.filter(nombres__contains = request.POST['busqueda'])
+            oUsuarios = Usuario.objects.filter(
+                        Q(nombres__icontains = request.POST['busqueda']) |
+                        Q(apellido_paterno__icontains = request.POST['busqueda']) |
+                        Q(apellido_materno__icontains = request.POST['busqueda'])
+                        # Q(dni__icontains = request.POST['busqueda'])
+                        )
+        elif tamanio == 2:
+            oUsuarios = Usuario.objects.filter(
+                        Q(nombres__icontains = busqueda_reverso[1]) &
+                        Q(apellido_paterno__icontains = busqueda_reverso[0])
+
+                        )
         else:
-            palabras_busqueda = ['']
+            oUsuarios = Usuario.objects.filter(
+                        Q(nombres__icontains = busqueda_reverso[2]) &
+                        Q(apellido_paterno__icontains = busqueda_reverso[1]) &
+                        Q(apellido_materno__icontains = busqueda_reverso[0])
+                        )
+
+        # else:
+        #     palabras_busqueda = ['']
     else:
         palabras_busqueda = ['']
+        oUsuario=''
 
     # Función Q importada para hacer consultas complejas, en este caso una consulta con 'OR'
-    for busqueda in palabras_busqueda:
-        if busqueda.isnumeric():
-            oUsuarios = Usuario.objects.filter(dni__contains = busqueda).only('nombres','apellido_paterno','apellido_materno','foto_perfil')
-        else:
-            oUser = User.objects.filter(username__contains = busqueda)
-            oUsuarios = Usuario.objects.filter(usuario_login__in = oUser).only('nombres','apellido_paterno','apellido_materno','foto_perfil')
+    # for busqueda in palabras_busqueda:
+    #     if busqueda.isnumeric():
+    #         oUsuarios = Usuario.objects.filter(dni__contains = busqueda).only('nombres','apellido_paterno','apellido_materno','foto_perfil')
+    #     else:
+    #         oUser = User.objects.filter(username__contains = busqueda)
+    #         oUsuarios = Usuario.objects.filter(usuario_login__in = oUser).only('nombres','apellido_paterno','apellido_materno','foto_perfil')
 
     data = serializers.serialize(
                 'json',

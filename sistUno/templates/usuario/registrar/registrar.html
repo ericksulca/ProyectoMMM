@@ -1,8 +1,10 @@
 {% extends 'base/base.html' %} {% load staticfiles%}{% block header %} {% endblock %} {% block content %}
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <div class="container">
     <div class="row">
-
-
         <div class="col-md-1 box-body">
 
         </div>
@@ -110,7 +112,7 @@
 
 
             </div>
-<hr>
+            <hr>
               <div class="form-group col-md-12">
                 <button id="boton" type="submit" class="btn btn-primary btn-sm" disabled>Guardar</button>
                 <a href="{% url 'home:index' %}">Ya tengo una cuenta</a>
@@ -143,6 +145,35 @@ $("#nombres").focus();
     });
   })
 {% endif %}
+
+
+//AUTOCOMPLETADO
+$( "#busqueda" ).autocomplete({
+  source: function(request,response){
+    $.ajax({
+      type:'POST',
+      url: "/Usuario/buscar-usuario/",
+      data: {
+          'busqueda': $('#busqueda').val(),
+          'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+      },
+      dataType:'json',
+      dataFilter:function(data){return data;},
+      success:function(data){
+        console.log(data);
+        response($.map(data,function(item){
+          return {
+            value:item.fields.nombres+' '+item.fields.apellido_paterno+' '+item.fields.apellido_materno
+          }
+        }))
+
+
+      }
+    })
+  }
+});
+//FIN AUTOCOMPLETADO
+
   // // busqueda de Referente
   //   $(function () {
   //       $('#busqueda').keyup(function () {
@@ -175,27 +206,41 @@ $("#nombres").focus();
 
 
 
-    $(function () {
-        $('#busqueda').keyup(function () {
-            var txt = $(this).val();
-            if (txt === '') { }
-            else {
-                $.ajax({
-                    type: "POST",
-                    url: "/Usuario/buscar-usuario/",
-                    data: {
-                        'busqueda': $('#busqueda').val(),
-                        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
-                    },
-                    success:searchSuccess,
-                    dataType: 'json'
-                });
-            }
-        });
-    });
+    // $(function () {
+    //     $('#busqueda').keyup(function () {
+    //         var txt = $(this).val();
+    //         if (txt === '') { }
+    //         else {
+    //             $.ajax({
+    //                 type: "POST",
+    //                 url: "/Usuario/buscar-usuario/",
+    //                 data: {
+    //                     'busqueda': $('#busqueda').val(),
+    //                     'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+    //                 },
+    //                 success:searchSuccess,
+    //                 dataType: 'json'
+    //             });
+    //         }
+    //     });
+    // });
 
     function searchSuccess(data, textStatus, jqXHR) {
-      console.log(data);
+      // console.log(data);
+      // var datosAutocomplete=[]
+      // for (let i in data) {
+      //   // if(data[i].fields.nombres!=null){
+      //     datosAutocomplete.push(data[i].fields.nombres+' '+data[i].fields.apellido_paterno+' '+data[i].fields.apellido_materno)
+      //   // }
+      // }
+      // datosAutocomplete = $.grep(datosAutocomplete,function(n){
+      //   return(n);
+      // });
+      // $( "#busqueda" ).autocomplete({
+      //   source: datosAutocomplete
+      // });
+      //
+      // console.log(datosAutocomplete);
 
       $('#result-bsqd').html("")
 
