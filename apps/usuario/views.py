@@ -139,8 +139,8 @@ def buscar_usuario(request):
             oUsuarios = Usuario.objects.filter(
                         Q(nombres__icontains = request.POST['busqueda']) |
                         Q(apellido_paterno__icontains = request.POST['busqueda']) |
-                        Q(apellido_materno__icontains = request.POST['busqueda'])
-                        # Q(dni__icontains = request.POST['busqueda'])
+                        Q(apellido_materno__icontains = request.POST['busqueda']) |
+                        Q(dni__icontains = request.POST['busqueda'])
                         )
         elif tamanio == 2:
             oUsuarios = Usuario.objects.filter(

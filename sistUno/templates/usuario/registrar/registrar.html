@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %} {% load staticfiles%}{% block header %} {% endblock %} {% block content %}
 <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <div class="container">
@@ -124,7 +125,7 @@
 
 </div>
 
-
+<input type="hidden" name="dni_referente_select" id="id_dni_referente_select" value="">
 
 <script>
 
@@ -149,7 +150,7 @@ $("#nombres").focus();
 
 //AUTOCOMPLETADO
 $( "#busqueda" ).autocomplete({
-  source: function(request,response){
+  source: function(request,add){
     $.ajax({
       type:'POST',
       url: "/Usuario/buscar-usuario/",
@@ -160,17 +161,39 @@ $( "#busqueda" ).autocomplete({
       dataType:'json',
       dataFilter:function(data){return data;},
       success:function(data){
-        console.log(data);
-        response($.map(data,function(item){
-          return {
-            value:item.fields.nombres+' '+item.fields.apellido_paterno+' '+item.fields.apellido_materno
-          }
-        }))
+        // console.log(data);
+        // response($.map(data,function(item){
+        //   return {
+        //     value:item.fields.nombres+' '+item.fields.apellido_paterno+' '+item.fields.apellido_materno
+        //   }
+        // }))
+
+        var suggestions = [];
+            $.each(data, function(i, val) {
+                suggestions.push({
+                    label: val.fields.nombres+' '+val.fields.apellido_paterno+' '+val.fields.apellido_materno,
+                    zzz: val.pk
+                });
+            });
+            add(suggestions);
 
 
       }
     })
-  }
+  },
+  select: function(event, ui) {
+          // alert(ui.item.zzz);
+
+          $("#id_dni_referente_select").val(ui.item.zzz);
+          $('#id_dni_referido').val('');
+          cargarCardSeleccionado(ui.item.zzz);
+
+        },
+  open: function() {
+      $("ul.ui-menu").width($(this).innerWidth());
+      // $("ul.ui-menu").height($(this).innerHeight());
+      $("ul.ui-menu").css("height","auto"); 
+    }
 });
 //FIN AUTOCOMPLETADO
 
@@ -206,24 +229,19 @@ $( "#busqueda" ).autocomplete({
 
 
 
-    // $(function () {
-    //     $('#busqueda').keyup(function () {
-    //         var txt = $(this).val();
-    //         if (txt === '') { }
-    //         else {
-    //             $.ajax({
-    //                 type: "POST",
-    //                 url: "/Usuario/buscar-usuario/",
-    //                 data: {
-    //                     'busqueda': $('#busqueda').val(),
-    //                     'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
-    //                 },
-    //                 success:searchSuccess,
-    //                 dataType: 'json'
-    //             });
-    //         }
-    //     });
-    // });
+    function cargarCardSeleccionado(dni) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Usuario/buscar-usuario/",
+                    data: {
+                        'busqueda': dni,
+                        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+                    },
+                    success:searchSuccess,
+                    dataType: 'json'
+                });
+
+    };
 
     function searchSuccess(data, textStatus, jqXHR) {
       // console.log(data);
@@ -253,7 +271,7 @@ $( "#busqueda" ).autocomplete({
                     '</div>'+
                     '<div class="col-md-8 col-xs-8">'+
                       '<div class="modal-header-p small">'+
-                      '<a onclick="elegirReferente('+data[i].pk+')" class="select-p" style="color:blue">Seleccionar</a><a class="close-p" onclick="removeCard('+data[i].pk+')">x</a>'+
+                      '<a onclick="elegirReferente('+data[i].pk+')" class="select-p" id="link_select" style="color:blue">Seleccionar</a><a class="close-p" onclick="removeCard('+data[i].pk+')">x</a>'+
                       '</div>'+
                       '<p><b>'+data[i].fields.nombres+' '+data[i].fields.apellido_paterno+' '+data[i].fields.apellido_materno+'</b></p>'+
                       '<p><b>'+data[i].pk+'</b></p>'+
