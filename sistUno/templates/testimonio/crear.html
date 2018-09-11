@@ -19,17 +19,24 @@
 
 
 <form class="" method="post">
+  <span class="text-info small">Escriba como máximo 200 caractéres</span>
   {% csrf_token %}
 
   {% if testimonio%}
     <input type="hidden" name="action" value="edit">
-    <textarea required name="contenido" rows="8" cols="80" placeholder="Escriba su testimonio aquí." class="form-control-p">{{testimonio.contenido}}</textarea>
+    <textarea required name="contenido" rows="8" cols="80" placeholder="Escriba su testimonio aquí." class="form-control-p comment-count" maxlength="200">{{testimonio.contenido}}</textarea>
+
   {% else %}
     <input type="hidden" name="action" value="create">
-    <textarea required name="contenido" rows="8" cols="80" placeholder="Escriba su testimonio aquí." class="form-control-p"></textarea>
+    <textarea required name="contenido" rows="8" cols="80" placeholder="Escriba su testimonio aquí." class="form-control-p comment-count" maxlength="200"></textarea>
+
   {% endif %}
 
+
+<br>
   <input type="submit" name="" value="Enviar" class="btn btn-primary btn-sm">
 </form>
+
+
 
 {% endblock %}

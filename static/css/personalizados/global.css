@@ -31,6 +31,12 @@ ul>li>a{
 
 .box-body{
   margin-top: 10px;
+
+}
+.box-body-content{
+  height: 444px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .box-login{
@@ -39,10 +45,11 @@ ul>li>a{
   border-style: solid;
   border-width: 1px;
   border-radius: 10px;
-  border-color: #9e99a1;
+  border-color: rgb(7, 168, 201);
   padding-bottom: 10px;
   padding-top: 10px;
   height: 100%;
+
 }
 
 .box-login label{
@@ -235,9 +242,21 @@ input[type="file"]{
 
 .select-p:hover{
   cursor: pointer;
-  
+
 }
 
 .modal-header-p .select-p {
   color: red;
+}
+
+.list-testimonial-content >p{
+  font-family: "Open sans";
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+    color: #454545;
+}
+
+.list-testimonial-name{
+  color: rgb(7, 168, 201);
 }

@@ -6,8 +6,23 @@
 
   <div class="row">
   <div class="col-md-9 box-body">
-    <h1>CONTACTENOS</h1>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    <h1>Contáctenos</h1>
+  <div class="box-body-content">
+    <form class="" action="index.html" method="post">
+      <div class="form-group">
+        <label for="">Correo electrónico:</label>
+        <input type="email" id="email" placeholder="Correo electrónico" class="form-control">
+        <div id="xmail" hidden> <h6 class="text-danger small">Ingresa un correo electrónico valido</h6> </div>
+      </div>
+      <div class="form-group">
+        <label for="">Mensaje:</label>
+        <textarea id="message" rows="8" cols="80" class="form-control" maxlength="200"></textarea>
+      </div>
+      <div class="form-group">
+        <input type="submit" name="" value="Enviar" class="btn btn-primary">
+      </div>
+    </form>
+  </div>
   </div>
     <!-- LOGIN FORM -->
 
@@ -27,4 +42,34 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+$("#email").focus();
+// funcion para validar el correo
+function caracteresCorreoValido(email, div){
+    // console.log(email);
+    //var email = $(email).val();
+    var caract = new RegExp(/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/);
+
+    if (caract.test(email) == false){
+      $("#xmail").removeAttr('hidden')
+        // $(div).hide().removeClass('hide').slideDown('fast');
+// $("#xmail").html("<h6 class='text-danger small'>Ingresa un correo electrónico valido</h6>");
+        return false;
+    }else{
+      $("#xmail").hide();
+        // $(div).hide().addClass('hide').slideDown('slow');
+//        $(div).html('');
+        return true;
+    }
+}
+  // cuando pierde el foco, este valida si lo que esta en el campo de texto si es un correo o no y muestra una respuesta
+  $('form').find('input[type=email]').blur(function(){
+    caracteresCorreoValido($(this).val(), '#xmail')
+
+    // $("#xmail").html("<h6 class='text-danger small'>Ingresa un correo electrónico valido</h6>");
+  });
+</script>
 {% endblock %}
