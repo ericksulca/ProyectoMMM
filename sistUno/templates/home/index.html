@@ -12,62 +12,20 @@
     <!-- LOGIN FORM -->
 
 
-      {% if usuario %}
-      <div class="col-md-3 box-login small">
-        <div class="row">
-          <div class="testimonio-photo">
-            <img src="{% static 'media/' %}{{usuario.foto_perfil}}" alt="" class="photo">
-          </div>
 
-          <div class="testimonio-name text-center col-md-12">
-            <h6>Bienvenido {{usuario.nombres}}</h6>
-          </div>
+  <div class="col-md-3 box-login small">
+    {% include 'home/login.html'%}
+  </div>
 
-          <div class="text-center col-md-12">
-            <div class="row">
-              <div class="col-md-3">
 
-              </div>
-              <div class="col-md-3 text-center">
-                <a href="{% url 'usuario:principal'%}" ><span class="fa fa-home" style="font-size:20px;"></span><br>Home</a>
-              </div>
-              <div class="col-md-3 text-center">
-                <a href="{% url 'logout'%}"><span class="fa fa-sign-out-alt" style="font-size:20px"></span><br>Salir</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- <div class="col-md-3 box-login small">
 
-      {% else %}
-      <div class="col-md-3 box-login small">
-        <h4>Ingresar</h4>
-        <hr>
-        {% if mensaje %}
-        <span for="" class="alert-danger">{{mensaje}}</span>
-        {% endif %}
-        <form class="" method="POST" action="{% url 'home:index' %}">
-          {% csrf_token %}
+      </div> -->
 
-          <div class="">
-            <label for="username">Usuario</label>
-            <input type="text" id="username" name="username" placeholder="Nombre de usuario" class="form-control-p">
-          </div>
-          <div class="">
-            <label for="contrasena">Contraseña</label>
-            <input type="password" id="contrasena" name="contraseña" placeholder="Contraseña" class="form-control-p">
-          </div>
-          <div class="">
-            <button type="submit" name="button" class="btn btn-primary btn-sm">Ingresar</button>
-            <a href="{% url 'usuario:registrar_usuario'%}">Registrate</a><br>
-          </div>
-          <a href="{% url 'password_reset_recover'%}" target="_blank">Recuperar contraseña</a>
-        </form>
-      </div>
-      {% endif %}
 
     <!-- END LOGIN FORM -->
   </div>
+</div>
   {%endblock%}
 
   {% block scripts %}

@@ -8,10 +8,16 @@ from apps.testimonio.models import Testimonio
 from apps.articulo.models import Articulo
 
 
-def baner_testimonio():
+def baner_testimonio(request):
+    if request.user.is_authenticated:
+        oUsuario=Usuario.objects.get(usuario_login_id=request.user.id)
+    else:
+        oUsuario=''
+
     banner = Banner.objects.all()
     testimonio=Testimonio.objects.all()
     context={
+        'usuario':oUsuario,
         'banner':banner,
         'testimonio':testimonio,
     }
@@ -58,16 +64,16 @@ def index(request):
 
 
 def legalidad(request):
-    return render(request,'home/legalidad.html',baner_testimonio())
+    return render(request,'home/legalidad.html',baner_testimonio(request))
 
 def quienes_somos(request):
-    return render(request,'home/quienes_somos.html',baner_testimonio())
+    return render(request,'home/quienes_somos.html',baner_testimonio(request))
 
 def testimonios(request):
-    return render(request,'home/testimonios.html',baner_testimonio())
+    return render(request,'home/testimonios.html',baner_testimonio(request))
 
 def ed_financiera(request):
-    return render(request,'home/ed_financiera.html',baner_testimonio())
+    return render(request,'home/ed_financiera.html',baner_testimonio(request))
 
 def contactenos(request):
-    return render(request,'home/contactenos.html',baner_testimonio())
+    return render(request,'home/contactenos.html',baner_testimonio(request))
