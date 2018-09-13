@@ -52,10 +52,13 @@ def deposito_solicitud(request):
         monto_total = Decimal(request.POST['monto'])
         for solicitud in oSolicitudes:
             if monto_total >= solicitud.monto_faltante:
-                ultima_operacion = Operacion.objects.latest(field_name='fecha')
-                saldo_final_anterior = ultima_operacion.saldo_final
+                ultima_operacion_emisor = Operacion.objects.filter(usuario_receptor=oUsuario).latest(field_name='fecha')
+                ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=solicitud.usuario).latest(field_name='fecha')
+                saldo_final_anterior_emisor = ultima_operacion_emisor.saldo_final
+                saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
                 monto_operacion = solicitud.monto_faltante
-                Saldo_final_operacion = ultima_operacion.saldo_final + monto_operacion
+                Saldo_final_operacion_emisor = ultima_operacion_emisor.saldo_final - monto_operacion
+                Saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + monto_operacion
                 monto_total -= solicitud.monto_faltante
                 solicitud.monto_completado = solicitud.monto
                 solicitud.monto_faltante = 0
@@ -63,8 +66,19 @@ def deposito_solicitud(request):
                 solicitud.save()
                 operacion = Operacion(
                     monto = monto_operacion,
-                    saldo_inicial = saldo_final_anterior,
-                    saldo_final = Saldo_final_operacion,
+                    saldo_inicial = saldo_final_anterior_emisor,
+                    saldo_final = Saldo_final_operacion_emisor,
+                    tipo_movimiento = 'retiro',
+                    usuario_emisor = oUsuario,
+                    usuario_receptor = oUsuario,
+                    solicitud = solicitud
+                )
+                operacion.save()
+
+                operacion = Operacion(
+                    monto = monto_operacion,
+                    saldo_inicial = saldo_final_anterior_receptor,
+                    saldo_final = Saldo_final_operacion_receptor,
                     tipo_movimiento = 'deposito',
                     usuario_emisor = oUsuario,
                     usuario_receptor = solicitud.usuario,
@@ -72,17 +86,31 @@ def deposito_solicitud(request):
                 )
                 operacion.save()
             else:
-                ultima_operacion = Operacion.objects.latest(field_name='fecha')
-                saldo_final_anterior = ultima_operacion.saldo_final
+                ultima_operacion_emisor = Operacion.objects.filter(usuario_receptor=oUsuario).latest(field_name='fecha')
+                ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=solicitud.usuario).latest(field_name='fecha')
+                saldo_final_anterior_emisor = ultima_operacion_emisor.saldo_final
+                saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
                 monto_operacion = solicitud.monto_faltante
-                Saldo_final_operacion = ultima_operacion.saldo_final + monto_operacion
+                Saldo_final_operacion_emisor = ultima_operacion_emisor.saldo_final - monto_operacion
+                Saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + monto_operacion
                 solicitud.monto_completado += monto_total 
                 solicitud.monto_faltante -= monto_total 
                 solicitud.save()
                 operacion = Operacion(
                     monto = monto_operacion,
-                    saldo_inicial = saldo_final_anterior,
-                    saldo_final = Saldo_final_operacion,
+                    saldo_inicial = saldo_final_anterior_emisor,
+                    saldo_final = Saldo_final_operacion_emisor,
+                    tipo_movimiento = 'retiro',
+                    usuario_emisor = oUsuario,
+                    usuario_receptor = oUsuario,
+                    solicitud = solicitud
+                )
+                operacion.save()
+
+                operacion = Operacion(
+                    monto = monto_operacion,
+                    saldo_inicial = saldo_final_anterior_receptor,
+                    saldo_final = Saldo_final_operacion_receptor,
                     tipo_movimiento = 'deposito',
                     usuario_emisor = oUsuario,
                     usuario_receptor = solicitud.usuario,
@@ -100,7 +128,7 @@ def deposito_solicitud(request):
 
 def operaciones_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('-fecha').only('monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final')
+    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).only('monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final').order_by('-fecha')
     data = serializers.serialize(
         'json',
         oOperaciones,
@@ -112,7 +140,7 @@ def operaciones_usuario(request):
 
 def operaciones_usuario_chart(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha').only('fecha', 'saldo_final')[:10]
+    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).order_by('fecha').only('fecha', 'saldo_final')[:10]
     data = serializers.serialize(
         'json',
         oOperaciones,
