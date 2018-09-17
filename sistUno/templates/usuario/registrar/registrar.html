@@ -96,7 +96,7 @@
                     <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="Nombres del referente">
                   </div>
                   <div class="col-md-3">
-                    <label for="">DNI del referente:</label>
+                    
                     {{ formUsuario.dni_referido }}
                   </div>
 
@@ -185,14 +185,14 @@ $( "#busqueda" ).autocomplete({
           // alert(ui.item.zzz);
 
           $("#id_dni_referente_select").val(ui.item.zzz);
-          $('#id_dni_referido').val('');
+          $('#id_dni_referido').val(ui.item.zzz);
           cargarCardSeleccionado(ui.item.zzz);
 
         },
   open: function() {
       $("ul.ui-menu").width($(this).innerWidth());
       // $("ul.ui-menu").height($(this).innerHeight());
-      $("ul.ui-menu").css("height","auto"); 
+      $("ul.ui-menu").css("height","auto");
     }
 });
 //FIN AUTOCOMPLETADO
@@ -270,11 +270,9 @@ $( "#busqueda" ).autocomplete({
                       '<img src="{% static "media/" %}'+data[i].fields.foto_perfil+'" alt="" style="width: 100px; height: 100px;">'+
                     '</div>'+
                     '<div class="col-md-8 col-xs-8">'+
-                      '<div class="modal-header-p small">'+
-                      '<a onclick="elegirReferente('+data[i].pk+')" class="select-p" id="link_select" style="color:blue">Seleccionar</a><a class="close-p" onclick="removeCard('+data[i].pk+')">x</a>'+
-                      '</div>'+
-                      '<p><b>'+data[i].fields.nombres+' '+data[i].fields.apellido_paterno+' '+data[i].fields.apellido_materno+'</b></p>'+
-                      '<p><b>'+data[i].pk+'</b></p>'+
+                      '<br>'+
+                      '<p><b>Nombres: '+data[i].fields.nombres+' '+data[i].fields.apellido_paterno+' '+data[i].fields.apellido_materno+'</b></p>'+
+                      '<p><b>DNI: '+data[i].pk+'</b></p>'+
                     '</div>'+
                  '</div>'+
                 '</div>';

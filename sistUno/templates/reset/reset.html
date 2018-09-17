@@ -1,20 +1,30 @@
 {% extends "reset/base.html" %}{% load i18n %}
 
-{% block titlepage %}{% trans "Cambiar contraseña" %}{% endblock %}
+{% block titlepage %}{% trans "Establecer nueva contraseña" %}{% endblock %}
 {% block content %}
-	{% if invalid %}{% url "password_reset_recover" as recovery_url %}
-		<p>{% blocktrans %}Lo sentimos, este enlace de restablecimiento de contraseña no es válido. Todavia puedes <a href="{{ recovery_url }}">solcitar uno nuevo</a>.{% endblocktrans %}</p>
-	{% else %}
-		<p>{% blocktrans %}Hola, <strong>{{ username }}</strong>. Por favor escriba su nueva contraseña.{% endblocktrans %}</p>
-		<form method="post" action="{% url "password_reset_reset" token %}">
-			{% csrf_token %}
-			<div class="row">
-				<div class="col-md-6">
-					{{ form.as_p }}
-				</div>
-			</div>
+	<div class="well">
 
-			<p><input type="submit" value="{% trans "Asignar nueva contraseña" %}" class="btn btn-primary"></p>
-		</form>
-	{% endif %}
+				<div class="row">
+					<div class="col-md-3">
+
+					</div>
+					<div class="col-md-6">
+						{% if invalid %}{% url "password_reset_recover" as recovery_url %}
+							<p>{% blocktrans %}Lo sentimos, este enlace de restablecimiento de contraseña no es válido. Todavia puedes <a href="{{ recovery_url }}">solcitar uno nuevo</a>.{% endblocktrans %}</p>
+						{% else %}
+							<p>{% blocktrans %}Hola, <strong>{{ username }}</strong>. Por favor escriba su nueva contraseña.{% endblocktrans %}</p>
+							<form method="post" action="{% url 'password_reset_reset' token %}">
+								{% csrf_token %}
+						{{ form.as_p }}
+						<input type="submit" value="{% trans 'Establecer' %}" class="btn btn-primary" />
+					</form>
+				{% endif %}
+					</div>
+					<div class="col-md-3">
+
+					</div>
+				</div>
+
+
+	</div>
 {% endblock %}

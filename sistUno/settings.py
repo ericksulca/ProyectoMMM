@@ -87,20 +87,20 @@ WSGI_APPLICATION = 'sistUno.wsgi.application'
 DATABASES = {
     'default': {
         # nube
-        # 'ENGINE': 'mysql_cymysql',
-        # 'NAME': 'admin_ayudammm',
-        # 'USER': 'admin_ayudammm',
-        # 'PASSWORD': 'sQhhhzqrfu',
-        # 'HOST': '138.197.36.187',
-        # 'PORT': '3306'
+        'ENGINE': 'mysql_cymysql',
+        'NAME': 'admin_ayudammm',
+        'USER': 'admin_ayudammm',
+        'PASSWORD': 'sQhhhzqrfu',
+        'HOST': '138.197.36.187',
+        'PORT': '3306'
 
         # local
-        'ENGINE': 'mysql_cymysql',
-        'NAME': 'proyectodb',
-        'USER': 'usuario_proyecto',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        # 'ENGINE': 'mysql_cymysql',
+        # 'NAME': 'proyectodb',
+        # 'USER': 'usuario_proyecto',
+        # 'PASSWORD': '1234',
+        # 'HOST': 'localhost',
+        # 'PORT': '3306',
     }
 }
 
@@ -159,5 +159,5 @@ EMAIL_USE_TLS=True
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=25
 EMAIL_HOST_USER='mariayobeth@gmail.com'
-EMAIL_HOST_PASSWORD='Gustavin24'
+EMAIL_HOST_PASSWORD='Amirita7'
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'

@@ -10,12 +10,22 @@
 
   </head>
   <body>
-    <div class="jumbotron text-center">
-      <h2>{% block titlepage %}{% endblock %}</h2>
-    </div>
-    <div class="container">
-      {% block content %}{% endblock %}
-    </div>
 
+    <div class="container" style="border:1px solid lightblue;padding-bottom:20px;">
+      <div class="text-center text-primary">
+        <div class="">
+          <img src="logo.jpg" alt="">
+        </div>
+        <h4>{% block titlepage %}{% endblock %}</h4>
+        <hr>
+      </div>
+      <div class="">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+    <script type="text/javascript">
+    	$("#id_username_or_email").focus();
+      $("#id_password1").focus();
+    </script>
   </body>
 </html>

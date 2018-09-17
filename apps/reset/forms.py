@@ -7,7 +7,7 @@ from django.conf import settings
 
 
 class PasswordRecoveryForm(forms.Form):
-    username_or_email = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),)
+    username_or_email = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre de ususario o correo electrónico'}),)
 
     error_messages = {
         'not_found': _("Lo sentimos, este usuario no existe."),
@@ -29,7 +29,7 @@ class PasswordRecoveryForm(forms.Form):
         labels = {
             'username': _('Usuario'),
             'email': _('Correo electrónico'),
-            'both': _('Usuario o correo electrónico'),
+            'both': _('Nombre de usuario o correo electrónico'),
         }
 
         User = get_user_model()  # noqa
@@ -100,11 +100,11 @@ class PasswordRecoveryForm(forms.Form):
 class PasswordResetForm(forms.Form):
     password1 = forms.CharField(
         label=_('Nueva contraseña'),
-        widget=forms.PasswordInput(attrs={'class':'form-control'}),
+        widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Nueva contraseña'}),
     )
     password2 = forms.CharField(
         label=_('Nueva contraseña (confirmar)'),
-        widget=forms.PasswordInput(attrs={'class':'form-control'}),
+        widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Confirmar nueva contraseña'}),
     )
 
     error_messages = {

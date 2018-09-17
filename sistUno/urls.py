@@ -31,15 +31,19 @@ urlpatterns = [
     path('', include('apps.home.urls')),
     path('logout', logout_then_login, name='logout'),
 
-    path('recover/(?P<signature>.+)/', views.recover_done,
-        name='password_reset_sent'),
+    # path('recover/(?P<signature>.+)/', views.recover_done, name='password_reset_sent'),
+    # path('recover/', views.recover, name='password_reset_recover'),
+    # path('reset/done/', views.reset_done, name='password_reset_done'),
+    # path('reset/(?P<token>[\w:-]+)/', views.reset, name='password_reset_reset'),
+
+    path('recover/<signature>/', views.recover_done, name='password_reset_sent'),
     path('recover/', views.recover, name='password_reset_recover'),
     path('reset/done/', views.reset_done, name='password_reset_done'),
-    path('reset/(?P<token>[\w:-]+)/', views.reset,
-        name='password_reset_reset'),
-    # path('reset/password_reset', password_reset, {'template_name':'reset/password_reset_form.html', 'email_template_name':'reset/password_reset_email.html'}, name='password_reset_recover'),
-    # path('reset/password_reset_done', password_reset_done, {'template_name':'reset/password_reset_done.html'}, name='password_reset_done'),
-    # path('reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', password_reset_confirm, {'template_name':'reset/password_reset_confirm.html'}, name='password_reset_confirm'),
-    # path('reset/done', password_reset_complete, {'template_name':'reset/password_reset_complete.html'}, name='password_reset_complete'),
+    path('reset/<token>/', views.reset, name='password_reset_reset'),
+
+
+
+
+
 
 ]
