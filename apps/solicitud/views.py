@@ -11,7 +11,7 @@ from apps.solicitud.models import Solicitud
 
 def index_solicitud(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    
+
     context = {
         'usuario': oUsuario
     }
@@ -20,7 +20,7 @@ def index_solicitud(request):
 
 def editar_solicitud(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    
+
     context = {
         'usuario': oUsuario
     }
@@ -54,5 +54,8 @@ def nueva_solicitud(request):
 
 # Función que da como respuesta monto de las solicitudes de prestamo activas
 def total_monto_solicitudes():
-    monto_prestamo = Solicitud.objects.filter(estado=True, pagado=False).aggregate(Sum('monto_faltante'))
-    return monto_prestamo['monto_faltante__sum']
+    # monto_prestamo = Solicitud.objects.filter(estado=True, pagado=False).aggregate(Sum('monto_faltante'))
+    # monto_prestamo=Solicitud.objects.filter(estado=True,pagado=False)[:1]
+    monto_prestamo = Solicitud.objects.filter(estado=True, pagado=False,monto_faltante__gt=0)[:1].get()
+    # return monto_prestamo['monto_faltante__sum']
+    return monto_prestamo#['monto_faltante']

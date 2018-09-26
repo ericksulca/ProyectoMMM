@@ -6,7 +6,10 @@ from apps.home.models import Banner
 from apps.usuario.models import Usuario
 from apps.testimonio.models import Testimonio
 from apps.articulo.models import Articulo
+from apps.solicitud.models import Solicitud
 
+from django.core.mail import EmailMessage
+from django.shortcuts import render_to_response
 
 def baner_testimonio(request):
     if request.user.is_authenticated:
@@ -76,4 +79,38 @@ def ed_financiera(request):
     return render(request,'home/ed_financiera.html',baner_testimonio(request))
 
 def contactenos(request):
+    if request.user.is_authenticated:
+        oUsuario=Usuario.objects.get(usuario_login_id=request.user.id)
+    else:
+        oUsuario=''
+
+    banner = Banner.objects.all()
+    testimonio=Testimonio.objects.all()
+
+    if request.method=='POST':
+        asunto='Mensaje desde formulario de contacto'
+        mensaje='Email: '+request.POST['email']+'. Nombre: '+request.POST['nombre']+'. Mensaje: '+request.POST['mensaje']
+        mail=EmailMessage(asunto,mensaje,to=['smevy4lc3@gmail.com'])
+        mail.send()
+        success='EL mensaje fue enviado con éxito, nos pondremos en contacto a su correo electrónico.'
+        context={
+            'success':success,
+            'usuario':oUsuario,
+            'banner':banner,
+            'testimonio':testimonio,
+        }
+        return render(request,'home/contactenos.html',context)
+
     return render(request,'home/contactenos.html',baner_testimonio(request))
+
+
+# PRUEBA
+def prueba(request):
+    oUsuario=Usuario.objects.all()
+    oSolicitud=Solicitud.objects.all()
+    context={
+        'usuario':oUsuario,
+        'solicitud':oSolicitud,
+    }
+
+    return render(request, 'prueba/prueba.html',context)

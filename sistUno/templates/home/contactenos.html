@@ -8,15 +8,31 @@
   <div class="col-md-9 box-body">
     <h1>Contáctenos</h1>
   <div class="box-body-content">
-    <form class="" action="index.html" method="post">
+    <form class="" action="{% url 'home:contactenos'%}" method="post">
+
+      {% csrf_token %}
+
+
+      {% if success != '' %}
+
+        <label for=""class="text-success">{{success}}</label>
+
+      {% endif %}
+
+
+      <div class="form-group">
+        <label for="">Nombre:</label>
+        <input type="text" id="nombre" placeholder="Nombre" class="form-control" required name="nombre">
+
+      </div>
       <div class="form-group">
         <label for="">Correo electrónico:</label>
-        <input type="email" id="email" placeholder="Correo electrónico" class="form-control">
+        <input type="email" id="email" placeholder="Correo electrónico" class="form-control" name="email">
         <div id="xmail" hidden> <h6 class="text-danger small">Ingresa un correo electrónico valido</h6> </div>
       </div>
       <div class="form-group">
         <label for="">Mensaje:</label>
-        <textarea id="message" rows="8" cols="80" class="form-control" maxlength="200"></textarea>
+        <textarea id="message" rows="5" cols="80" class="form-control" maxlength="200" required name="mensaje"></textarea>
       </div>
       <div class="form-group">
         <input type="submit" name="" value="Enviar" class="btn btn-primary">
@@ -46,7 +62,7 @@
 
 {% block scripts %}
 <script>
-$("#email").focus();
+$("#nombre").focus();
 // funcion para validar el correo
 function caracteresCorreoValido(email, div){
     // console.log(email);

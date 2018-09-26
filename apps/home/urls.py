@@ -12,4 +12,7 @@ urlpatterns = [
     path('contactenos', views.contactenos, name='contactenos'),
     path('accounts/login/', views.index, name='account'),
 
+    # PRUEBA
+    path('prueba', views.prueba, name='prueba'),
+
 ]

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+
+
+    <table>
+      {%for i in usuario%}
+      <tr>
+        <td>{{i.dni}}</td>
+        <td>{{i.nombres}}</td>
+      </tr>
+      {%endfor%}
+    </table>
+
+    <table>
+      {%for d in solicitud%}
+      <tr>
+        <td>{{d.id}}</td>
+        <td>{{d.usuario_id}}</td>
+        <td>{{d.estado}}</td>
+        <td>{{d.pagado}}</td>
+        <td>{{d.monto_completado}}</td>
+        <td>{{d.monto_faltante}}</td>
+      </tr>
+      {%endfor%}
+    </table>
+  </body>
+</html>
