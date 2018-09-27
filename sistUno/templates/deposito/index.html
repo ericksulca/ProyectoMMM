@@ -22,7 +22,7 @@
 
 <h1>Depósito</h1>
 
-<p>La cantidad máxima a depositar es de {{ monto.monto_faltante }}</p>
+<p>La cantidad máxima a depositar es de {{ monto }}</p>
 
 <form action="{% url 'deposito:deposito_usuario' %}" method="POST">
     {% csrf_token %}
@@ -32,9 +32,7 @@
     <input type="submit" value="Guardar" class="btn btn-primary">
 </form>
 
-<p>ID Solicitud: {{monto.id}}</p>
-<p>Usuario:{{ monto.usuario.nombres }} {{ monto.usuario.apellido_paterno }} {{ monto.usuario.apellido_materno }}</p>
-<p>DNI:{{ monto.usuario.dni }}</p>
+
 
 {% endblock %}
 

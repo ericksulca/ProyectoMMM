@@ -52,13 +52,36 @@
         <li class="nav-item dropdown no-arrow mx-1">
           <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
-            <span class="badge badge-danger">9+</span>
+            <span class="badge badge-danger">{{cantidad_notificaciones}}+</span>
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+          <div class="dropdown-menu dropdown-menu-right box-notificacion" aria-labelledby="alertsDropdown">
+            {%for notificacion in notificaciones%}
+
+            {% ifequal notificacion.tipo 'deposito' %}
+              {%ifequal notificacion.estado 0 %}
+              <a class="dropdown-item notificacion-no-leido" href="#">
+                Haz recibido un depósito de parte de<br>
+                <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b>
+                . El dinero será transferido <br>
+                a su cuenta bancaria dentro de 48 horas.<br>
+                <b>{{notificacion.fecha_registro}}</b>
+              </a>
+              {%else%}
+              <a class="dropdown-item notificacion-leido" href="#" >
+                Haz recibido un depósito de parte de<br>
+                <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b>
+                . El dinero será transferido <br>
+                a su cuenta bancaria dentro de 48 horas.<br>
+                <b>{{notificacion.fecha_registro}}</b>
+              </a>
+              {%endifequal%}
+
+            {% endifequal %}
+            <!-- <div class="dropdown-divider"></div> -->
+            {% endfor %}
+            <!-- <a class="dropdown-item" href="#">Another action</a> -->
+            <!-- <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a> -->
           </div>
         </li>
         <!-- <li class="nav-item dropdown no-arrow mx-1">
@@ -111,9 +134,10 @@
             <span>Principal</span>
           </a>
         </li>
-      
+
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'deposito:index' %}">
+          <!-- <a class="nav-link" href="{% url 'deposito:index' %}"> -->
+          <a class="nav-link" href="{% url 'deposito:deposito_solicitud' %}">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Deposito</span></a>
         </li>

@@ -260,3 +260,21 @@ input[type="file"]{
 .list-testimonial-name{
   color: rgb(7, 168, 201);
 }
+
+.notificacion-no-leido{
+  background-color: lightgray;
+}
+.notificacion-no-leido:hover{
+  background-color: rgb(18, 94, 136);
+  color:white;
+}
+.notificacion-leido:hover{
+  background-color: rgb(18, 94, 136);
+  color:white;
+}
+
+.box-notificacion{
+  height: 418px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

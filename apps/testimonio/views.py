@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
 from apps.testimonio.models import Testimonio
 from apps.usuario.models import Usuario
+from apps.usuario.views import notificaciones_usuario
+from apps.usuario.views import cantidad_notificaciones
 
 def testimonio_registrar(request):
     if request.user.is_authenticated:
@@ -34,7 +36,9 @@ def testimonio_registrar(request):
     context = {
         'usuario':oUsuario,
         'testimonio':oTestimonio,
-        'respuesta':success
+        'respuesta':success,
+        'notificaciones':notificaciones_usuario(request),
+        'cantidad_notificaciones':cantidad_notificaciones(request),
     }
 
     return render(request, 'testimonio/crear.html',context)
