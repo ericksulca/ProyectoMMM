@@ -255,10 +255,12 @@ input[type="file"]{
 .notificacion-no-leido:hover{
   background-color: rgb(18, 94, 136);
   color:white;
+  cursor:pointer;
 }
 .notificacion-leido:hover{
   background-color: rgb(18, 94, 136);
   color:white;
+  cursor:pointer;
 }
 
 .box-notificacion{

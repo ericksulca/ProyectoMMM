@@ -38,12 +38,12 @@
       <!-- Navbar Search -->
       <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Buscar..." aria-label="Search" aria-describedby="basic-addon2">
-          <div class="input-group-append">
+          <input type="hidden" class="form-control" placeholder="Buscar..." aria-label="Search" aria-describedby="basic-addon2">
+          <!-- <div class="input-group-append">
             <button class="btn btn-primary" type="button">
               <i class="fas fa-search"></i>
             </button>
-          </div>
+          </div> -->
         </div>
       </form>
 
@@ -64,7 +64,7 @@
                 <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b>
                 . El dinero será transferido <br>
                 a su cuenta bancaria en un plazo de 48 horas.<br>
-                <b>{{notificacion.fecha_registro}}</b>
+                <b>{{notificacion.fecha_registro |date:"d M, Y"}}</b>
               </a>
               {%else%}
               <a class="dropdown-item notificacion-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}')">
@@ -72,7 +72,7 @@
                 <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b>
                 . El dinero será transferido <br>
                 a su cuenta bancaria en un plazo de 48 horas.<br>
-                <b>{{notificacion.fecha_registro}}</b>
+                <b>{{notificacion.fecha_registro |date:"d M, Y"}}</b>
               </a>
               {%endifequal%}
 
@@ -102,11 +102,11 @@
 
     </nav>
     <!-- MODAL -->
-    <div class="modal fade" id="modalNotificacion"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalNotificacion"  role="dialog" aria-labelledby="exampleModalLabelNotificacion" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-primary" id="exampleModalLabel"><b>Notificación de depósito</b></h5>
+            <h5 class="modal-title text-primary" id="exampleModalLabelNotificacion"><b>Notificación de depósito</b></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -241,14 +241,15 @@
     <script type="text/javascript">
 
     function modalNotificacion(id,nombres,fecha){
+      $("#nombres").html(nombres);
+      $("#fecha").html(fecha);
+      $("#modalNotificacion").modal("show");
       $.ajax({
         type: 'get',
         url: "/Notificacion/leer/"+id,
         success:function(){
           $("#li_notificaciones").load(" #li_notificaciones>*","");
-          $("#nombres").html(nombres);
-          $("#fecha").html(fecha);
-          $("#modalNotificacion").modal("show");
+
         }
       })
 
