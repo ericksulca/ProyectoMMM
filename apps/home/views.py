@@ -89,10 +89,16 @@ def contactenos(request):
 
     if request.method=='POST':
         asunto='Mensaje desde formulario de contacto'
-        mensaje='Email: '+request.POST['email']+'. Nombre: '+request.POST['nombre']+'. Mensaje: '+request.POST['mensaje']
+        mensaje='Email: '+request.POST['email']+'.\n Nombre: '+request.POST['nombre']+'.\n Mensaje: \n'+request.POST['mensaje']
         mail=EmailMessage(asunto,mensaje,to=['smevy4lc3@gmail.com'])
         mail.send()
-        success='EL mensaje fue enviado con éxito, nos pondremos en contacto a su correo electrónico.'
+        success='success'
+
+        asunto2='Mensaje de contacto recibido'
+        mensaje2='Hola '+request.POST['nombre']+', su mensaje:\n'+request.POST['mensaje']+ '\n a localhost fue recibido con éxito, responderemos a su consulta en breve.'
+        mail2=EmailMessage(asunto2,mensaje2,to=[request.POST['email']])
+        mail2.send()
+
         context={
             'success':success,
             'usuario':oUsuario,

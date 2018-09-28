@@ -49,53 +49,43 @@
 
       <!-- Navbar -->
       <ul class="navbar-nav ml-auto ml-md-0">
-        <li class="nav-item dropdown no-arrow mx-1">
+        <li class="nav-item dropdown no-arrow mx-1" id="li_notificaciones">
           <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
             <span class="badge badge-danger">{{cantidad_notificaciones}}+</span>
           </a>
-          <div class="dropdown-menu dropdown-menu-right box-notificacion" aria-labelledby="alertsDropdown">
+          <div class="dropdown-menu dropdown-menu-right box-notificacion" aria-labelledby="alertsDropdown" id="notificaciones">
             {%for notificacion in notificaciones%}
 
             {% ifequal notificacion.tipo 'deposito' %}
               {%ifequal notificacion.estado 0 %}
-              <a class="dropdown-item notificacion-no-leido" href="#">
+              <a class="dropdown-item notificacion-no-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}')">
                 Haz recibido un depósito de parte de<br>
                 <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b>
                 . El dinero será transferido <br>
-                a su cuenta bancaria dentro de 48 horas.<br>
+                a su cuenta bancaria en un plazo de 48 horas.<br>
                 <b>{{notificacion.fecha_registro}}</b>
               </a>
               {%else%}
-              <a class="dropdown-item notificacion-leido" href="#" >
+              <a class="dropdown-item notificacion-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}')">
                 Haz recibido un depósito de parte de<br>
                 <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b>
                 . El dinero será transferido <br>
-                a su cuenta bancaria dentro de 48 horas.<br>
+                a su cuenta bancaria en un plazo de 48 horas.<br>
                 <b>{{notificacion.fecha_registro}}</b>
               </a>
               {%endifequal%}
 
+
+
             {% endifequal %}
-            <!-- <div class="dropdown-divider"></div> -->
+
+
             {% endfor %}
-            <!-- <a class="dropdown-item" href="#">Another action</a> -->
-            <!-- <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a> -->
+
           </div>
         </li>
-        <!-- <li class="nav-item dropdown no-arrow mx-1">
-          <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-envelope fa-fw"></i>
-            <span class="badge badge-danger">7</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li> -->
+
         <li class="nav-item dropdown no-arrow">
           <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user-circle fa-fw"></i>
@@ -111,6 +101,30 @@
       </ul>
 
     </nav>
+    <!-- MODAL -->
+    <div class="modal fade" id="modalNotificacion"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-primary" id="exampleModalLabel"><b>Notificación de depósito</b></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="text-justify">Haz recibido un depósito de parte de <b id="nombres"></b>. El dinero será transferido a su cuenta bancaria en un plazo de 48 horas</p>
+            <p>Una vez recibido el depósito confirme la operación en su lista de operaciones ubicada en el menú principal.</p>
+            <p> <b id="fecha"></b> </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FIN MODAL -->
+
 
     <div id="wrapper">
 
@@ -142,7 +156,7 @@
             <span>Deposito</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'solicitud:index' %}">
+          <a class="nav-link" href="{% url 'solicitud:nueva_solicitud' %}">
             <i class="fas fa-fw fa-table"></i>
             <span>Solicitud</span></a>
         </li>
@@ -224,6 +238,26 @@
     <!-- Demo scripts for this page-->
     <!-- <script src="{% static 'vendor/js/datatables-demo.js' %}"></script> -->
     <!-- <script src="{% static 'vendor/js/chart-area-demo.js' %}"></script> -->
+    <script type="text/javascript">
+
+    function modalNotificacion(id,nombres,fecha){
+      $.ajax({
+        type: 'get',
+        url: "/Notificacion/leer/"+id,
+        success:function(){
+          $("#li_notificaciones").load(" #li_notificaciones>*","");
+          $("#nombres").html(nombres);
+          $("#fecha").html(fecha);
+          $("#modalNotificacion").modal("show");
+        }
+      })
+
+
+
+
+    }
+
+    </script>
 
     {% block scripts %}
     {% endblock %}

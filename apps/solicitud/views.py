@@ -1,7 +1,10 @@
 from django.core import serializers
+from django.http import JsonResponse
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib import messages
+# import json
 
 from .forms import NuevaSolicitudForm
 from apps.usuario.models import Usuario
@@ -33,6 +36,9 @@ def editar_solicitud(request):
     return render(request, 'solicitud/editar.html', context)
 
 
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def nueva_solicitud(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     if request.method == 'POST':
@@ -43,8 +49,18 @@ def nueva_solicitud(request):
             solicitud.usuario = oUsuario
             solicitud.monto_faltante = monto_faltante
             solicitud.save()
-            return redirect('solicitud:index')
+            # mensaje={'success':'success'}
+            # return JsonResponse(mensaje)
+            # data = serializers.serialize(
+            #             'json',
+            #             mensaje
+            #         )
+            #
+            # return HttpResponse(data, content_type='application/json')
+            messages.add_message(request, messages.INFO, "Su solicitud fue agergada a la lista de espera con éxito. Recibira una notificación al recibir el depósito.")
+            return redirect('solicitud:nueva_solicitud')
         else:
+            messages.add_message(request, messages.INFO, "Ocurrio un error en el procesamiento de la solicutud, por favor inténtelo neuvamente.")
             return redirect('solicitud:nueva_solicitud')
     else:
         form = NuevaSolicitudForm()

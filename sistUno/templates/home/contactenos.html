@@ -13,11 +13,14 @@
       {% csrf_token %}
 
 
-      {% if success != '' %}
+      {% ifequal success 'success' %}
 
-        <label class="text-success">{{success}}</label>
 
-      {% endif %}
+        <div class="alert-success">
+          <h5 class="text-success">Su mensaje fue recibido con éxito, nos pondremos en contacto a su correo electrónico.</h5>
+        </div>
+
+      {% endifequal %}
 
 
       <div class="form-group">

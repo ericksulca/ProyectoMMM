@@ -28,6 +28,7 @@ urlpatterns = [
     path('Solicitud/', include('apps.solicitud.urls')),
     path('Usuario/', include('apps.usuario.urls')),
     path('Testimonio/', include('apps.testimonio.urls')),
+    path('Notificacion/', include('apps.notificacion.urls')),
     path('', include('apps.home.urls')),
     path('logout', logout_then_login, name='logout'),
 

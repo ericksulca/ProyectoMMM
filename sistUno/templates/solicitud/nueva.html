@@ -6,27 +6,34 @@
   <li class="breadcrumb-item">
     <a href="{% url 'usuario:principal' %}">Principal</a>
   </li>
-  <li class="breadcrumb-item active">
+  <!-- <li class="breadcrumb-item active">
     <a href="{% url 'solicitud:index' %}">Solicitudes</a>
-  </li>
+  </li> -->
   <li class="breadcrumb-item active">
-    Nueva solicitud
+    Realizar solicitud
   </li>
-  <li class="breadcrumb-item active">
+  <!-- <li class="breadcrumb-item active">
     <a href="{% url 'solicitud:editar_solicitud' %}">Editar solicitud</a>
-  </li>
+  </li> -->
 </ol>
 {% endblock %}
 
 
 {% block content %}
 
-<h1>Registrar Solicitud</h1>
-
-<form action="{% url 'solicitud:nueva_solicitud' %}" method="POST">
+<h1>Realizar Solicitud</h1>
+{% if messages %}
+    <div class="alert-success">
+        {% for message in messages %}
+            <li> {{ message }} </li>
+        {% endfor %}
+    </div>
+{% endif %}
+<form action="{% url 'solicitud:nueva_solicitud' %}" method="POST" id="form-solicitud">
   {% csrf_token %}
   {{ form.as_p }}
-  <input type="submit" value="Guardar">
+  <!-- <input type="text" name="monto" id="id_monto" value=""> -->
+  <input type="submit" value="Guardar" class="btn btn-primary">
 </form>
 
 {% endblock %}
@@ -42,7 +49,38 @@ validacion.onchange = function() {
   validacion.value = parseFloat(x).toFixed(2);
 };
 
-
+//$(function() {
+  // function getCookie(c_name)
+  // {
+  //     if (document.cookie.length > 0)
+  //     {
+  //         c_start = document.cookie.indexOf(c_name + "=");
+  //         if (c_start != -1)
+  //         {
+  //             c_start = c_start + c_name.length + 1;
+  //             c_end = document.cookie.indexOf(";", c_start);
+  //             if (c_end == -1) c_end = document.cookie.length;
+  //             return unescape(document.cookie.substring(c_start,c_end));
+  //         }
+  //     }
+  //     return "";
+  //  }
+		//   $('#form-solicitud').on('submit', function (event) {
+   	//         event.preventDefault();
+    //
+    //         $.ajax({
+    //           // headers: { "X-CSRFToken": getCookie("csrftoken") },
+    //           data:  $('#id_monto').val(),
+    //           url:   $('#form-solicitud').attr('action'),
+    //           type:  'post',
+    //           success:  function (response) {
+    //                   console.log(response);
+    //           }
+    //
+    //         })
+    //
+		//   });
+		// });
 </script>
 
 {% endblock %}

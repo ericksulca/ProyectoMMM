@@ -71,6 +71,7 @@ ul>li>a{
     padding: 15px;
     font-size: 15px;
     text-align: justify;
+    height: 142px;
 }
 
 .panel-heading{
@@ -101,21 +102,8 @@ ul>li>a{
     border-color: #337ab7;
 }
 
-
-/* .testimonio-section{
-  border-color: #9e99a1;
-  border-style: solid;
-  border-width: 1px;
-  width: 100%;
-  padding: 10px;
-
-} */
-
 .testimonio-content{
   border-color: #9e99a1;
-  /* border-style: solid;
-  border-width: 1px; */
-  /* width: 200px; */
   padding: 10px;
   border-radius: 20px;
 }

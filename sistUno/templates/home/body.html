@@ -1,41 +1,40 @@
 
-        {% for arti in articulo%}
-          {% ifequal arti.tipo 'principal' %}
-          <div class="panel panel-primary">
-          <div class="panel-heading">{{arti.titulo}} </div>
-         <div class="panel-body">
-            {{arti.contenido}} <a href="#">... Ver más</a>
-          </div>
-          </div>
-          {% endifequal %}
+<div class="box-body-content">
+  {% for arti in articulo%}
+    {% ifequal arti.tipo 'principal' %}
+    <div class="panel panel-primary">
+    <div class="panel-heading">{{arti.titulo}} </div>
+   <div class="panel-body">
+      {{arti.contenido}} <a href="#">... Ver más</a>
+    </div>
+    </div>
+    {% endifequal %}
 
-        {% endfor %}
+  {% endfor %}
 
-
-
-          <div class="row">
-        {% for arti in articulo%}
-
-
-
-          {% ifequal arti.tipo 'secundario' %}
-
-          <div class="col-md-4">
-            <div class="panel panel-primary">
-            <div class="panel-heading">{{arti.titulo}}</div>
-           <div class="panel-body">
-              {{arti.contenido}} <a href="#">... Ver más</a>
-            </div>
-            </div>
-          </div>
+    <div class="row">
+  {% for arti in articulo%}
 
 
 
-          {% endifequal %}
+    {% ifequal arti.tipo 'secundario' %}
 
-        {% endfor %}
+    <div class="col-md-4">
+      <div class="panel panel-primary">
+      <div class="panel-heading">{{arti.titulo}}</div>
+     <div class="panel-body">
+        {{arti.contenido}} <a href="#">... Ver más</a>
       </div>
+      </div>
+    </div>
 
+    {% endifequal %}
+
+  {% endfor %}
+</div>
+
+
+</div>
 
 
 
