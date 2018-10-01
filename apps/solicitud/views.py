@@ -57,7 +57,7 @@ def nueva_solicitud(request):
             #         )
             #
             # return HttpResponse(data, content_type='application/json')
-            messages.add_message(request, messages.INFO, "Su solicitud fue agergada a la lista de espera con éxito. Recibira una notificación al recibir el depósito.")
+            messages.add_message(request, messages.INFO, "Su solicitud fue agregada a la lista de espera con éxito. Recibira una notificación al recibir el depósito.")
             return redirect('solicitud:nueva_solicitud')
         else:
             messages.add_message(request, messages.INFO, "Ocurrio un error en el procesamiento de la solicutud, por favor inténtelo neuvamente.")

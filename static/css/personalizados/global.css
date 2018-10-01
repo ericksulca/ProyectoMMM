@@ -268,3 +268,9 @@ input[type="file"]{
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+#id_monto{
+  border: none;
+  color:#3fb3de;
+  font-weight: bold;
+}

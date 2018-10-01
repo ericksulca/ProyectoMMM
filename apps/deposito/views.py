@@ -10,6 +10,7 @@ from apps.usuario.views import notificaciones_usuario
 from apps.usuario.views import cantidad_notificaciones
 from apps.usuario.models import Usuario
 from apps.notificacion.models import Notificacion
+from apps.notificacion.models import Notificacion_depositar
 from apps.solicitud.models import Solicitud
 from .models import Operacion
 from .forms import  NuevoDeposito
@@ -50,6 +51,7 @@ def deposito_solicitud(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     oSolicitudes = Solicitud.objects.filter(pagado=False, estado=True).order_by('fecha')
     lista_receptores=[]
+    monto_depositar=[]
     notificacion=''
     # oNotificaciones=Notificacion.objects.filter(id_emisor_id=oUsuario.dni).order_by('-id')
     # oNotificaciones=Notificacion.objects.all()
@@ -58,8 +60,30 @@ def deposito_solicitud(request):
         for solicitud in oSolicitudes:
 
             if monto_total >= solicitud.monto_faltante:
+
+                monto_depositar.append(monto_total-(monto_total-solicitud.monto_faltante))
+
+
                 ultima_operacion_emisor = Operacion.objects.filter(usuario_receptor=oUsuario).latest(field_name='fecha')
                 ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=solicitud.usuario).latest(field_name='fecha')
+                notificacion=Notificacion(
+                    id_emisor_id=oUsuario.dni,
+                    id_receptor=ultima_operacion_receptor.usuario_receptor_id,
+                    tipo='deposito',
+                    estado=0,
+                    monto=monto_total-(monto_total-solicitud.monto_faltante),
+                    confirmado=0
+                )
+                notificacion.save()
+                notificacion_depositar=Notificacion_depositar(
+                    emisor=oUsuario.dni,
+                    receptor_id=ultima_operacion_receptor.usuario_receptor_id,
+                    tipo='deposito',
+                    estado=0,
+                    monto=monto_total,
+                    confirmado=0
+                )
+                notificacion_depositar.save()
                 saldo_final_anterior_emisor = ultima_operacion_emisor.saldo_final
                 saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
                 monto_operacion = solicitud.monto_faltante
@@ -92,16 +116,33 @@ def deposito_solicitud(request):
                 )
                 operacion.save()
                 lista_receptores.append(ultima_operacion_receptor.usuario_receptor_id)
+
+
+
+            else:
+                monto_depositar.append(monto_total)
+
+
+                ultima_operacion_emisor = Operacion.objects.filter(usuario_receptor=oUsuario).latest(field_name='fecha')
+                ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=solicitud.usuario).latest(field_name='fecha')
                 notificacion=Notificacion(
                     id_emisor_id=oUsuario.dni,
                     id_receptor=ultima_operacion_receptor.usuario_receptor_id,
                     tipo='deposito',
-                    estado=0
+                    estado=0,
+                    monto=monto_total,
+                    confirmado=0
                 )
                 notificacion.save()
-            else:
-                ultima_operacion_emisor = Operacion.objects.filter(usuario_receptor=oUsuario).latest(field_name='fecha')
-                ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=solicitud.usuario).latest(field_name='fecha')
+                notificacion_depositar=Notificacion_depositar(
+                    emisor=oUsuario.dni,
+                    receptor_id=ultima_operacion_receptor.usuario_receptor_id,
+                    tipo='deposito',
+                    estado=0,
+                    monto=monto_total,
+                    confirmado=0
+                )
+                notificacion_depositar.save()
                 saldo_final_anterior_emisor = ultima_operacion_emisor.saldo_final
                 saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
                 monto_operacion = solicitud.monto_faltante
@@ -132,22 +173,20 @@ def deposito_solicitud(request):
                 )
                 operacion.save()
                 lista_receptores.append(ultima_operacion_receptor.usuario_receptor_id)
-                notificacion=Notificacion(
-                    id_emisor_id=oUsuario.dni,
-                    id_receptor=ultima_operacion_receptor.usuario_receptor_id,
-                    tipo='deposito',
-                    estado=0
-                )
-                notificacion.save()
+
+
                 break
 
     monto = total_monto_solicitudes()
+    deposito_realizar=Notificacion_depositar.objects.filter(emisor=oUsuario.dni)
     context = {
         'usuario': oUsuario,
         'lista_receptores':lista_receptores,
+        # 'monto_depositar':monto_depositar,
         'monto': monto,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'deposito_realizar':deposito_realizar
     }
 
     return render(request, 'deposito/deposito_solicitud.html', context)
