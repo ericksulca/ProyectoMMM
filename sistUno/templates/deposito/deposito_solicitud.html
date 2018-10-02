@@ -22,7 +22,53 @@
 {% block content %}
 
 <h1>Nuevo deposito</h1>
+<div class="" id="tableField">
 
+
+
+<!-- {%for a in lista_receptores%}
+{{a}}
+{%endfor%} -->
+<!-- <hr> -->
+{% if deposito_realizar %}
+
+<p class="text-warning">No puede realizar más operaciones hasta realizar el deposito a las siguientes cuentas bancarias.</p>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td>NOMBRE COMPLETO</td>
+        <td>ENTIDAD BANCARIA</td>
+        <td>NÚMERO DE CUENTA</td>
+        <td>MONTO</td>
+        <td>CONFIRMAR</td>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <td>NOMBRE COMPLETO</td>
+        <td>ENTIDAD BANCARIA</td>
+        <td>NÚMERO DE CUENTA</td>
+        <td>MONTO</td>
+        <td>CONFIRMAR</td>
+      </tr>
+    </tfoot>
+    <tbody>
+      {%for m in deposito_realizar%}
+      <tr>
+        <td>{{m.receptor.apellido_paterno}} {{m.receptor.apellido_materno}} {{m.receptor.nombres}}</td>
+        <td>{{m.receptor.entidad_bancaria}}</td>
+        <td>{{m.receptor.numero_cuenta}}</td>
+        <td>{{m.monto}}</td>
+        <td><a type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal({{m.id}})"> Confirmar </a> </td>
+      </tr>
+
+      {%endfor%}
+    </tbody>
+  </table>
+
+
+{%else%}
 {%ifequal monto None%}
 <p class="text-info"><b>El monto máximo requerido por todos los usuarios es de S/ <input type="text" id="id_monto" value="0" disabled></b> </p>
 {%else%}
@@ -39,45 +85,9 @@
 
     </div>
 </form>
-
-
-{%for a in lista_receptores%}
-{{a}}
-{%endfor%}
-<hr>
-{% if deposito_realizar %}
-No puede realizar más operaciones hasta realizar el deposito a las siguientes cuentas bancarias.
-
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <td>NÚMERO DE CUENTA</td>
-      <td>MONTO</td>
-      <td>CONFIRMAR</td>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <td>NÚMERO DE CUENTA</td>
-      <td>MONTO</td>
-      <td>CONFIRMAR</td>
-    </tr>
-  </tfoot>
-  <tbody>
-    {%for m in deposito_realizar%}
-    <tr>
-      <td>{{m.receptor.numero_cuenta}}</td>
-      <td>{{m.monto}}</td>
-      <td><button type="button" class="btn btn-primary glyphicon glyphicon-edit" name="button"> </button> </td>
-    </tr>
-
-    {%endfor%}
-  </tbody>
-</table>
-
 {% endif %}
 
-
+</div>
 
 <!-- {{usuario.dni}} -->
 
@@ -86,11 +96,35 @@ No puede realizar más operaciones hasta realizar el deposito a las siguientes c
 <p>{{notificacion.id}}</p><br>
 {% endfor %} -->
 
+<!-- Modal de confirmacion-->
+<div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmacionModalLabel"><b>Confirmación de depósito</b></h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">La confirmación se realiza luego de depositar el dinero en la cuenta bancaria correspondiente, si ya lo hizo de click en "Aceptar".
+        <input type="hidden" name="" id="id_confirmacion_modal" value="">
+      </div>
+      <div class="modal-footer">
+
+        <button class="btn btn-secondary" onclick="confirmarDeposito()">Aceptar</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal">Cancelar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin modal de confirmacion -->
+
 
 {% endblock %}
 
 {% block scripts %}
-
+<div id="scripts">
 <script>
 
 $("#monto").keyup(function(){
@@ -110,6 +144,39 @@ $("#monto").keyup(function(){
   }
 })
 
-</script>
 
+function confirmarDepositoModal(id){
+
+  $("#confirmacionModal").modal("show");
+  $("#id_confirmacion_modal").val(id);
+  // $.ajax({
+  //   type: 'get',
+  //   url: "/Deposito/confirmar_deposito/"+id,
+  //   success:function(){
+  //
+  //     $("#tableField").load(" #tableField>*","");
+  //
+  //   }
+  // })
+}
+
+function confirmarDeposito(){
+  $("#confirmacionModal").modal("hide");
+  var id=$("#id_confirmacion_modal").val();
+  $.ajax({
+    type: 'get',
+    url: "/Deposito/confirmar_deposito/"+id,
+    success:function(){
+
+      $("#tableField").load(" #tableField>*","");
+      $("#scripts").load(" #scripts>*","");
+
+    }
+  })
+}
+
+
+
+</script>
+</div>
 {% endblock %}

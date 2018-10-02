@@ -80,7 +80,7 @@ def deposito_solicitud(request):
                     receptor_id=ultima_operacion_receptor.usuario_receptor_id,
                     tipo='deposito',
                     estado=0,
-                    monto=monto_total,
+                    monto=monto_total-(monto_total-solicitud.monto_faltante),
                     confirmado=0
                 )
                 notificacion_depositar.save()
@@ -178,7 +178,7 @@ def deposito_solicitud(request):
                 break
 
     monto = total_monto_solicitudes()
-    deposito_realizar=Notificacion_depositar.objects.filter(emisor=oUsuario.dni)
+    deposito_realizar=Notificacion_depositar.objects.filter(emisor=oUsuario.dni, confirmado=0)
     context = {
         'usuario': oUsuario,
         'lista_receptores':lista_receptores,
@@ -212,3 +212,21 @@ def operaciones_usuario_chart(request):
         fields = ['fecha', 'saldo_final']
     )
     return HttpResponse(data, content_type='application/json')
+
+def confirmar_deposito(request,id):
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    oNotificacionDepositar=Notificacion_depositar.objects.get(id=id)
+    oNotificacionDepositar.confirmado=1
+    oNotificacionDepositar.save()
+
+    notificacion=Notificacion(
+        id_emisor_id=oUsuario.dni,
+        id_receptor=ultima_operacion_receptor.usuario_receptor_id,
+        tipo='deposito',
+        estado=0,
+        monto=monto_total,
+        confirmado=0
+    )
+    notificacion.save()
+
+    return HttpResponse(str("s"))

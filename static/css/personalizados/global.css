@@ -253,20 +253,28 @@ input[type="file"]{
   background-color: lightgray;
 }
 .notificacion-no-leido:hover{
-  background-color: rgb(18, 94, 136);
+  /* background-color: rgb(18, 94, 136); */
+  background-color: lightblue;
   color:white;
   cursor:pointer;
 }
 .notificacion-leido:hover{
-  background-color: rgb(18, 94, 136);
-  color:white;
+  /* background-color: rgb(18, 94, 136); */
+  background-color: lightblue;
   cursor:pointer;
 }
 
 .box-notificacion{
-  height: 418px;
+  max-height: 418px;
   overflow-y: auto;
   overflow-x: hidden;
+
+}
+
+.box-notificacion > a{
+  border:1px solid lightblue;
+  margin-top: 1px;
+
 }
 
 #id_monto{

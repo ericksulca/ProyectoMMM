@@ -10,4 +10,5 @@ urlpatterns = [
     path('', login_required(views.deposito_solicitud), name='deposito_solicitud'),
     path('operaciones/listar/', login_required(views.operaciones_usuario), name='operaciones_usuario'),
     path('operaciones/listar-chart/', login_required(views.operaciones_usuario_chart), name='operaciones_usuario_chart'),
+    path('confirmar_deposito/<int:id>', views.confirmar_deposito, name='confirmar_deposito'),
 ]
