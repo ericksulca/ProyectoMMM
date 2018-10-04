@@ -66,24 +66,38 @@ def deposito_solicitud(request):
 
                 ultima_operacion_emisor = Operacion.objects.filter(usuario_receptor=oUsuario).latest(field_name='fecha')
                 ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=solicitud.usuario).latest(field_name='fecha')
+
+                #REGISTRAR NOTIFICACION PARA ENVIAR AL RECEPTOR
                 notificacion=Notificacion(
                     id_emisor_id=oUsuario.dni,
                     id_receptor=ultima_operacion_receptor.usuario_receptor_id,
-                    tipo='deposito',
+                    usuario_sesion=ultima_operacion_receptor.usuario_receptor_id,
+                    tipo='deposito_realizado_receptor',
                     estado=0,
                     monto=monto_total-(monto_total-solicitud.monto_faltante),
                     confirmado=0
                 )
                 notificacion.save()
-                notificacion_depositar=Notificacion_depositar(
-                    emisor=oUsuario.dni,
-                    receptor_id=ultima_operacion_receptor.usuario_receptor_id,
-                    tipo='deposito',
+                #REGISTRAR NOTIFICACION PARA ENVIAR AL EMISOR
+                notificacion=Notificacion(
+                    id_emisor_id=ultima_operacion_receptor.usuario_receptor_id,
+                    id_receptor=oUsuario.dni,
+                    usuario_sesion=oUsuario.dni,
+                    tipo='deposito_realizado_emisor',
                     estado=0,
                     monto=monto_total-(monto_total-solicitud.monto_faltante),
                     confirmado=0
                 )
-                notificacion_depositar.save()
+                notificacion.save()
+                # notificacion_depositar=Notificacion_depositar(
+                #     emisor=oUsuario.dni,
+                #     receptor_id=ultima_operacion_receptor.usuario_receptor_id,
+                #     tipo='deposito',
+                #     estado=0,
+                #     monto=monto_total-(monto_total-solicitud.monto_faltante),
+                #     confirmado=0
+                # )
+                # notificacion_depositar.save()
                 saldo_final_anterior_emisor = ultima_operacion_emisor.saldo_final
                 saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
                 monto_operacion = solicitud.monto_faltante
@@ -125,24 +139,37 @@ def deposito_solicitud(request):
 
                 ultima_operacion_emisor = Operacion.objects.filter(usuario_receptor=oUsuario).latest(field_name='fecha')
                 ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=solicitud.usuario).latest(field_name='fecha')
+                #REGISTRAR NOTIFICACION PARA ENVIAR AL RECEPTOR
                 notificacion=Notificacion(
                     id_emisor_id=oUsuario.dni,
                     id_receptor=ultima_operacion_receptor.usuario_receptor_id,
-                    tipo='deposito',
+                    usuario_sesion=ultima_operacion_receptor.usuario_receptor_id,
+                    tipo='deposito_realizado_receptor',
                     estado=0,
                     monto=monto_total,
                     confirmado=0
                 )
                 notificacion.save()
-                notificacion_depositar=Notificacion_depositar(
-                    emisor=oUsuario.dni,
-                    receptor_id=ultima_operacion_receptor.usuario_receptor_id,
-                    tipo='deposito',
+                #REGISTRAR NOTIFICACION PARA ENVIAR AL EMISOR
+                notificacion=Notificacion(
+                    id_emisor_id=ultima_operacion_receptor.usuario_receptor_id,
+                    id_receptor=oUsuario.dni,
+                    usuario_sesion=oUsuario.dni,
+                    tipo='deposito_realizado_emisor',
                     estado=0,
                     monto=monto_total,
                     confirmado=0
                 )
-                notificacion_depositar.save()
+                notificacion.save()
+                # notificacion_depositar=Notificacion_depositar(
+                #     emisor=oUsuario.dni,
+                #     receptor_id=ultima_operacion_receptor.usuario_receptor_id,
+                #     tipo='deposito',
+                #     estado=0,
+                #     monto=monto_total,
+                #     confirmado=0
+                # )
+                # notificacion_depositar.save()
                 saldo_final_anterior_emisor = ultima_operacion_emisor.saldo_final
                 saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
                 monto_operacion = solicitud.monto_faltante
@@ -178,7 +205,7 @@ def deposito_solicitud(request):
                 break
 
     monto = total_monto_solicitudes()
-    deposito_realizar=Notificacion_depositar.objects.filter(emisor=oUsuario.dni, confirmado=0)
+    deposito_realizar=Notificacion.objects.filter(usuario_sesion=oUsuario.dni, confirmado=0,tipo="deposito_realizado_emisor")
     context = {
         'usuario': oUsuario,
         'lista_receptores':lista_receptores,
@@ -213,20 +240,21 @@ def operaciones_usuario_chart(request):
     )
     return HttpResponse(data, content_type='application/json')
 
-def confirmar_deposito(request,id):
+def confirmar_deposito(request,id,dni_receptor):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oNotificacionDepositar=Notificacion_depositar.objects.get(id=id)
+    oNotificacionDepositar=Notificacion.objects.get(id=id)
     oNotificacionDepositar.confirmado=1
     oNotificacionDepositar.save()
 
-    # notificacion=Notificacion(
-    #     id_emisor_id=oUsuario.dni,
-    #     id_receptor=ultima_operacion_receptor.usuario_receptor_id,
-    #     tipo='deposito',
-    #     estado=0,
-    #     monto=monto_total,
-    #     confirmado=0
-    # )
-    # notificacion.save()
+    notificacion=Notificacion(
+        id_emisor_id=oUsuario.dni,
+        id_receptor=dni_receptor,
+        tipo='deposito_confirmado_receptor',
+        usuario_sesion=dni_receptor,
+        estado=0,
+        monto=oNotificacionDepositar.monto,
+        confirmado=0
+    )
+    notificacion.save()
 
     return HttpResponse(str("s"))

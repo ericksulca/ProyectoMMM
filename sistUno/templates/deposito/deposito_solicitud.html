@@ -41,6 +41,8 @@
         <td>ENTIDAD BANCARIA</td>
         <td>NÚMERO DE CUENTA</td>
         <td>MONTO</td>
+        <td>FECHA</td>
+        <td>ESTADO</td>
         <td>CONFIRMAR</td>
       </tr>
     </thead>
@@ -50,17 +52,21 @@
         <td>ENTIDAD BANCARIA</td>
         <td>NÚMERO DE CUENTA</td>
         <td>MONTO</td>
+        <td>FECHA</td>
+        <td>ESTADO</td>
         <td>CONFIRMAR</td>
       </tr>
     </tfoot>
     <tbody>
       {%for m in deposito_realizar%}
       <tr>
-        <td>{{m.receptor.apellido_paterno}} {{m.receptor.apellido_materno}} {{m.receptor.nombres}}</td>
-        <td>{{m.receptor.entidad_bancaria}}</td>
-        <td>{{m.receptor.numero_cuenta}}</td>
+        <td>{{m.id_emisor.apellido_paterno}} {{m.id_emisor.apellido_materno}} {{m.id_emisor.nombres}}</td>
+        <td>{{m.id_emisor.entidad_bancaria}}</td>
+        <td>{{m.id_emisor.numero_cuenta}}</td>
         <td>{{m.monto}}</td>
-        <td><a type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal({{m.id}})"> Confirmar </a> </td>
+        <td>{{m.fecha}}</td>
+        <td>{{m.confirmado}}</td>
+        <td><a type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal({{m.id}},{{m.id_emisor.dni}},{{m.monto}})"> Confirmar </a> </td>
       </tr>
 
       {%endfor%}
@@ -108,6 +114,8 @@
       </div>
       <div class="modal-body">La confirmación se realiza luego de depositar el dinero en la cuenta bancaria correspondiente, si ya lo hizo de click en "Aceptar".
         <input type="hidden" name="" id="id_confirmacion_modal" value="">
+        <input type="hidden" name="" id="dni_receptor_confirmacion_modal" value="">
+        <input type="hidden" name="" id="monto_confirmacion_modal" value="">
       </div>
       <div class="modal-footer">
 
@@ -127,6 +135,10 @@
 <div id="scripts">
 <script>
 
+$('#form-solicitud')[0].reset();
+
+$("#monto").focus();
+
 $("#monto").keyup(function(){
   var monto_ingresado=parseFloat($("#monto").val());
   var monto_maximo=parseFloat($("#id_monto").val());
@@ -145,10 +157,12 @@ $("#monto").keyup(function(){
 })
 
 
-function confirmarDepositoModal(id){
+function confirmarDepositoModal(id,dni_receptor,monto){
 
   $("#confirmacionModal").modal("show");
   $("#id_confirmacion_modal").val(id);
+  $("#dni_receptor_confirmacion_modal").val(dni_receptor);
+  $("#monto_confirmacion_modal").val(monto);
   // $.ajax({
   //   type: 'get',
   //   url: "/Deposito/confirmar_deposito/"+id,
@@ -163,9 +177,11 @@ function confirmarDepositoModal(id){
 function confirmarDeposito(){
   $("#confirmacionModal").modal("hide");
   var id=$("#id_confirmacion_modal").val();
+  var dni_receptor=$("#dni_receptor_confirmacion_modal").val();
+
   $.ajax({
     type: 'get',
-    url: "/Deposito/confirmar_deposito/"+id,
+    url: "/Deposito/confirmar_deposito/"+id+"/"+dni_receptor,
     success:function(){
 
       $("#tableField").load(" #tableField>*","");

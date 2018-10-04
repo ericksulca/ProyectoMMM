@@ -19,7 +19,12 @@ from django.db.models import Q
 
 def notificaciones_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oNotificaciones=Notificacion.objects.filter(id_receptor=oUsuario.dni).order_by('-id')#[:5]
+    # oNotificaciones=Notificacion.objects.filter(id_receptor=oUsuario.dni).order_by('-id')#[:5]
+    oNotificaciones = Notificacion.objects.filter(
+                Q(id_receptor = oUsuario.dni) |
+                Q(id_emisor_id = oUsuario.dni) &
+                Q(usuario_sesion=oUsuario.dni)
+                ).order_by('-id')
     return oNotificaciones
 
 def cantidad_notificaciones(request):
