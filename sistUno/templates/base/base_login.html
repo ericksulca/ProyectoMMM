@@ -270,7 +270,7 @@
 
     <!-- Core plugin JavaScript-->
     <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
+    <!-- <script src="{% static 'js/moment.min.js' %}"></script> -->
     <!-- Page level plugin JavaScript-->
     <!-- <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -289,9 +289,14 @@
         var text='<p class="text-justify">Haz recibido un depósito de '+monto+' por parte de <b id="nombres">'+nombres+'</b>. El dinero será transferido a su cuenta bancaria en un plazo de 48 horas</p>'
           +'<p>Una vez recibido el depósito confirme la operación en su lista de operaciones ubicada en el menú principal.</p>';
       }
-      else {
+      else if(tipo=='deposito_realizado_emisor') {
         var text='<p class="text-justify">Debes realizar un depósito de <b>S/'+monto+'</b> en un plazo de 48 horas a <b id="nombres">'+nombres+'</b> al número de cuenta bancaria '+cuenta+'.</p>'
         +'<p>Una vez realizado el depósito confirme la operación en su lista de depositos a realizar ubicada en el menú Depósito.</p>';
+      }
+      else{
+        var text='<p class="text-justify">La persona '+nombres+' ha confirmado haberle realizado el deposito de <b>S/'+monto+'</b> epor favor revise su cuenta bancaria,'
+        +'de estar conforme con la operación, confirme haber recibido el dinero en el registro correspondiente listado en su menú principal';
+
 
       }
       $("#id_modal_body").html(text);

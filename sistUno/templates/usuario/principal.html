@@ -194,7 +194,9 @@ window.onload = function() {
     url: '/Deposito/operaciones/listar-chart/',
     success: function(data) {
       data.forEach(element => {
+        // fechas.push(moment(element.fields.fecha).format('DD/MM/YYYY'));
         fechas.push(element.fields.fecha);
+        // moment(testDate).format('MM/DD/YYYY');
         saldos.push(element.fields.saldo_final);
       });
 
