@@ -19,10 +19,16 @@ def baner_testimonio(request):
 
     banner = Banner.objects.all()
     testimonio=Testimonio.objects.all()
+    legalidad=Articulo.objects.get(categoria_id=3)
+    quienes_somos=Articulo.objects.get(categoria_id=4)
+    entidad_financiera=Articulo.objects.get(categoria_id=5)
     context={
         'usuario':oUsuario,
         'banner':banner,
         'testimonio':testimonio,
+        'legalidad':legalidad,
+        'quienes_somos':quienes_somos,
+        'entidad_financiera':entidad_financiera,
     }
     return context
 

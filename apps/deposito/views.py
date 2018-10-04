@@ -219,14 +219,14 @@ def confirmar_deposito(request,id):
     oNotificacionDepositar.confirmado=1
     oNotificacionDepositar.save()
 
-    notificacion=Notificacion(
-        id_emisor_id=oUsuario.dni,
-        id_receptor=ultima_operacion_receptor.usuario_receptor_id,
-        tipo='deposito',
-        estado=0,
-        monto=monto_total,
-        confirmado=0
-    )
-    notificacion.save()
+    # notificacion=Notificacion(
+    #     id_emisor_id=oUsuario.dni,
+    #     id_receptor=ultima_operacion_receptor.usuario_receptor_id,
+    #     tipo='deposito',
+    #     estado=0,
+    #     monto=monto_total,
+    #     confirmado=0
+    # )
+    # notificacion.save()
 
     return HttpResponse(str("s"))

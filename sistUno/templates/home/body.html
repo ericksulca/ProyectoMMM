@@ -1,7 +1,7 @@
 
 <div class="box-body-content">
   {% for arti in articulo%}
-    {% ifequal arti.tipo 'principal' %}
+    {% ifequal arti.categoria_id 1 %}
     <div class="panel panel-primary">
     <div class="panel-heading">{{arti.titulo}} </div>
    <div class="panel-body">
@@ -17,13 +17,14 @@
 
 
 
-    {% ifequal arti.tipo 'secundario' %}
+    {% ifequal arti.categoria_id 2 %}
 
     <div class="col-md-4">
       <div class="panel panel-primary">
       <div class="panel-heading">{{arti.titulo}}</div>
      <div class="panel-body">
-        {{arti.contenido}} <a href="#">... Ver más</a>
+       <a href="#">Leer todo</a><br>
+         {{arti.contenido}}
       </div>
       </div>
     </div>
