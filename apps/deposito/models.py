@@ -15,8 +15,8 @@ class Operacion(models.Model):
     saldo_inicial = models.DecimalField(max_digits=10, decimal_places=2)
     saldo_final = models.DecimalField(max_digits=10, decimal_places=2)
     fecha = models.DateTimeField(auto_now=True)
-    estado = models.BooleanField(default=True)
-    tipo_movimiento = models.CharField(max_length=8, choices=TIPO_MOVIMIENTO)
+    estado = models.IntegerField()
+    tipo_movimiento = models.CharField(max_length=10, choices=TIPO_MOVIMIENTO)
 
     usuario_emisor = models.ForeignKey(
         Usuario, related_name='UsuarioEmisor',
@@ -32,10 +32,10 @@ class Operacion(models.Model):
         null=True,
         on_delete=models.PROTECT
     )
-    
+
     def __str__(self):
         return '%s %s %s' % (self.usuario_emisor, self.movimiento, self.monto)
-    
+
     @property
     def movimiento(self):
         return self.tipo_movimiento
@@ -49,7 +49,7 @@ class Operacion_backup(models.Model):
 
     monto_backup = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_backup = models.DateTimeField(auto_now=True)
-    estado_backup = models.BooleanField(default=True)
+    estado_backup = models.IntegerField(default=1)
     tipo_movimiento_backup = models.CharField(max_length=8, choices=TIPO_MOVIMIENTO)
 
     usuario_emisor_backup = models.ForeignKey(
@@ -66,10 +66,10 @@ class Operacion_backup(models.Model):
         null=True,
         on_delete=models.PROTECT
     )
-    
+
     def __str__(self):
         return '%s %s %s' % (self.usuario_emisor_backup, self.movimiento_backup, self.monto_backup)
-    
+
     @property
     def movimiento_backup(self):
         return self.tipo_movimiento_backup

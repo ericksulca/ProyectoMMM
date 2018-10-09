@@ -21,7 +21,9 @@
                 <div class="row">
                   <div class="col-md-3">
                     <label for="">Nombres:</label>
-                    {{ formUsuario.nombres }}
+                    <!-- {{ formUsuario.nombres }} -->
+                    <input type="text" name="nombres" class="form-control-p" required id="nombres" placeholder="Nombre" autofocus>
+
                   </div>
                   <div class="col-md-3">
                     <label for="">Apellido paterno:</label>
@@ -96,7 +98,7 @@
                     <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="Nombres del referente">
                   </div>
                   <div class="col-md-3">
-                    
+
                     {{ formUsuario.dni_referido }}
                   </div>
 
@@ -129,7 +131,7 @@
 
 <script>
 
-$("#nombres").focus();
+// $("#nombres").focus();
 
 {% if dni_referido %}
 

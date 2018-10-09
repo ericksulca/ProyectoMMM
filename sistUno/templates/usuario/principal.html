@@ -62,11 +62,11 @@
 
 <!-- MODAL INVITACION -->
 
-<div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Enlace de invitación</h5>
+        <h5 class="modal-title" id="exampleModalLabel2">Enlace de invitación</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -207,14 +207,15 @@ $("#copiado").html("Enlace de invitación copiado");
 
       ],
       "createdRow": function(row, data, dataIndex) {
-        if (data.fields.tipo_movimiento == 'deposito') {
-          $(row).addClass('text-success');
+        if (data.fields.tipo_movimiento == 'Solicitud') {
+          $(row).addClass('text-warning');
         }
-        if (data.fields.tipo_movimiento == 'retiro') {
+        if (data.fields.tipo_movimiento == 'Deposito') {
           $(row).addClass('text-danger');
         }
-        if (data.fields.estado == 0) {
-          $(row).addClass('text-warning');
+        if (data.fields.estado == 2) {
+          $(row).removeClass();
+          $(row).addClass('text-success');
         }
         if (data.fields.estado == 3) {
           $(row).addClass('text-primary');
@@ -241,8 +242,10 @@ var obtener_data_row=function(tbody,table){
       success:function(response){
             $("#nombre-emisor").append(response[0].fields.nombres+" "+response[0].fields.apellido_paterno+" "+response[0].fields.apellido_materno);
             // console.log(response[0].fields.nombres)
+
       }
     })
+
     $("#id-operacion").val(data.pk);
     $("#id-usuario").val(data.fields.usuario_emisor);
     $("#monto-confirmacion").append(data.fields.monto);
@@ -258,7 +261,9 @@ function confirmarOperacion(){
     method:"get",
     url:"/Deposito/confirmar_deposito_receptor/"+id_operacion+"/"+id_usuario,
     success:function(){
-      $("#dataTable").load(" #dataTable>*","");
+      // $("#dataTable").load(" #dataTable>*","");
+      location.reload();
+
     }
 
   })

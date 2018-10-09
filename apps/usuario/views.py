@@ -125,9 +125,9 @@ def registrar_usuario(request, dni_referido=''):
             usuario = formUsuario.save(commit=False)
             usuario.usuario_login = user
             usuario.save()
-            saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='deposito')
+            saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Solicitud')
             saldo_usuario.save()
-            deposito_defecto = Operacion(monto=20.00, saldo_inicial=0.00, saldo_final=-20.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='retiro')
+            deposito_defecto = Operacion(monto=20.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Deposito')
             deposito_defecto.save()
             usuario = authenticate(request, username=username, password=password1)
             login(request, usuario)

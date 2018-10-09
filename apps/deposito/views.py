@@ -32,7 +32,7 @@ def deposito_usuario(request):
         form = NuevoDeposito(request.POST)
         if form.is_valid():
             operacion = form.save(commit=False)
-            operacion.tipo_movimiento = 'deposito'
+            operacion.tipo_movimiento = 'Solicitud'
             operacion.save()
             return redirect('deposito:index')
         else:
@@ -44,7 +44,6 @@ def deposito_usuario(request):
         'usuario': oUsuario,
         'form': form
     }
-
     return render(request, 'deposito/nueva.html', context)
 
 def deposito_solicitud(request):
@@ -92,7 +91,7 @@ def deposito_solicitud(request):
                 # notificacion_depositar=Notificacion_depositar(
                 #     emisor=oUsuario.dni,
                 #     receptor_id=ultima_operacion_receptor.usuario_receptor_id,
-                #     tipo='deposito',
+                #     tipo='Solicitud',
                 #     estado=0,
                 #     monto=monto_total-(monto_total-solicitud.monto_faltante),
                 #     confirmado=0
@@ -112,10 +111,11 @@ def deposito_solicitud(request):
                     monto = monto_operacion,
                     saldo_inicial = saldo_final_anterior_emisor,
                     saldo_final = Saldo_final_operacion_emisor,
-                    tipo_movimiento = 'retiro',
+                    tipo_movimiento = 'Deposito',
                     usuario_emisor = oUsuario,
                     usuario_receptor = oUsuario,
-                    solicitud = solicitud
+                    solicitud = solicitud,
+                    estado=1
                 )
                 operacion.save()
 
@@ -123,10 +123,11 @@ def deposito_solicitud(request):
                     monto = monto_operacion,
                     saldo_inicial = saldo_final_anterior_receptor,
                     saldo_final = Saldo_final_operacion_receptor,
-                    tipo_movimiento = 'deposito',
+                    tipo_movimiento = 'Solicitud',
                     usuario_emisor = oUsuario,
                     usuario_receptor = solicitud.usuario,
-                    solicitud = solicitud
+                    solicitud = solicitud,
+                    estado=1
                 )
                 operacion.save()
                 lista_receptores.append(ultima_operacion_receptor.usuario_receptor_id)
@@ -164,7 +165,7 @@ def deposito_solicitud(request):
                 # notificacion_depositar=Notificacion_depositar(
                 #     emisor=oUsuario.dni,
                 #     receptor_id=ultima_operacion_receptor.usuario_receptor_id,
-                #     tipo='deposito',
+                #     tipo='Solicitud',
                 #     estado=0,
                 #     monto=monto_total,
                 #     confirmado=0
@@ -183,10 +184,11 @@ def deposito_solicitud(request):
                     monto = monto_operacion,
                     saldo_inicial = saldo_final_anterior_emisor,
                     saldo_final = Saldo_final_operacion_emisor,
-                    tipo_movimiento = 'retiro',
+                    tipo_movimiento = 'Deposito',
                     usuario_emisor = oUsuario,
                     usuario_receptor = oUsuario,
-                    solicitud = solicitud
+                    solicitud = solicitud,
+                    estado=1
                 )
                 operacion.save()
 
@@ -194,10 +196,11 @@ def deposito_solicitud(request):
                     monto = monto_operacion,
                     saldo_inicial = saldo_final_anterior_receptor,
                     saldo_final = Saldo_final_operacion_receptor,
-                    tipo_movimiento = 'deposito',
+                    tipo_movimiento = 'Solicitud',
                     usuario_emisor = oUsuario,
                     usuario_receptor = solicitud.usuario,
-                    solicitud = solicitud
+                    solicitud = solicitud,
+                    estado=1
                 )
                 operacion.save()
                 lista_receptores.append(ultima_operacion_receptor.usuario_receptor_id)
@@ -264,7 +267,7 @@ def confirmar_deposito_emisor(request,id_operacion,id_usuario):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
 
     oOperacion=Operacion.objects.get(id=id_operacion)
-    oOperacion.estado=False
+    oOperacion.estado=2
     oOperacion.save()
 
     notificacion=Notificacion(
