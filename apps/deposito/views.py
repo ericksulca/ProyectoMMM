@@ -172,7 +172,8 @@ def deposito_solicitud(request):
                 # notificacion_depositar.save()
                 saldo_final_anterior_emisor = ultima_operacion_emisor.saldo_final
                 saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
-                monto_operacion = solicitud.monto_faltante
+                # monto_operacion = solicitud.monto_faltante
+                monto_operacion=monto_total
                 Saldo_final_operacion_emisor = ultima_operacion_emisor.saldo_final - monto_operacion
                 Saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + monto_operacion
                 solicitud.monto_completado += monto_total
@@ -232,7 +233,7 @@ def operaciones_usuario(request):
 
 def operaciones_usuario_chart(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).order_by('fecha').only('fecha', 'saldo_final')[:10]
+    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).order_by('-fecha').only('fecha', 'saldo_final')[:10]
     data = serializers.serialize(
         'json',
         oOperaciones,
