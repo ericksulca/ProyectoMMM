@@ -100,7 +100,7 @@
             {% ifequal notificacion.tipo 'deposito_confirmado_receptor' %}
               {%ifequal notificacion.estado 0 %}
               <a class="dropdown-item notificacion-no-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}','{{notificacion.tipo}}',{{notificacion.monto}},{{notificacion.id_emisor.numero_cuenta}})">
-                La persona <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b> ha confirmado</br>
+                La persona <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b>  con DNI <b>{{notificacion.id_emisor.dni}}</b> ha confirmado</br>
                   haberle realizado el deposito de <b>S/ {{notificacion.monto}}.00</b>,<br>
                    por favor revise su cuenta bancaria, de estar<br>
                    conforme con la operación confirme haber recibido<br>
@@ -121,6 +121,23 @@
               {%endifequal%}
             {% endifequal %}
 
+            {% ifequal notificacion.tipo 'deposito_confirmado_emisor' %}
+              {%ifequal notificacion.estado 0 %}
+              <a class="dropdown-item notificacion-no-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}','{{notificacion.tipo}}',{{notificacion.monto}},{{notificacion.id_emisor.numero_cuenta}})">
+                La persona <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b> ha confirmado</br>
+                  haber recibido el monto solicitado. Gracias por su<br> colaboración.<br>
+
+                <b>{{notificacion.fecha_registro |date:"d M, Y"}}</b>
+              </a>
+              {%else%}
+              <a class="dropdown-item notificacion-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}','{{notificacion.tipo}}',{{notificacion.monto}},{{notificacion.id_emisor.numero_cuenta}})">
+                La persona <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b> ha confirmado</br>
+                  haber recibido el monto solicitado. Gracias por su<br> colaboración.<br>
+
+                <b>{{notificacion.fecha_registro |date:"d M, Y"}}</b>
+              </a>
+              {%endifequal%}
+            {% endifequal %}
 
             {% endfor %}
 
@@ -294,8 +311,11 @@
         var text='<p class="text-justify">Debes realizar un depósito de <b>S/'+monto+'</b> en un plazo de 48 horas a <b id="nombres">'+nombres+'</b> al número de cuenta bancaria '+cuenta+'.</p>'
         +'<p>Una vez realizado el depósito confirme la operación en su lista de depositos a realizar ubicada en el menú Depósito.</p>';
       }
+      else if(tipo=='deposito_confirmado_emisor') {
+        var text='<p class="text-justify">La persona '+nombres+' ha confirmado haberle recibido el deposito solicitado. Gracias por su colaboración.';
+      }
       else{
-        var text='<p class="text-justify">La persona '+nombres+' ha confirmado haberle realizado el deposito de <b>S/'+monto+'</b> epor favor revise su cuenta bancaria,'
+        var text='<p class="text-justify">La persona '+nombres+' ha confirmado haberle realizado el deposito de <b>S/'+monto+'</b> por favor revise su cuenta bancaria,'
         +'de estar conforme con la operación, confirme haber recibido el dinero en el registro correspondiente listado en su menú principal';
 
 

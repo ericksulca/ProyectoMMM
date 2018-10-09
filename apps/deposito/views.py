@@ -223,11 +223,11 @@ def deposito_solicitud(request):
 
 def operaciones_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).only('monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final').order_by('-fecha')
+    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).only('monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final','estado').order_by('-fecha')
     data = serializers.serialize(
         'json',
         oOperaciones,
-        fields = ['monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final']
+        fields = ['id','monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final','estado']
     )
     return HttpResponse(data, content_type='application/json')
 
@@ -259,3 +259,23 @@ def confirmar_deposito(request,id,dni_receptor):
     notificacion.save()
 
     return HttpResponse(str("s"))
+
+def confirmar_deposito_emisor(request,id_operacion,id_usuario):
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+
+    oOperacion=Operacion.objects.get(id=id_operacion)
+    oOperacion.estado=False
+    oOperacion.save()
+
+    notificacion=Notificacion(
+        id_emisor_id=oUsuario.dni,
+        id_receptor=id_usuario,
+        tipo='deposito_confirmado_emisor',
+        usuario_sesion=id_usuario,
+        estado=0,
+        monto=0,
+        confirmado=0
+    )
+    notificacion.save()
+    return HttpResponse(str("s"))
+    # return redirect('usuario:principal')

@@ -127,6 +127,8 @@ def registrar_usuario(request, dni_referido=''):
             usuario.save()
             saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='deposito')
             saldo_usuario.save()
+            deposito_defecto = Operacion(monto=20.00, saldo_inicial=0.00, saldo_final=-20.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='retiro')
+            deposito_defecto.save()
             usuario = authenticate(request, username=username, password=password1)
             login(request, usuario)
 
@@ -201,27 +203,19 @@ def buscar_usuario(request):
     return HttpResponse(data, content_type='application/json')
 
 
-# def buscar_usuario(request):
-#     if request.method == 'POST':
-#         usuarios = Usuario.objects.filter(
-#             Q(nombres__startswith = request.POST['busqueda']) |
-#             Q(apellido_paterno__startswith = request.POST['busqueda']) |
-#             Q(apellido_materno__startswith = request.POST['busqueda']) |
-#             Q(dni__startswith = request.POST['busqueda'])
-#             )
-#
-#     else:
-#         palabras_busqueda = ['']
-#
-#     context = {
-#         'usuarios': usuarios
-#     }
-#     data = serializers.serialize(
-#             'json',
-#             usuarios,
-#             fields = ['nombres','apellido_paterno','apellido_materno']
-#         )
-#     return HttpResponse(data, content_type='application/json')
+def buscar_usuario_confirmacion(request,id_usuario):
+    oUsuario=Usuario.objects.filter(dni=id_usuario)
+
+
+    context = {
+        'usuarios': oUsuario
+    }
+    data = serializers.serialize(
+            'json',
+            oUsuario,
+            fields = ['nombres','apellido_paterno','apellido_materno']
+        )
+    return HttpResponse(data, content_type='application/json')
 
 
 

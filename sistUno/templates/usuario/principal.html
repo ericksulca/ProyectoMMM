@@ -36,10 +36,12 @@
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
+            <th id="column_id_operacion">id</th>
             <th>Fecha</th>
             <th>DNI emisor</th>
             <th>Operacion</th>
-            <th>Monto</th>
+            <!-- <th>Estado</th> -->
+            <th>Monto Recibido/Retirado</th>
             <th>Saldo inicial</th>
             <th>Saldo final</th>
             <th>Confirmar deposito</th>
@@ -68,7 +70,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        
+
       </div>
       <div class="modal-body">
         <input  type="text" id="invitacion" value="http://localhost:8000/Usuario/registrar/{{usuario.dni}}" class="form-control">
@@ -83,6 +85,27 @@
 </div>
 
 <!-- FIN MODAL INVITACION -->
+
+<!-- MODAL CONFIRMACION DE DEPOSITO -->
+<div class="modal fade" id="modalConfirmacionReceptor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmación de Depósito</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Al Seleccionar la opción "Aceptar" confirma haber recibido el monto de <b id="monto-confirmacion">S/ </b> por parte de <b id="nombre-emisor"></b></div>
+      <input type="hidden" id="id-operacion" name="" value="">
+      <input type="hidden" id="id-usuario" name="" value="">
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+        <a class="btn btn-primary" onclick="confirmarOperacion()">Aceptar</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 {%endblock%}
 
@@ -143,6 +166,28 @@ $("#copiado").html("Enlace de invitación copiado");
         // }
       },
       "columns":[
+        {"data": "pk"
+        // "render":function(data,type,row){
+        //           var codigo='';
+        //
+        //           // console.log(typeof(data))
+        //           if (data<10) {
+        //             codigo="MO0000"+data;
+        //           }else if(data>=10 & data<=99) {
+        //             codigo="MO000"+data;
+        //           }
+        //           else if(data>=100 & data<=999) {
+        //               codigo="MO00"+data;
+        //           }
+        //           else if(data>=1000 & data<=9999) {
+        //               codigo="MO0"+data;
+        //           }else {
+        //               codigo="MO"+data;
+        //           }
+        //
+        //           return codigo;
+        //         }
+        },
         {"data": "fields.fecha",
         "render": function(data,type,row){
                     if(type === "sort" || type === "type"){
@@ -153,6 +198,7 @@ $("#copiado").html("Enlace de invitación copiado");
         },
         {"data": "fields.usuario_emisor"},
         {"data": "fields.tipo_movimiento"},
+        // {"data": "fields.estado"},
         {"data": "fields.monto"},
         {"data": "fields.saldo_inicial"},
         {"data": "fields.saldo_final"},
@@ -167,6 +213,12 @@ $("#copiado").html("Enlace de invitación copiado");
         if (data.fields.tipo_movimiento == 'retiro') {
           $(row).addClass('text-danger');
         }
+        if (data.fields.estado == 0) {
+          $(row).addClass('text-warning');
+        }
+        if (data.fields.estado == 3) {
+          $(row).addClass('text-primary');
+        }
       },
       "language": español
 
@@ -175,11 +227,42 @@ $("#copiado").html("Enlace de invitación copiado");
     obtener_data_row("#dataTable",table);
   }
 
+// $("#column_id_operacion").hide();
+
 var obtener_data_row=function(tbody,table){
   $(tbody).on("click","button.confirmar",function(){
     var data=table.row($(this).parents("tr")).data();
-    console.log(data)
+    // console.log(data)
+
+    $.ajax({
+      method:"get",
+      url:"/Usuario/buscar-usuario-confirmacion/"+data.fields.usuario_emisor,
+      type:"json",
+      success:function(response){
+            $("#nombre-emisor").append(response[0].fields.nombres+" "+response[0].fields.apellido_paterno+" "+response[0].fields.apellido_materno);
+            // console.log(response[0].fields.nombres)
+      }
+    })
+    $("#id-operacion").val(data.pk);
+    $("#id-usuario").val(data.fields.usuario_emisor);
+    $("#monto-confirmacion").append(data.fields.monto);
+
+    $("#modalConfirmacionReceptor").modal("show")
   });
+}
+
+function confirmarOperacion(){
+  var id_operacion=$("#id-operacion").val();
+  var id_usuario=$("#id-usuario").val();
+  $.ajax({
+    method:"get",
+    url:"/Deposito/confirmar_deposito_receptor/"+id_operacion+"/"+id_usuario,
+    success:function(){
+      $("#dataTable").load(" #dataTable>*","");
+    }
+
+  })
+  $("#modalConfirmacionReceptor").modal("hide");
 }
 
 var fecha = function(mes) {

@@ -9,6 +9,7 @@ from . import views
 app_name='usuario'
 urlpatterns = [
     path('buscar-usuario/', views.buscar_usuario, name='buscar_usuario'),
+    path('buscar-usuario-confirmacion/<int:id_usuario>', views.buscar_usuario_confirmacion, name='buscar_usuario_confirmacion'),
     path('editar/', login_required(views.editar_usuario), name='editar_usuario'),
     # path('login/', views.login_usuario, name='login'),
     path('principal/', login_required(views.principal_usuario), name='principal'),
