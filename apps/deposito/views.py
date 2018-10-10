@@ -226,7 +226,7 @@ def deposito_solicitud(request):
 
 def operaciones_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).only('monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final','estado').order_by('-fecha')
+    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).only('id','monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final','estado').order_by('-fecha')
     data = serializers.serialize(
         'json',
         oOperaciones,

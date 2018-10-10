@@ -33,22 +33,75 @@
     Detalle de operaciones en la cuenta de {% if user is None %}Sesion no iniciada {% else %} {{ user.username }} {% endif %}</div>
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <table class="table table-bordered small" id="dataTable" width="100%" cellspacing="0">
         <thead>
-          <tr>
-            <th id="column_id_operacion">id</th>
+          <tr class="text-center">
+            <th>Operación</th>
             <th>Fecha</th>
-            <th>DNI emisor</th>
-            <th>Operacion</th>
+            <th>DNI Emisor/Receptor</th>
+            <th>Número de cuenta</th>
+            <!-- <th>Operacion</th> -->
             <!-- <th>Estado</th> -->
-            <th>Monto Recibido/Retirado</th>
-            <th>Saldo inicial</th>
-            <th>Saldo final</th>
+            <th>Monto Recibido/Retirado (S/)</th>
+            <th>Saldo inicial (S/)</th>
+            <th>Saldo final (S/)</th>
             <th>Confirmar deposito</th>
           </tr>
         </thead>
         <tfoot>
+          <tr class="text-center">
+            <th>Operación</th>
+            <th>Fecha</th>
+            <th>DNI Emisor/Receptor</th>
+            <th>Número de cuenta</th>
+            <!-- <th>Operacion</th> -->
+            <!-- <th>Estado</th> -->
+            <th>Monto Recibido/Retirado (S/)</th>
+            <th>Saldo inicial (S/)</th>
+            <th>Saldo final (S/)</th>
+            <th>Confirmar deposito</th>
+          </tr>
         </tfoot>
+        <tbody>
+          {%if operaciones%}
+            {%for operacion in operaciones%}
+            <tr id="tr_{{operacion.id}}"
+
+            {% ifequal operacion.estado 2 %}
+            class="text-success"
+            {% endifequal%}
+            {% ifequal operacion.tipo_movimiento 'Solicitud' %}
+            class="text-warning"
+            {% endifequal%}
+            {% ifequal operacion.tipo_movimiento 'Deposito' %}
+            class="text-danger"
+            {% endifequal%}
+            >
+              <td class="text-center">{{operacion.tipo_movimiento}}</td>
+              <td class="text-center">{{operacion.fecha|date:"d-m-Y"}}</td>
+              <td class="text-center">{{operacion.usuario_emisor.dni}}</td>
+              <td class="text-center">{{operacion.usuario_emisor.numero_cuenta}}</td>
+              <!-- <td>{{operacion.tipo_movimiento}}</td> -->
+              <td class="text-right">{{operacion.monto}}</td>
+              <td class="text-right">{{operacion.saldo_inicial}}</td>
+              <td class="text-right">{{operacion.saldo_final}}</td>
+              <td class="text-center">
+                {% ifequal operacion.estado 2 %}
+                {%else%}
+                  {% ifequal operacion.tipo_movimiento 'Deposito' %}
+                  {%else%}
+                  <button type="button" id="btn_{{operacion.id}}" onclick="cargarDatosModal({{operacion.usuario_emisor.dni}},{{operacion.id}},{{operacion.monto}})" name="button" class="btn btn-primary btn-sm">Confirmar</button>
+                  {% endifequal%}
+
+                {% endifequal%}
+
+
+              </td>
+            </tr>
+            {%endfor%}
+
+          {%endif%}
+        </tbody>
       </table>
     </div>
   </div>
@@ -61,7 +114,6 @@
 
 
 <!-- MODAL INVITACION -->
-
 <div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -83,7 +135,6 @@
     </div>
   </div>
 </div>
-
 <!-- FIN MODAL INVITACION -->
 
 <!-- MODAL CONFIRMACION DE DEPOSITO -->
@@ -106,12 +157,96 @@
     </div>
   </div>
 </div>
+<!-- FIN MODAL CONFIRMACION DE DEPOSITO -->
 
+<!-- MODAL DEPOSITOS PENDIENTES -->
+<div class="modal fade" id="modalPendiente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelPendiente" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabelPendiente"><b>Depósitos pendientes</b></h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-primary">Puede realizar la confirmación de sus depósitos pendientes en la pestaña "Depósito" de su menú luego de haber realizado la operación en la entidad y cuenta bancaria correspondiente.</p>
+        <p class="text-danger">El depósito debe realizarse como máximo 48 horas después de la fecha correspondiente.</p>
+        {% if deposito_realizar %}
+
+          <table class="table table-bordered table-hover small" id="dataTableModal">
+            <thead>
+              <tr class="text-center">
+                <td>FECHA</td>
+                <td>NOMBRE COMPLETO</td>
+                <td>ENTIDAD BANCARIA</td>
+                <td>NÚMERO DE CUENTA</td>
+                <td>MONTO (S/)</td>
+
+              </tr>
+            </thead>
+            <tfoot>
+              <tr class="text-center">
+                <td>FECHA</td>
+                <td>NOMBRE COMPLETO</td>
+                <td>ENTIDAD BANCARIA</td>
+                <td>NÚMERO DE CUENTA</td>
+                <td>MONTO (S/)</td>
+
+              </tr>
+            </tfoot>
+            <tbody>
+              {%for m in deposito_realizar%}
+              <tr>
+                <td class="text-center">{{m.fecha_registro|date:"d-m-Y"}}</td>
+                <td class="text-left">{{m.id_emisor.apellido_paterno}} {{m.id_emisor.apellido_materno}} {{m.id_emisor.nombres}}</td>
+                <td class="text-center">{{m.id_emisor.entidad_bancaria}}</td>
+                <td class="text-center">{{m.id_emisor.numero_cuenta}}</td>
+                <td class="text-right">{{m.monto}}.00</td>
+
+              </tr>
+
+              {%endfor%}
+            </tbody>
+          </table>
+
+        {%else%}
+
+        <h6>No tiene depósitos pendientes a realizar</h6>
+
+        {%endif%}
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL DEPOSITOS PENDIENTES -->
 {%endblock%}
 
 {% block scripts %}
 
 <script>
+
+$(document).ready(function() {
+  $('#modalPendiente').modal('show');
+
+});
+
+//COLOREAR FILAS
+// $(function() {
+//   $("#dataTable td:first-child:contains(Deposito)")
+//     .parents("tr").addClass("text-danger")
+//
+// $("#dataTable td:first-child:contains(Solicitud)")
+//  .parents("tr").addClass("text-warning")
+//
+// });
+
 // COPIAR LINK DE INVITACION
 function copiarLink(){
   var linka=document.getElementById("invitacion");
@@ -119,139 +254,130 @@ function copiarLink(){
   document.execCommand("copy");
 
 $("#copiado").html("Enlace de invitación copiado");
-
-
 }
 //FIN COPIAR LINK DE INVITACION
+  // var español = {
+  //   "sProcessing":     "Procesando...",
+  //   "sLengthMenu":     "Mostrar _MENU_ registros",
+  //   "sZeroRecords":    "No se encontraron resultados",
+  //   "sEmptyTable":     "Ningún dato disponible en esta tabla",
+  //   "sInfo":           "Mostrando registros del _START_ al _END_ de  _TOTAL_ registros",
+  //   "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+  //   "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+  //   "sInfoPostFix":    "",
+  //   "sSearch":         "Buscar:",
+  //   "sUrl":            "",
+  //   "sInfoThousands":  ",",
+  //   "sLoadingRecords": "Cargando...",
+  //   "oPaginate": {
+  //       "sFirst":    "Primero",
+  //       "sLast":     "Último",
+  //       "sNext":     "Siguiente",
+  //       "sPrevious": "Anterior"
+  //   },
+  //   "oAria": {
+  //       "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+  //       "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+  //   }
+  // }
+  //
+  // $(document).ready(function() {
+  // //   detalles_operaciones();
+  // $('#dataTable').DataTable({
+  //   "language": español
+  // });
+  // });
 
+  // var detalles_operaciones = function() {
+  //   var table = $('#dataTable').DataTable({
+  //     "processing": true,
+  //     "ajax": {
+  //       method: "GET",
+  //       url: "/Deposito/operaciones/listar/",
+  //       "dataSrc": "",
+  //     },
+  //     "columns":[
+  //       {"data": "pk"},
+  //       {"data": "fields.fecha",
+  //       "render": function(data,type,row){
+  //                   if(type === "sort" || type === "type"){
+  //                     return data;
+  //                   }
+  //                   return moment(data).format('DD/MM/YYYY');
+  //                 }
+  //       },
+  //       {"data": "fields.usuario_emisor"},
+  //       {"data": "fields.tipo_movimiento"},
+  //       // {"data": "fields.estado"},
+  //       {"data": "fields.monto"},
+  //       {"data": "fields.saldo_inicial"},
+  //       {"data": "fields.saldo_final"},
+  //       {"defaultContent":"<button class='confirmar btn btn-primary btn-sm'>Confirmar</button>"}
+  //       // {"label": "fields.saldo_final"}
+  //
+  //     ],
+  //     "createdRow": function(row, data, dataIndex) {
+  //       if (data.fields.tipo_movimiento == 'Solicitud') {
+  //         $(row).addClass('text-warning');
+  //       }
+  //       if (data.fields.tipo_movimiento == 'Deposito') {
+  //         $(row).addClass('text-danger');
+  //       }
+  //       if (data.fields.estado == 2) {
+  //         $(row).removeClass();
+  //         $(row).addClass('text-success');
+  //       }
+  //       if (data.fields.estado == 3) {
+  //         $(row).addClass('text-primary');
+  //       }
+  //     },
+  //     "language": español
+  //
+  //   });
+  //
+  //   obtener_data_row("#dataTable",table);
+  // }
 
-  var español = {
-    "sProcessing":     "Procesando...",
-    "sLengthMenu":     "Mostrar _MENU_ registros",
-    "sZeroRecords":    "No se encontraron resultados",
-    "sEmptyTable":     "Ningún dato disponible en esta tabla",
-    "sInfo":           "Mostrando registros del _START_ al _END_ de  _TOTAL_ registros",
-    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-    "sInfoPostFix":    "",
-    "sSearch":         "Buscar:",
-    "sUrl":            "",
-    "sInfoThousands":  ",",
-    "sLoadingRecords": "Cargando...",
-    "oPaginate": {
-        "sFirst":    "Primero",
-        "sLast":     "Último",
-        "sNext":     "Siguiente",
-        "sPrevious": "Anterior"
-    },
-    "oAria": {
-        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+// var obtener_data_row=function(tbody,table){
+//   $(tbody).on("click","button.confirmar",function(){
+//     var data=table.row($(this).parents("tr")).data();
+//     // console.log(data)
+//
+//     $.ajax({
+//       method:"get",
+//       url:"/Usuario/buscar-usuario-confirmacion/"+data.fields.usuario_emisor,
+//       type:"json",
+//       success:function(response){
+//             $("#nombre-emisor").append(response[0].fields.nombres+" "+response[0].fields.apellido_paterno+" "+response[0].fields.apellido_materno);
+//             // console.log(response[0].fields.nombres)
+//
+//       }
+//     })
+//
+//     $("#id-operacion").val(data.pk);
+//     $("#id-usuario").val(data.fields.usuario_emisor);
+//     $("#monto-confirmacion").append(data.fields.monto);
+//
+//     $("#modalConfirmacionReceptor").modal("show")
+//   });
+// }
+
+function cargarDatosModal(dni_emisor,id_operacion,monto){
+  $.ajax({
+    method:"get",
+    url:"/Usuario/buscar-usuario-confirmacion/"+dni_emisor,
+    type:"json",
+    success:function(response){
+          $("#nombre-emisor").append(response[0].fields.nombres+" "+response[0].fields.apellido_paterno+" "+response[0].fields.apellido_materno);
+          // console.log(response[0].fields.nombres)
+
     }
-  }
+  })
+  $("#id-operacion").val(id_operacion);
+  $("#id-usuario").val(dni_emisor);
+  $("#monto-confirmacion").append(monto);
 
-  $(document).ready(function() {
-    detalles_operaciones();
-  });
-
-  var detalles_operaciones = function() {
-    var table = $('#dataTable').DataTable({
-      "processing": true,
-      "ajax": {
-        method: "GET",
-        url: "/Deposito/operaciones/listar/",
-        "dataSrc": "",
-        // success: function(data) {
-        //   console.log(data[0].fields.tipo_movimiento);
-        // }
-      },
-      "columns":[
-        {"data": "pk"
-        // "render":function(data,type,row){
-        //           var codigo='';
-        //
-        //           // console.log(typeof(data))
-        //           if (data<10) {
-        //             codigo="MO0000"+data;
-        //           }else if(data>=10 & data<=99) {
-        //             codigo="MO000"+data;
-        //           }
-        //           else if(data>=100 & data<=999) {
-        //               codigo="MO00"+data;
-        //           }
-        //           else if(data>=1000 & data<=9999) {
-        //               codigo="MO0"+data;
-        //           }else {
-        //               codigo="MO"+data;
-        //           }
-        //
-        //           return codigo;
-        //         }
-        },
-        {"data": "fields.fecha",
-        "render": function(data,type,row){
-                    if(type === "sort" || type === "type"){
-                      return data;
-                    }
-                    return moment(data).format('DD/MM/YYYY');
-                  }
-        },
-        {"data": "fields.usuario_emisor"},
-        {"data": "fields.tipo_movimiento"},
-        // {"data": "fields.estado"},
-        {"data": "fields.monto"},
-        {"data": "fields.saldo_inicial"},
-        {"data": "fields.saldo_final"},
-        {"defaultContent":"<button class='confirmar btn btn-primary btn-sm'>Confirmar</button>"}
-        // {"label": "fields.saldo_final"}
-
-      ],
-      "createdRow": function(row, data, dataIndex) {
-        if (data.fields.tipo_movimiento == 'Solicitud') {
-          $(row).addClass('text-warning');
-        }
-        if (data.fields.tipo_movimiento == 'Deposito') {
-          $(row).addClass('text-danger');
-        }
-        if (data.fields.estado == 2) {
-          $(row).removeClass();
-          $(row).addClass('text-success');
-        }
-        if (data.fields.estado == 3) {
-          $(row).addClass('text-primary');
-        }
-      },
-      "language": español
-
-    });
-
-    obtener_data_row("#dataTable",table);
-  }
-
-// $("#column_id_operacion").hide();
-
-var obtener_data_row=function(tbody,table){
-  $(tbody).on("click","button.confirmar",function(){
-    var data=table.row($(this).parents("tr")).data();
-    // console.log(data)
-
-    $.ajax({
-      method:"get",
-      url:"/Usuario/buscar-usuario-confirmacion/"+data.fields.usuario_emisor,
-      type:"json",
-      success:function(response){
-            $("#nombre-emisor").append(response[0].fields.nombres+" "+response[0].fields.apellido_paterno+" "+response[0].fields.apellido_materno);
-            // console.log(response[0].fields.nombres)
-
-      }
-    })
-
-    $("#id-operacion").val(data.pk);
-    $("#id-usuario").val(data.fields.usuario_emisor);
-    $("#monto-confirmacion").append(data.fields.monto);
-
-    $("#modalConfirmacionReceptor").modal("show")
-  });
+  $("#modalConfirmacionReceptor").modal("show");
 }
 
 function confirmarOperacion(){
@@ -261,9 +387,7 @@ function confirmarOperacion(){
     method:"get",
     url:"/Deposito/confirmar_deposito_receptor/"+id_operacion+"/"+id_usuario,
     success:function(){
-      // $("#dataTable").load(" #dataTable>*","");
       location.reload();
-
     }
 
   })

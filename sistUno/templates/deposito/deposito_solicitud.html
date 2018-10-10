@@ -34,39 +34,36 @@
 
 <p class="text-warning">No puede realizar más operaciones hasta realizar el deposito a las siguientes cuentas bancarias.</p>
 
-  <table class="table table-bordered">
+  <table class="table table-bordered table-hover small" id="dataTable">
     <thead>
-      <tr>
+      <tr class="text-center">
+        <td>FECHA</td>
         <td>NOMBRE COMPLETO</td>
         <td>ENTIDAD BANCARIA</td>
         <td>NÚMERO DE CUENTA</td>
-        <td>MONTO</td>
-        <td>FECHA</td>
-        <td>ESTADO</td>
+        <td>MONTO (S/)</td>
         <td>CONFIRMAR</td>
       </tr>
     </thead>
     <tfoot>
-      <tr>
+      <tr class="text-center">
+        <td>FECHA</td>
         <td>NOMBRE COMPLETO</td>
         <td>ENTIDAD BANCARIA</td>
         <td>NÚMERO DE CUENTA</td>
-        <td>MONTO</td>
-        <td>FECHA</td>
-        <td>ESTADO</td>
+        <td>MONTO (S/)</td>
         <td>CONFIRMAR</td>
       </tr>
     </tfoot>
     <tbody>
       {%for m in deposito_realizar%}
       <tr>
-        <td>{{m.id_emisor.apellido_paterno}} {{m.id_emisor.apellido_materno}} {{m.id_emisor.nombres}}</td>
-        <td>{{m.id_emisor.entidad_bancaria}}</td>
-        <td>{{m.id_emisor.numero_cuenta}}</td>
-        <td>{{m.monto}}</td>
-        <td>{{m.fecha}}</td>
-        <td>{{m.confirmado}}</td>
-        <td><a type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal({{m.id}},{{m.id_emisor.dni}},{{m.monto}})"> Confirmar </a> </td>
+        <td class="text-center">{{m.fecha_registro|date:"d-m-Y"}}</td>
+        <td class="text-left">{{m.id_emisor.apellido_paterno}} {{m.id_emisor.apellido_materno}} {{m.id_emisor.nombres}}</td>
+        <td class="text-center">{{m.id_emisor.entidad_bancaria}}</td>
+        <td class="text-center">{{m.id_emisor.numero_cuenta}}</td>
+        <td class="text-right">{{m.monto}}.00</td>
+        <td class="text-center"><a type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal({{m.id}},{{m.id_emisor.dni}},{{m.monto}})"> Confirmar </a> </td>
       </tr>
 
       {%endfor%}
@@ -135,7 +132,8 @@
 <div id="scripts">
 <script>
 
-$('#form-solicitud')[0].reset();
+
+// $('#form-solicitud')[0].reset();
 
 $("#monto").focus();
 
