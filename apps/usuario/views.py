@@ -35,7 +35,7 @@ def cantidad_notificaciones(request):
 def principal_usuario(request):
     if request.user.is_authenticated:
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-        oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).only('id','monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final','estado').order_by('-fecha')
+        oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).only('id','monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final','estado').order_by('-id')
         deposito_realizar=Notificacion.objects.filter(usuario_sesion=oUsuario.dni, confirmado=0,tipo="deposito_realizado_emisor")
     else:
         oUsuario = ''
