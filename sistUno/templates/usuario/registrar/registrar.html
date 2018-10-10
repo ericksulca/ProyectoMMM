@@ -73,6 +73,7 @@
                   <div class="col-md-3">
                     <label for="">Número de cuenta:</label>
                     {{ formUsuario.numero_cuenta }}
+                    <!-- <input type="text" name="numero_cuenta" pattern="[A-Za-z0-9_-]{1,15}" class="form-control-p" required placeholder="Número de cuenta" id="id_numero_cuenta"> -->
                   </div>
                 </div>
               </div>
@@ -130,8 +131,26 @@
 <input type="hidden" name="dni_referente_select" id="id_dni_referente_select" value="">
 
 <script>
+$(document).ready(function() {
+  $('#id_numero_cuenta').keypress(function (e) {
+    // var valor=$('#id_numero_cuenta').val().toUpperCase();
+    // e.value=valor;
+    if (e.charCode > 47 && e.charCode < 91)
+    {
+      return true;
+    } else if(e.charCode==45){
+      return true;
+    }else{
+      return false;
+    }
+  });
+  $('#id_dni').keypress(function (e) {
 
-// $("#nombres").focus();
+    if (e.charCode > 47 && e.charCode < 58) return true;
+
+    return false;
+  });
+});
 
 {% if dni_referido %}
 
