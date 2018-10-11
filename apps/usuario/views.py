@@ -51,7 +51,6 @@ def principal_usuario(request):
 
     return render(request, 'usuario/principal.html',context)
 
-
 def perfil_usuario(request):
     if request.user.is_authenticated:
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
@@ -110,10 +109,8 @@ def cambio_contrasena(request):
 
     return render(request, 'usuario/perfil/cambio_contraseña.html', context)
 
-
 def editar_usuario(request):
     return render(request, 'usuario/editar.html')
-
 
 def registrar_usuario(request, dni_referido=''):
     if request.method == 'POST':
@@ -135,6 +132,18 @@ def registrar_usuario(request, dni_referido=''):
             saldo_usuario.save()
             deposito_defecto = Operacion(monto=20.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Deposito')
             deposito_defecto.save()
+
+            # notificacion=Notificacion(
+            #     id_emisor_id=usuario,
+            #     id_receptor=usuario,
+            #     usuario_sesion=usuario,
+            #     tipo='deposito_defecto',
+            #     estado=0,
+            #     monto=20,
+            #     confirmado=0
+            # )
+            # notificacion.save()
+
             usuario = authenticate(request, username=username, password=password1)
             login(request, usuario)
 

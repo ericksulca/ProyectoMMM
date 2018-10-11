@@ -40,9 +40,8 @@
             <th>Operación</th>
             <th>Fecha</th>
             <th>DNI Emisor/Receptor</th>
+            <th>Entidad Bancaria</th>
             <th>Número de cuenta</th>
-            <!-- <th>Operacion</th> -->
-            <!-- <th>Estado</th> -->
             <th>Monto Recibido/Retirado (S/)</th>
             <th>Saldo inicial (S/)</th>
             <th>Saldo final (S/)</th>
@@ -55,9 +54,8 @@
             <th>Operación</th>
             <th>Fecha</th>
             <th>DNI Emisor/Receptor</th>
+            <th>Entidad Bancaria</th>
             <th>Número de cuenta</th>
-            <!-- <th>Operacion</th> -->
-            <!-- <th>Estado</th> -->
             <th>Monto Recibido/Retirado (S/)</th>
             <th>Saldo inicial (S/)</th>
             <th>Saldo final (S/)</th>
@@ -84,6 +82,7 @@
               <td class="text-center">{{operacion.tipo_movimiento}}</td>
               <td class="text-center">{{operacion.fecha|date:"d-m-Y"}}</td>
               <td class="text-center">{{operacion.usuario_emisor.dni}}</td>
+              <td class="text-center">{{operacion.usuario_emisor.entidad_bancaria}}</td>
               <td class="text-center">{{operacion.usuario_emisor.numero_cuenta}}</td>
               <!-- <td>{{operacion.tipo_movimiento}}</td> -->
               <td class="text-right">{{operacion.monto}}</td>
@@ -175,7 +174,7 @@
       </div>
 
       <div class="modal-body">
-        <p class="text-primary">Puede realizar la confirmación de sus depósitos pendientes en la pestaña "Depósito" de su menú luego de haber realizado la operación en la entidad y cuenta bancaria correspondiente.</p>
+        <p class="text-primary">Puede realizar la confirmación de sus depósitos pendientes en la pestaña "Dar ayuda" de su menú luego de haber realizado la operación en la entidad y cuenta bancaria correspondiente.</p>
         <p class="text-danger">El depósito debe realizarse como máximo 48 horas después de la fecha correspondiente.</p>
         {% if deposito_realizar %}
 

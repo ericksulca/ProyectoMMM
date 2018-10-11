@@ -8,7 +8,7 @@
     <a href="{% url 'usuario:principal' %}">Principal</a>
   </li>
   <li class="breadcrumb-item active">
-    <a href="{% url 'deposito:index' %}"></a>Depósitos
+    <a href="{% url 'deposito:index' %}"></a>Dar ayuda
   </li>
   <!-- <li class="breadcrumb-item">
     <a href="{% url 'deposito:deposito_usuario' %}">Nuevo deposito</a>
@@ -21,7 +21,7 @@
 
 {% block content %}
 
-<h1>Nuevo deposito</h1>
+<h1>Dar Ayuda</h1>
 <div class="" id="tableField">
 
 
@@ -32,7 +32,8 @@
 <!-- <hr> -->
 {% if deposito_realizar %}
 
-<p class="text-warning">No puede realizar más operaciones hasta realizar el deposito a las siguientes cuentas bancarias.</p>
+<p class="text-primary">No puede realizar más operaciones hasta realizar el deposito a las siguientes cuentas bancarias.</p>
+<p class="text-danger">El depósito debe realizarse como máximo 48 horas después de la fecha correspondiente.</p>
 
   <table class="table table-bordered table-hover small" id="dataTable">
     <thead>
