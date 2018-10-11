@@ -93,7 +93,11 @@
                 {%else%}
                   {% ifequal operacion.tipo_movimiento 'Deposito' %}
                   {%else%}
+                  {% ifequal operacion.tipo_movimiento 'Registro' %}
+                  {%else%}
                   <button type="button" id="btn_{{operacion.id}}" onclick="cargarDatosModal({{operacion.usuario_emisor.dni}},{{operacion.id}},{{operacion.monto}})" name="button" class="btn btn-primary btn-sm">Confirmar</button>
+                  {% endifequal%}
+
                   {% endifequal%}
 
                 {% endifequal%}

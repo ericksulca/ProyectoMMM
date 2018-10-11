@@ -128,21 +128,44 @@ def registrar_usuario(request, dni_referido=''):
             usuario = formUsuario.save(commit=False)
             usuario.usuario_login = user
             usuario.save()
-            saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Solicitud')
+            usuario_admin=Usuario.objects.get(dni=37847637)
+            saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Registro')
             saldo_usuario.save()
-            deposito_defecto = Operacion(monto=20.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Deposito')
+
+            ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=usuario_admin).latest(field_name='fecha')
+            saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
+            Saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + 20
+            deposito_defecto = Operacion(monto=20.00, saldo_inicial=saldo_final_anterior_receptor, saldo_final=Saldo_final_operacion_receptor, usuario_emisor=usuario, usuario_receptor=usuario_admin, tipo_movimiento='Solicitud')
             deposito_defecto.save()
 
-            # notificacion=Notificacion(
-            #     id_emisor_id=usuario,
-            #     id_receptor=usuario,
-            #     usuario_sesion=usuario,
-            #     tipo='deposito_defecto',
-            #     estado=0,
-            #     monto=20,
-            #     confirmado=0
+            notificacion=Notificacion(
+                id_emisor_id=37847637,
+                id_receptor=usuario.dni,
+                usuario_sesion=usuario.dni,
+                tipo='deposito_realizado_emisor',
+                estado=0,
+                monto=20,
+                confirmado=0
+            )
+            notificacion.save()
+
+            #CREACION DE LA SOLICITUD PARA LA CONFIRMACION POR PARTE DEL ADMINISTRADOR User:admin, Pass: admin
+            # ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=usuario_admin).latest(field_name='fecha')
+            # saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
+            # Saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + 20
+            #
+            # solicitud_defecto_admin = Operacion(
+            #     monto = 20,
+            #     saldo_inicial = saldo_final_anterior_receptor,
+            #     saldo_final = Saldo_final_operacion_receptor,
+            #     tipo_movimiento = 'Solicitud',
+            #     usuario_emisor = usuario.dni,
+            #     usuario_receptor = usuario_admin.dni,
+            #     # solicitud = solicitud,
+            #     estado=1
             # )
-            # notificacion.save()
+            # solicitud_defecto_admin.save()
+            #
 
             usuario = authenticate(request, username=username, password=password1)
             login(request, usuario)

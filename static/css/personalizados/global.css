@@ -251,16 +251,16 @@ input[type="file"]{
   color: rgb(7, 168, 201);
 }
 
-.notificacion-no-leido{
+.notificacion-leido{
   background-color: lightgray;
 }
-.notificacion-no-leido:hover{
+.notificacion-leido:hover{
   /* background-color: rgb(18, 94, 136); */
   background-color: lightblue;
   color:white;
   cursor:pointer;
 }
-.notificacion-leido:hover{
+.notificacion-no-leido:hover{
   /* background-color: rgb(18, 94, 136); */
   background-color: lightblue;
   cursor:pointer;

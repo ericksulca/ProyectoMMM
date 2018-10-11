@@ -57,7 +57,7 @@ def deposito_solicitud(request):
     if request.method == 'POST':
         monto_total = Decimal(request.POST['monto'])
         for solicitud in oSolicitudes:
-
+            usuario = Usuario.objects.get(usuario_login_id=request.user.id)
             if monto_total >= solicitud.monto_faltante:
 
                 monto_depositar.append(monto_total-(monto_total-solicitud.monto_faltante))
@@ -124,7 +124,8 @@ def deposito_solicitud(request):
                 operacion.save()
                 lista_receptores.append(ultima_operacion_receptor.usuario_receptor_id)
 
-
+                usuario.depositos_pendientes+=1
+                usuario.save()
 
             else:
                 monto_depositar.append(monto_total)
@@ -186,13 +187,24 @@ def deposito_solicitud(request):
                     estado=1
                 )
                 operacion.save()
+
+                usuario.depositos_pendientes+=1
+                usuario.save()
+
                 lista_receptores.append(ultima_operacion_receptor.usuario_receptor_id)
 
 
                 break
 
     monto = total_monto_solicitudes()
-    deposito_realizar=Notificacion.objects.filter(usuario_sesion=oUsuario.dni, confirmado=0,tipo="deposito_realizado_emisor")
+    # deposito_realizar=Notificacion.objects.filter(usuario_sesion=oUsuario.dni, confirmado=0,tipo="deposito_realizado_emisor")
+    deposito_realizar = Notificacion.objects.filter(
+                Q(usuario_sesion = oUsuario.dni) &
+                Q(confirmado = 0) &
+                Q(tipo="deposito_realizado_emisor")
+                # Q(tipo="deposito_defecto")
+                )
+    # depositos_pendientes=
     context = {
         'usuario': oUsuario,
         'lista_receptores':lista_receptores,
@@ -252,6 +264,10 @@ def confirmar_deposito_emisor(request,id_operacion,id_usuario):
     oOperacion=Operacion.objects.get(id=id_operacion)
     oOperacion.estado=2
     oOperacion.save()
+
+    usuario=Usuario.objects.get(dni=id_usuario)
+    usuario.depositos_pendientes-=1
+    usuario.save()
 
     notificacion=Notificacion(
         id_emisor_id=oUsuario.dni,

@@ -139,6 +139,22 @@
               {%endifequal%}
             {% endifequal %}
 
+            {% ifequal notificacion.tipo 'deposito_defecto' %}
+              {%ifequal notificacion.estado 0 %}
+              <a class="dropdown-item notificacion-no-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}','{{notificacion.tipo}}',{{notificacion.monto}},{{notificacion.id_emisor.numero_cuenta}})">
+                Para completar su registro, debe realizar un depósito de S/ 20.00 al siguiente Nro de cuenta: <b>4403123064626</b> en el <b>BANCO DE CRÉDITO DEL PERÚ</b>. Gracias por su registro.
+
+                <b>{{notificacion.fecha_registro |date:"d M, Y"}}</b>
+              </a>
+              {%else%}
+              <a class="dropdown-item notificacion-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}','{{notificacion.tipo}}',{{notificacion.monto}},{{notificacion.id_emisor.numero_cuenta}})">
+                Para completar su registro, debe realizar un depósito de S/ 20.00 al siguiente Nro de cuenta: <b>4403123064626</b> en el <b>BANCO DE CRÉDITO DEL PERÚ</b>. Gracias por su registro.
+
+                <b>{{notificacion.fecha_registro |date:"d M, Y"}}</b>
+              </a>
+              {%endifequal%}
+            {% endifequal %}
+
             {% endfor %}
 
           </div>
@@ -313,11 +329,14 @@
         +'<p>Una vez realizado el depósito confirme la operación en su lista de depositos a realizar ubicada en el menú Depósito.</p>';
       }
       else if(tipo=='deposito_confirmado_emisor') {
-        var text='<p class="text-justify">La persona '+nombres+' ha confirmado haberle recibido el deposito solicitado. Gracias por su colaboración.';
+        var text='<p class="text-justify">La persona '+nombres+' ha confirmado haberle recibido el deposito solicitado. Gracias por su colaboración.</p>';
+      }
+      else if(tipo=='deposito_defecto') {
+        var text='<p class="text-justify">Depósito por defecto.</p>';
       }
       else{
         var text='<p class="text-justify">La persona '+nombres+' ha confirmado haberle realizado el deposito de <b>S/'+monto+'</b> por favor revise su cuenta bancaria,'
-        +'de estar conforme con la operación, confirme haber recibido el dinero en el registro correspondiente listado en su menú principal';
+        +'de estar conforme con la operación, confirme haber recibido el dinero en el registro correspondiente listado en su menú principal.</p>';
 
 
       }

@@ -28,6 +28,7 @@ class Usuario(models.Model):
     usuario_login = models.OneToOneField(User, on_delete=models.PROTECT)
     entidad_bancaria = models.ForeignKey(Entidad_bancaria, on_delete=models.PROTECT)
     dni_referido = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
+    depositos_pendientes=models.IntegerField(default=1,null=True)
 
     def __str__(self):
         return self.nombres
