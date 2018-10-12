@@ -188,11 +188,17 @@ function confirmarDeposito(){
   $.ajax({
     type: 'get',
     url: "/Deposito/confirmar_deposito/"+id+"/"+dni_receptor,
+    beforeSend:function(objeto){
+                $('#div_carga').css({display:'block'});
+    },
     success:function(){
 
       $("#tableField").load(" #tableField>*","");
       $("#scripts").load(" #scripts>*","");
 
+    },
+    complete:function(){
+      $('#div_carga').css('display','none');
     }
   })
 }

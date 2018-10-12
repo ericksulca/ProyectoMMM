@@ -132,8 +132,8 @@
 
       </div>
       <div class="modal-body">
-        <input  type="text" id="invitacion" value="http://localhost:8000/Usuario/registrar/{{usuario.dni}}" class="form-control">
-        <!-- <input  type="text" id="invitacion" value="http://www.fincomun.com/Usuario/registrar/{{usuario.dni}}" class="form-control"> -->
+        <!-- <input  type="text" id="invitacion" value="http://localhost:8000/Usuario/registrar/{{usuario.dni}}" class="form-control"> -->
+        <input  type="text" id="invitacion" value="http://www.fincomun.et/Usuario/registrar/{{usuario.dni}}" class="form-control">
         <label id="copiado" style="color:green;"></label>
       </div>
       <div class="modal-footer">
@@ -233,6 +233,8 @@
     </div>
   </div>
 </div>
+
+
 <!-- FIN MODAL DEPOSITOS PENDIENTES -->
 {%endblock%}
 
@@ -240,20 +242,21 @@
 
 <script>
 
+// $('#div_carga')
+//   .hide()
+//   .ajaxStart(function() {
+//     $(this).show();
+//   })
+//   .ajaxStop(function() {
+//     $(this).hide();
+//   })
+// ;
+
 $(document).ready(function() {
   $('#modalPendiente').modal('show');
 
 });
 
-//COLOREAR FILAS
-// $(function() {
-//   $("#dataTable td:first-child:contains(Deposito)")
-//     .parents("tr").addClass("text-danger")
-//
-// $("#dataTable td:first-child:contains(Solicitud)")
-//  .parents("tr").addClass("text-warning")
-//
-// });
 
 // COPIAR LINK DE INVITACION
 function copiarLink(){
@@ -263,112 +266,7 @@ function copiarLink(){
 
 $("#copiado").html("Enlace de invitación copiado");
 }
-//FIN COPIAR LINK DE INVITACION
-  // var español = {
-  //   "sProcessing":     "Procesando...",
-  //   "sLengthMenu":     "Mostrar _MENU_ registros",
-  //   "sZeroRecords":    "No se encontraron resultados",
-  //   "sEmptyTable":     "Ningún dato disponible en esta tabla",
-  //   "sInfo":           "Mostrando registros del _START_ al _END_ de  _TOTAL_ registros",
-  //   "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-  //   "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-  //   "sInfoPostFix":    "",
-  //   "sSearch":         "Buscar:",
-  //   "sUrl":            "",
-  //   "sInfoThousands":  ",",
-  //   "sLoadingRecords": "Cargando...",
-  //   "oPaginate": {
-  //       "sFirst":    "Primero",
-  //       "sLast":     "Último",
-  //       "sNext":     "Siguiente",
-  //       "sPrevious": "Anterior"
-  //   },
-  //   "oAria": {
-  //       "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-  //       "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-  //   }
-  // }
-  //
-  // $(document).ready(function() {
-  // //   detalles_operaciones();
-  // $('#dataTable').DataTable({
-  //   "language": español
-  // });
-  // });
 
-  // var detalles_operaciones = function() {
-  //   var table = $('#dataTable').DataTable({
-  //     "processing": true,
-  //     "ajax": {
-  //       method: "GET",
-  //       url: "/Deposito/operaciones/listar/",
-  //       "dataSrc": "",
-  //     },
-  //     "columns":[
-  //       {"data": "pk"},
-  //       {"data": "fields.fecha",
-  //       "render": function(data,type,row){
-  //                   if(type === "sort" || type === "type"){
-  //                     return data;
-  //                   }
-  //                   return moment(data).format('DD/MM/YYYY');
-  //                 }
-  //       },
-  //       {"data": "fields.usuario_emisor"},
-  //       {"data": "fields.tipo_movimiento"},
-  //       // {"data": "fields.estado"},
-  //       {"data": "fields.monto"},
-  //       {"data": "fields.saldo_inicial"},
-  //       {"data": "fields.saldo_final"},
-  //       {"defaultContent":"<button class='confirmar btn btn-primary btn-sm'>Confirmar</button>"}
-  //       // {"label": "fields.saldo_final"}
-  //
-  //     ],
-  //     "createdRow": function(row, data, dataIndex) {
-  //       if (data.fields.tipo_movimiento == 'Solicitud') {
-  //         $(row).addClass('text-warning');
-  //       }
-  //       if (data.fields.tipo_movimiento == 'Deposito') {
-  //         $(row).addClass('text-danger');
-  //       }
-  //       if (data.fields.estado == 2) {
-  //         $(row).removeClass();
-  //         $(row).addClass('text-success');
-  //       }
-  //       if (data.fields.estado == 3) {
-  //         $(row).addClass('text-primary');
-  //       }
-  //     },
-  //     "language": español
-  //
-  //   });
-  //
-  //   obtener_data_row("#dataTable",table);
-  // }
-
-// var obtener_data_row=function(tbody,table){
-//   $(tbody).on("click","button.confirmar",function(){
-//     var data=table.row($(this).parents("tr")).data();
-//     // console.log(data)
-//
-//     $.ajax({
-//       method:"get",
-//       url:"/Usuario/buscar-usuario-confirmacion/"+data.fields.usuario_emisor,
-//       type:"json",
-//       success:function(response){
-//             $("#nombre-emisor").append(response[0].fields.nombres+" "+response[0].fields.apellido_paterno+" "+response[0].fields.apellido_materno);
-//             // console.log(response[0].fields.nombres)
-//
-//       }
-//     })
-//
-//     $("#id-operacion").val(data.pk);
-//     $("#id-usuario").val(data.fields.usuario_emisor);
-//     $("#monto-confirmacion").append(data.fields.monto);
-//
-//     $("#modalConfirmacionReceptor").modal("show")
-//   });
-// }
 
 function cargarDatosModal(dni_emisor,id_operacion,monto){
   $.ajax({
@@ -394,6 +292,9 @@ function confirmarOperacion(){
   $.ajax({
     method:"get",
     url:"/Deposito/confirmar_deposito_receptor/"+id_operacion+"/"+id_usuario,
+    beforeSend:function(objeto){
+                $('#div_carga').css({display:'block'});
+    },
     success:function(){
       location.reload();
     }

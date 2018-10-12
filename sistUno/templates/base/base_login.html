@@ -23,6 +23,7 @@
 
     <link rel="stylesheet" href="{% static 'css/personalizados/global.css'%}">
 
+    <link href="{% static 'img/pantalla.css' %}" rel="stylesheet">
   </head>
 
   <body id="page-top">
@@ -257,6 +258,11 @@
 
         </div>
         <!-- /.container-fluid -->
+        <!-- PANTALLA DE ESPERA -->
+        <div class="" id="div_carga">
+          <img src="{% static 'img/ajax-loader.gif'%}" id="cargador" alt="">
+        </div>
+
 
         <!-- Sticky Footer -->
         <footer class="sticky-footer">
@@ -318,6 +324,8 @@
     <!-- <script src="{% static 'vendor/js/datatables-demo.js' %}"></script> -->
     <!-- <script src="{% static 'vendor/js/chart-area-demo.js' %}"></script> -->
     <script type="text/javascript">
+
+
 
     function modalNotificacion(id,nombres,fecha,tipo,monto,cuenta){
       if(tipo=='deposito_realizado_receptor'){
