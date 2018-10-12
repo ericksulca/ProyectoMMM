@@ -67,20 +67,28 @@ def nueva_solicitud(request):
     else:
         form = NuevaSolicitudForm()
 
+
+    now = timezone.now()
+    fecha_usuario = oUsuario.fecha
+    resultado = now - fecha_usuario
+    dias_restantes=30-resultado.days
+    form_habilitado=False
+    # print(resultado.days)
+    if resultado.days > 29:
+        form_habilitado=True
+    # else:
+    #     print ("Menor")
+
     context = {
         'usuario': oUsuario,
         'form': form,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'form_habilitado':form_habilitado,
+        'fecha_registro':fecha_usuario,
+        'dias_restantes':dias_restantes,
     }
-    now = timezone.now()
-    fecha_usuario = oUsuario.fecha
-    resultado = now - fecha_usuario
-    print(resultado.days)
-    if resultado.days > 29:
-        print ("Mayor")
-    else:
-        print ("Menor")
+
 
 
     return render(request, 'solicitud/nueva.html', context)

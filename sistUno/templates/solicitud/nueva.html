@@ -22,19 +22,31 @@
 {% block content %}
 
 <h1>Pedir Ayuda</h1>
-{% if messages %}
-    <div class="alert-success">
-        {% for message in messages %}
-            <li> {{ message }} </li>
-        {% endfor %}
-    </div>
+{% if form_habilitado %}
+  {% if messages %}
+      <div class="alert-success">
+          {% for message in messages %}
+              <li> {{ message }} </li>
+          {% endfor %}
+      </div>
+  {% endif %}
+  <form action="{% url 'solicitud:nueva_solicitud' %}" method="POST" id="form-solicitud">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <!-- <input type="text" name="monto" id="id_monto" value=""> -->
+    <input type="submit" value="Guardar" class="btn btn-primary">
+  </form>
+{% else %}
+
+<h6 class="text-success">Las solicitudes pueden realizarse 30 días después del registro.</h6>
+<h6 class="text-success">Fecha de registro: {{fecha_registro|date:"d M Y"}}</h6>
+<h6 class="text-success">Días restantes: {{dias_restantes}}</h6>
+
 {% endif %}
-<form action="{% url 'solicitud:nueva_solicitud' %}" method="POST" id="form-solicitud">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <!-- <input type="text" name="monto" id="id_monto" value=""> -->
-  <input type="submit" value="Guardar" class="btn btn-primary">
-</form>
+
+
+
+
 
 {% endblock %}
 
