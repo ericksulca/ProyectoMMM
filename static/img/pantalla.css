@@ -8,6 +8,7 @@
 	background: url(gris.png) repeat;
 	display:none;
 	z-index:1;
+  opacity: 0.5;
 }
 
 #cargador{
