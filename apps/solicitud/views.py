@@ -37,7 +37,9 @@ def editar_solicitud(request):
 
 
 from django.views.decorators.csrf import csrf_exempt
-
+from datetime import datetime, date, time, timedelta
+import calendar
+from django.utils import timezone
 @csrf_exempt
 def nueva_solicitud(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
@@ -71,6 +73,15 @@ def nueva_solicitud(request):
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
     }
+    now = timezone.now()
+    fecha_usuario = oUsuario.fecha
+    resultado = now - fecha_usuario
+    print(resultado.days)
+    if resultado.days > 29:
+        print ("Mayor")
+    else:
+        print ("Menor")
+
 
     return render(request, 'solicitud/nueva.html', context)
 

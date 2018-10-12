@@ -18,6 +18,7 @@ class Usuario(models.Model):
         validators=[MinValueValidator(10000000),
         MaxValueValidator(99999999)],
         )
+    fecha = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     nombres = models.CharField(max_length=50)
     apellido_paterno = models.CharField(max_length=50)
     apellido_materno = models.CharField(max_length=50)
