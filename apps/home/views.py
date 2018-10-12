@@ -7,6 +7,7 @@ from apps.usuario.models import Usuario
 from apps.testimonio.models import Testimonio
 from apps.articulo.models import Articulo
 from apps.solicitud.models import Solicitud
+from apps.general.models import General
 
 from django.core.mail import EmailMessage
 from django.shortcuts import render_to_response
@@ -61,12 +62,14 @@ def index(request):
         oUsuario=''
 
     oArticulo=Articulo.objects.all()[:4]
+    video=General.objects.get(id=1)
     context={
         'mensaje':mensaje,
         'banner':banner,
         'usuario':oUsuario,
         'testimonio':testimonio,
         'articulo':oArticulo,
+        'video':video.enlace_youtube,
     }
 
     return render(request, 'home/index.html',context)

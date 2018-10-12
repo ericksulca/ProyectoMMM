@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect, render_to_response
 
 from apps.home.models import Banner
 from apps.testimonio.models import Testimonio
+from apps.general.models import General
 from apps.notificacion.models import Notificacion
 from apps.deposito.models import Operacion
 from .forms import NuevoUsuarioForm, EditarPerfilForm
@@ -132,9 +133,12 @@ def registrar_usuario(request, dni_referido=''):
             saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Registro')
             saldo_usuario.save()
 
+            # OBTIENE EL COSTO DE INSCRIPCION Y OTROS
+            monto_registro=General.objects.get(id=1)
+
             ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=usuario_admin).latest(field_name='fecha')
             saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
-            Saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + 20
+            Saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + monto_registro.inscripcion
             deposito_defecto = Operacion(monto=20.00, saldo_inicial=saldo_final_anterior_receptor, saldo_final=Saldo_final_operacion_receptor, usuario_emisor=usuario, usuario_receptor=usuario_admin, tipo_movimiento='Solicitud')
             deposito_defecto.save()
 
@@ -144,7 +148,7 @@ def registrar_usuario(request, dni_referido=''):
                 usuario_sesion=usuario.dni,
                 tipo='deposito_realizado_emisor',
                 estado=0,
-                monto=20,
+                monto=monto_registro.inscripcion,
                 confirmado=0
             )
             notificacion.save()

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.articulo',
     'apps.reset',
     'apps.notificacion',
+    'apps.general',
 ]
 
 MIDDLEWARE = [

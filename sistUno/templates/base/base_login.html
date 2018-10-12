@@ -63,7 +63,7 @@
               <a class="dropdown-item notificacion-no-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}','{{notificacion.tipo}}',{{notificacion.monto}},{{notificacion.id_emisor.numero_cuenta}})">
                 Debes realizar un depósito de S/{{notificacion.monto}}.00 a<br>
                 <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b>
-                al número de cuenta {{notificacion.id_emisor.numero_cuenta}}, los<br>detalles de la cuenta puede verlos en la pestaña Deposito.<br>
+                al número de cuenta {{notificacion.id_emisor.numero_cuenta}}, los<br>detalles de la cuenta puede verlos en la pestaña "Dar Ayuda".<br>
                 Tiene un plazo de 48 horas para realizar el depósito.<br>
                 <b>{{notificacion.fecha_registro |date:"d M, Y"}}</b>
               </a>
@@ -71,7 +71,7 @@
               <a class="dropdown-item notificacion-leido" onclick="modalNotificacion({{notificacion.id}},'{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}','{{notificacion.fecha_registro}}','{{notificacion.tipo}}',{{notificacion.monto}},{{notificacion.id_emisor.numero_cuenta}})">
                 Debes realizar un depósito de S/{{notificacion.monto}}.00 a<br>
                 <b>{{notificacion.id_emisor.nombres}} {{notificacion.id_emisor.apellido_paterno}} {{notificacion.id_emisor.apellido_materno}}</b>
-                al número de cuenta {{notificacion.id_emisor.numero_cuenta}}, los<br>detalles de la cuenta puede verlos en la pestaña Deposito.<br>
+                al número de cuenta {{notificacion.id_emisor.numero_cuenta}}, los<br>detalles de la cuenta puede verlos en la pestaña "Dar Ayuda".<br>
                 Tiene un plazo de 48 horas para realizar el depósito.<br>
                 <b>{{notificacion.fecha_registro |date:"d M, Y"}}</b>
               </a>
@@ -334,7 +334,7 @@
       }
       else if(tipo=='deposito_realizado_emisor') {
         var text='<p class="text-justify">Debes realizar un depósito de <b>S/'+monto+'</b> en un plazo de 48 horas a <b id="nombres">'+nombres+'</b> al número de cuenta bancaria '+cuenta+'.</p>'
-        +'<p>Una vez realizado el depósito confirme la operación en su lista de depositos a realizar ubicada en el menú Depósito.</p>';
+        +'<p>Una vez realizado el depósito confirme la operación en su lista de depositos a realizar ubicada en el menú "Dar Ayuda".</p>';
       }
       else if(tipo=='deposito_confirmado_emisor') {
         var text='<p class="text-justify">La persona '+nombres+' ha confirmado haberle recibido el deposito solicitado. Gracias por su colaboración.</p>';
