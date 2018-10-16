@@ -71,7 +71,7 @@ ul>li>a{
     padding: 15px;
     font-size: 15px;
     text-align: justify;
-    height: 142px;
+    height: 300px;
     word-wrap: break-word;
     overflow: hidden;
 }
@@ -283,4 +283,14 @@ input[type="file"]{
   border: none;
   color:#3fb3de;
   font-weight: bold;
+}
+
+/* DISEÑO DE LAS TABLAS */
+tfoot, thead{
+  background-color: rgb(32,20,22);
+  color: white;
+}
+
+.text-warning-p{
+  color: rgb(250,82,10);
 }

@@ -325,7 +325,18 @@
     <!-- <script src="{% static 'vendor/js/chart-area-demo.js' %}"></script> -->
     <script type="text/javascript">
 
-
+    $(document).ready(function(){
+      $("form").submit(function(){
+        if($("body").hasClass('sendingForm')){
+          return false;
+        }
+        $("body").addClass("sendingForm");
+        $(this).find("input:submit").css({visibility: "hidden"});
+        $(this).find("input:button").css({visibility: "hidden"});
+        $(this).find("a").css({visibility: "hidden"});
+        $(this).find("input:submit").parent().append("Procesando...");
+      })
+    });
 
     function modalNotificacion(id,nombres,fecha,tipo,monto,cuenta){
       if(tipo=='deposito_realizado_receptor'){

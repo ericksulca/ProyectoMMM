@@ -33,7 +33,7 @@
     Detalle de operaciones en la cuenta de {% if user is None %}Sesion no iniciada {% else %} {{ user.username }} {% endif %}</div>
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered small" id="dataTable" width="100%" cellspacing="0">
+      <table class="table table-bordered small table-hover" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr class="text-center">
 
@@ -72,11 +72,12 @@
             class="text-success"
             {% endifequal%}
             {% ifequal operacion.tipo_movimiento 'Solicitud' %}
-            class="text-warning"
+            class="text-warning-p"
             {% endifequal%}
             {% ifequal operacion.tipo_movimiento 'Deposito' %}
             class="text-danger"
             {% endifequal%}
+
             >
 
               <td class="text-center">{{operacion.tipo_movimiento}}</td>
@@ -133,7 +134,7 @@
       </div>
       <div class="modal-body">
         <!-- <input  type="text" id="invitacion" value="http://localhost:8000/Usuario/registrar/{{usuario.dni}}" class="form-control"> -->
-        <input  type="text" id="invitacion" value="http://www.fincomun.et/Usuario/registrar/{{usuario.dni}}" class="form-control">
+        <input  type="text" id="invitacion" value="http://www.fincomun.net/Usuario/registrar/{{usuario.dni}}" class="form-control">
         <label id="copiado" style="color:green;"></label>
       </div>
       <div class="modal-footer">
@@ -297,6 +298,7 @@ function confirmarOperacion(){
     },
     success:function(){
       location.reload();
+      
     }
 
   })
