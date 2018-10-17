@@ -12,7 +12,7 @@ def testimonio_registrar(request):
     if request.user.is_authenticated:
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
         try:
-            oTestimonio=Testimonio.objects.get(usuario_id=oUsuario.dni)
+            oTestimonio=Testimonio.objects.get(usuario_id=oUsuario.id)
         except Testimonio.DoesNotExist:
             oTestimonio=None
     else:
@@ -21,7 +21,7 @@ def testimonio_registrar(request):
     if request.method=='POST':
         if request.POST['action']=='create':
             form=Testimonio(contenido=request.POST['contenido'],
-                            usuario_id=oUsuario.dni)
+                            usuario_id=oUsuario.id)
             form.save()
             success='El testimonio fue guardado correctamente.'
         else:

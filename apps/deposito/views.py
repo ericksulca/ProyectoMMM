@@ -10,7 +10,7 @@ from apps.usuario.views import notificaciones_usuario
 from apps.usuario.views import cantidad_notificaciones
 from apps.usuario.models import Usuario
 from apps.notificacion.models import Notificacion
-from apps.notificacion.models import Notificacion_depositar
+# from apps.notificacion.models import Notificacion_depositar
 from apps.solicitud.models import Solicitud
 from .models import Operacion
 from .forms import  NuevoDeposito
@@ -52,7 +52,7 @@ def deposito_solicitud(request):
     lista_receptores=[]
     monto_depositar=[]
     notificacion=''
-    # oNotificaciones=Notificacion.objects.filter(id_emisor_id=oUsuario.dni).order_by('-id')
+    # oNotificaciones=Notificacion.objects.filter(id_emisor_id=oUsuario.id).order_by('-id')
     # oNotificaciones=Notificacion.objects.all()
     if request.method == 'POST':
         monto_total = Decimal(request.POST['monto'])
@@ -68,7 +68,7 @@ def deposito_solicitud(request):
 
                 #REGISTRAR NOTIFICACION PARA ENVIAR AL RECEPTOR
                 notificacion=Notificacion(
-                    id_emisor_id=oUsuario.dni,
+                    id_emisor_id=oUsuario.id,
                     id_receptor=ultima_operacion_receptor.usuario_receptor_id,
                     usuario_sesion=ultima_operacion_receptor.usuario_receptor_id,
                     tipo='deposito_realizado_receptor',
@@ -80,8 +80,8 @@ def deposito_solicitud(request):
                 #REGISTRAR NOTIFICACION PARA ENVIAR AL EMISOR
                 notificacion=Notificacion(
                     id_emisor_id=ultima_operacion_receptor.usuario_receptor_id,
-                    id_receptor=oUsuario.dni,
-                    usuario_sesion=oUsuario.dni,
+                    id_receptor=oUsuario.id,
+                    usuario_sesion=oUsuario.id,
                     tipo='deposito_realizado_emisor',
                     estado=0,
                     monto=monto_total-(monto_total-solicitud.monto_faltante),
@@ -135,7 +135,7 @@ def deposito_solicitud(request):
                 ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=solicitud.usuario).latest(field_name='fecha')
                 #REGISTRAR NOTIFICACION PARA ENVIAR AL RECEPTOR
                 notificacion=Notificacion(
-                    id_emisor_id=oUsuario.dni,
+                    id_emisor_id=oUsuario.id,
                     id_receptor=ultima_operacion_receptor.usuario_receptor_id,
                     usuario_sesion=ultima_operacion_receptor.usuario_receptor_id,
                     tipo='deposito_realizado_receptor',
@@ -147,8 +147,8 @@ def deposito_solicitud(request):
                 #REGISTRAR NOTIFICACION PARA ENVIAR AL EMISOR
                 notificacion=Notificacion(
                     id_emisor_id=ultima_operacion_receptor.usuario_receptor_id,
-                    id_receptor=oUsuario.dni,
-                    usuario_sesion=oUsuario.dni,
+                    id_receptor=oUsuario.id,
+                    usuario_sesion=oUsuario.id,
                     tipo='deposito_realizado_emisor',
                     estado=0,
                     monto=monto_total,
@@ -197,9 +197,9 @@ def deposito_solicitud(request):
                 break
 
     monto = total_monto_solicitudes()
-    # deposito_realizar=Notificacion.objects.filter(usuario_sesion=oUsuario.dni, confirmado=0,tipo="deposito_realizado_emisor")
+    # deposito_realizar=Notificacion.objects.filter(usuario_sesion=oUsuario.id, confirmado=0,tipo="deposito_realizado_emisor")
     deposito_realizar = Notificacion.objects.filter(
-                Q(usuario_sesion = oUsuario.dni) &
+                Q(usuario_sesion = oUsuario.id) &
                 Q(confirmado = 0) &
                 Q(tipo="deposito_realizado_emisor")
                 # Q(tipo="deposito_defecto")
@@ -231,7 +231,7 @@ def operaciones_usuario(request):
 
 def operaciones_usuario_chart(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).order_by('fecha').only('fecha', 'saldo_final')[:10]
+    oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).order_by('-fecha').only('fecha', 'saldo_final')[:10][::-1]
     data = serializers.serialize(
         'json',
         oOperaciones,
@@ -246,7 +246,7 @@ def confirmar_deposito(request,id,dni_receptor):
     oNotificacionDepositar.save()
 
     notificacion=Notificacion(
-        id_emisor_id=oUsuario.dni,
+        id_emisor_id=oUsuario.id,
         id_receptor=dni_receptor,
         tipo='deposito_confirmado_receptor',
         usuario_sesion=dni_receptor,
@@ -265,12 +265,12 @@ def confirmar_deposito_emisor(request,id_operacion,id_usuario):
     oOperacion.estado=2
     oOperacion.save()
 
-    usuario=Usuario.objects.get(dni=id_usuario)
+    usuario=Usuario.objects.get(id=id_usuario)
     usuario.depositos_pendientes-=1
     usuario.save()
 
     notificacion=Notificacion(
-        id_emisor_id=oUsuario.dni,
+        id_emisor_id=oUsuario.id,
         id_receptor=id_usuario,
         tipo='deposito_confirmado_emisor',
         usuario_sesion=id_usuario,

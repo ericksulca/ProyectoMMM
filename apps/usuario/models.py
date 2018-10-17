@@ -13,11 +13,13 @@ class Entidad_bancaria(models.Model):
 
 
 class Usuario(models.Model):
-    dni = models.IntegerField(
-        primary_key=True,
-        validators=[MinValueValidator(10000000),
-        MaxValueValidator(99999999)],
-        )
+    # dni = models.IntegerField(
+    #     primary_key=True,
+    #     validators=[MinValueValidator(10000000),
+    #     MaxValueValidator(99999999)],
+    #     )
+
+    dni=models.IntegerField(unique=True)
     fecha = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     nombres = models.CharField(max_length=50)
     apellido_paterno = models.CharField(max_length=50)

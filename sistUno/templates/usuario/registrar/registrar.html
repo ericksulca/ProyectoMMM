@@ -182,18 +182,13 @@ $( "#busqueda" ).autocomplete({
       dataType:'json',
       dataFilter:function(data){return data;},
       success:function(data){
-        // console.log(data);
-        // response($.map(data,function(item){
-        //   return {
-        //     value:item.fields.nombres+' '+item.fields.apellido_paterno+' '+item.fields.apellido_materno
-        //   }
-        // }))
+      // console.
 
         var suggestions = [];
             $.each(data, function(i, val) {
                 suggestions.push({
                     label: val.fields.nombres+' '+val.fields.apellido_paterno+' '+val.fields.apellido_materno,
-                    zzz: val.pk
+                    zzz: val.fields.dni
                 });
             });
             add(suggestions);
@@ -218,33 +213,7 @@ $( "#busqueda" ).autocomplete({
 });
 //FIN AUTOCOMPLETADO
 
-  // // busqueda de Referente
-  //   $(function () {
-  //       $('#busqueda').keyup(function () {
-  //           var txt = $(this).val();
-  //           if (txt === '') { }
-  //           else {
-  //               $.ajax({
-  //                   type: "POST",
-  //                   url: "/Usuario/buscar-usuario/",
-  //                   data: {
-  //                       'busqueda': $('#busqueda').val(),
-  //                       'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
-  //                   },
-  //                   success: searchSuccess,
-  //                   dataType: 'html'
-  //               });
-  //           }
-  //       });
-  //   });
-  //
-  //   function searchSuccess(data, textStatus, jqXHR) {
-  //       $('#resultados-busqueda').html(data);
-  //       $(document).on('click', '#usuario-buscado-dni', function() {
-  //         var dni = this.text;
-  //         $('#id_dni_referido')[0].value = dni;
-  //         });
-  //   };
+
 
   // busqueda de Referente v2
 
@@ -265,7 +234,7 @@ $( "#busqueda" ).autocomplete({
     };
 
     function searchSuccess(data, textStatus, jqXHR) {
-      // console.log(data);
+      console.log(data);
       // var datosAutocomplete=[]
       // for (let i in data) {
       //   // if(data[i].fields.nombres!=null){

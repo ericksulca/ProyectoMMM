@@ -64,7 +64,7 @@
         <td class="text-center">{{m.id_emisor.entidad_bancaria}}</td>
         <td class="text-center">{{m.id_emisor.numero_cuenta}}</td>
         <td class="text-right">{{m.monto}}.00</td>
-        <td class="text-center"><a type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal({{m.id}},{{m.id_emisor.dni}},{{m.monto}})"> Confirmar </a> </td>
+        <td class="text-center"><a type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal({{m.id}},{{m.id_emisor.id}},{{m.monto}})"> Confirmar </a> </td>
       </tr>
 
       {%endfor%}
@@ -169,15 +169,6 @@ function confirmarDepositoModal(id,dni_receptor,monto){
   $("#id_confirmacion_modal").val(id);
   $("#dni_receptor_confirmacion_modal").val(dni_receptor);
   $("#monto_confirmacion_modal").val(monto);
-  // $.ajax({
-  //   type: 'get',
-  //   url: "/Deposito/confirmar_deposito/"+id,
-  //   success:function(){
-  //
-  //     $("#tableField").load(" #tableField>*","");
-  //
-  //   }
-  // })
 }
 
 function confirmarDeposito(){

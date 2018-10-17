@@ -24,7 +24,7 @@
   <div class="col-md-4">
     <img src="{% static 'media/' %}{{usuario.foto_perfil}}" alt="" class="photo testimonio-photo">
   </div>
-  
+
 </div>
 </form>
 <hr>
@@ -32,42 +32,44 @@
   {% csrf_token %}
   <div class="row usuario-perfil">
     <div class="col-md-4">
-      <div class="">
+      <div class="form-group">
         <label class="label-perfil" for="nombres">Nombres:</label>
         {{ formUsuario.nombres }}
       </div>
-      <div class="">
+      <div class="form-group">
         <label class="label-perfil" for="apellido_paterno">Apellido Paterno:</label>
         {{ formUsuario.apellido_paterno}}
       </div>
-      <div class="">
+      <div class="form-group">
         <label class="label-perfil" for="apellido_materno">Apellido Materno:</label>
         {{ formUsuario.apellido_materno}}
       </div>
       <div class="">
-        <label class="label-perfil" for="dni">DNI:</label>
-        {{ formUsuario.dni }}
+        <!-- <label class="label-perfil" for="dni">DNI:</label>
+        {{ formUsuario.dni }} -->
+        <input type="hidden" name="dni" id="id_dni" value="">
       </div>
     </div>
-    
 
-    <div class="col-md-4">  
-      <div class="">
+
+    <div class="col-md-4">
+      <div class="form-group">
           <label class="label-perfil" for="foto_perfil">Foto de perfil:</label>
           {{ formUsuario.foto_perfil }}
       </div>
-      <div class="">
+      <div class="form-group">
           <label for="">Entidad bancaria:</label>
           {{ formUsuario.entidad_bancaria }}
       </div>
-      <div class="">
+      <div class="form-group">
         <label class="label-perfil" for="numero_cuenta">Número de cuenta:</label>
         {{ formUsuario.numero_cuenta }}
       </div>
     </div>
   </div>
-
+<div class="form-group">
   <input type="submit" name="" value="Guardar" class="btn btn-primary btn-sm">
+</div>
 </form>
 
 {% endblock %}

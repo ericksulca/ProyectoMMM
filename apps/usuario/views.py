@@ -22,22 +22,22 @@ def notificaciones_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     # oNotificaciones=Notificacion.objects.filter(id_receptor=oUsuario.dni).order_by('-id')#[:5]
     oNotificaciones = Notificacion.objects.filter(
-                Q(id_receptor = oUsuario.dni) |
-                Q(id_emisor_id = oUsuario.dni) &
-                Q(usuario_sesion=oUsuario.dni)
+                Q(id_receptor = oUsuario.id) |
+                Q(id_emisor_id = oUsuario.id) &
+                Q(usuario_sesion=oUsuario.id)
                 ).order_by('-id')
     return oNotificaciones
 
 def cantidad_notificaciones(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    cNotificaciones=Notificacion.objects.filter(id_receptor=oUsuario.dni,estado=0).count()
+    cNotificaciones=Notificacion.objects.filter(id_receptor=oUsuario.id,estado=0).count()
     return cNotificaciones
 
 def principal_usuario(request):
     if request.user.is_authenticated:
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
         oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).only('id','monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final','estado').order_by('-id')
-        deposito_realizar=Notificacion.objects.filter(usuario_sesion=oUsuario.dni, confirmado=0,tipo="deposito_realizado_emisor")
+        deposito_realizar=Notificacion.objects.filter(usuario_sesion=oUsuario.id, confirmado=0,tipo="deposito_realizado_emisor")
     else:
         oUsuario = ''
         oOperaciones=''
@@ -129,7 +129,11 @@ def registrar_usuario(request, dni_referido=''):
             usuario = formUsuario.save(commit=False)
             usuario.usuario_login = user
             usuario.save()
-            usuario_admin=Usuario.objects.get(dni=37847637)
+
+
+            # usuario_admin=Usuario.objects.get(dni=37847637)
+            # BUSCA EL USUARIO PERTENECIENTE AL USER ADMIN
+            usuario_admin=Usuario.objects.get(usuario_login_id=4)
             saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Registro')
             saldo_usuario.save()
 
@@ -143,33 +147,15 @@ def registrar_usuario(request, dni_referido=''):
             deposito_defecto.save()
 
             notificacion=Notificacion(
-                id_emisor_id=37847637,
-                id_receptor=usuario.dni,
-                usuario_sesion=usuario.dni,
+                id_emisor_id=usuario_admin.id,
+                id_receptor=usuario.id,
+                usuario_sesion=usuario.id,
                 tipo='deposito_realizado_emisor',
                 estado=0,
                 monto=monto_registro.inscripcion,
                 confirmado=0
             )
             notificacion.save()
-
-            #CREACION DE LA SOLICITUD PARA LA CONFIRMACION POR PARTE DEL ADMINISTRADOR User:admin, Pass: admin
-            # ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=usuario_admin).latest(field_name='fecha')
-            # saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
-            # Saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + 20
-            #
-            # solicitud_defecto_admin = Operacion(
-            #     monto = 20,
-            #     saldo_inicial = saldo_final_anterior_receptor,
-            #     saldo_final = Saldo_final_operacion_receptor,
-            #     tipo_movimiento = 'Solicitud',
-            #     usuario_emisor = usuario.dni,
-            #     usuario_receptor = usuario_admin.dni,
-            #     # solicitud = solicitud,
-            #     estado=1
-            # )
-            # solicitud_defecto_admin.save()
-            #
 
             usuario = authenticate(request, username=username, password=password1)
             login(request, usuario)
@@ -202,9 +188,7 @@ def buscar_usuario(request):
         tamanio=len(busqueda)
 
         if tamanio == 1:
-        # if 'busqueda' in request.POST:
-            # palabras_busqueda = request.POST['busqueda'].split()
-        # oUsuarios = Usuario.objects.filter(nombres__contains = request.POST['busqueda'])
+
             oUsuarios = Usuario.objects.filter(
                         Q(nombres__icontains = request.POST['busqueda']) |
                         Q(apellido_paterno__icontains = request.POST['busqueda']) |
@@ -224,19 +208,9 @@ def buscar_usuario(request):
                         Q(apellido_materno__icontains = busqueda_reverso[0])
                         )
 
-        # else:
-        #     palabras_busqueda = ['']
     else:
         palabras_busqueda = ['']
         oUsuario=''
-
-    # Función Q importada para hacer consultas complejas, en este caso una consulta con 'OR'
-    # for busqueda in palabras_busqueda:
-    #     if busqueda.isnumeric():
-    #         oUsuarios = Usuario.objects.filter(dni__contains = busqueda).only('nombres','apellido_paterno','apellido_materno','foto_perfil')
-    #     else:
-    #         oUser = User.objects.filter(username__contains = busqueda)
-    #         oUsuarios = Usuario.objects.filter(usuario_login__in = oUser).only('nombres','apellido_paterno','apellido_materno','foto_perfil')
 
     data = serializers.serialize(
                 'json',
@@ -244,9 +218,8 @@ def buscar_usuario(request):
             )
     return HttpResponse(data, content_type='application/json')
 
-
 def buscar_usuario_confirmacion(request,id_usuario):
-    oUsuario=Usuario.objects.filter(dni=id_usuario)
+    oUsuario=Usuario.objects.filter(id=id_usuario)
 
 
     context = {
@@ -258,10 +231,6 @@ def buscar_usuario_confirmacion(request,id_usuario):
             fields = ['nombres','apellido_paterno','apellido_materno']
         )
     return HttpResponse(data, content_type='application/json')
-
-
-
-
 
 def validar_email(request):
     if request.method == 'POST':
@@ -276,7 +245,6 @@ def validar_email(request):
 
     return render(request, 'usuario/registrar/validar_email.html', {'emails': emails})
 
-
 def validar_username(request):
     if request.method == 'POST':
         if 'username' in request.POST:
@@ -289,26 +257,3 @@ def validar_username(request):
     users = User.objects.filter(username=username)
 
     return render(request, 'usuario/registrar/validar_username.html', {'users': users})
-
-
-# def operaciones_usuario(request):
-#     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-#     oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha')
-#     data = serializers.serialize(
-#         'json',
-#         oOperaciones,
-#         fields = ['monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final']
-#     )
-#     return HttpResponse(data, content_type='application/json')
-
-
-
-# def operaciones_usuario_chart(request):
-#     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-#     oOperaciones = Operacion.objects.filter(Q(usuario_emisor=oUsuario) | Q(usuario_receptor=oUsuario)).order_by('fecha')[:10]
-#     data = serializers.serialize(
-#         'json',
-#         oOperaciones,
-#         fields = ['fecha', 'saldo_final']
-#     )
-#     return HttpResponse(data, content_type='application/json')

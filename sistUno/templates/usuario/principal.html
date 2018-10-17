@@ -96,7 +96,7 @@
                   {%else%}
                   {% ifequal operacion.tipo_movimiento 'Registro' %}
                   {%else%}
-                  <button type="button" id="btn_{{operacion.id}}" onclick="cargarDatosModal({{operacion.usuario_emisor.dni}},{{operacion.id}},{{operacion.monto}})" name="button" class="btn btn-primary btn-sm">Confirmar</button>
+                  <button type="button" id="btn_{{operacion.id}}" onclick="cargarDatosModal({{operacion.usuario_emisor.id}},{{operacion.id}},{{operacion.monto}})" name="button" class="btn btn-primary btn-sm">Confirmar</button>
                   {% endifequal%}
 
                   {% endifequal%}
@@ -243,21 +243,11 @@
 
 <script>
 
-// $('#div_carga')
-//   .hide()
-//   .ajaxStart(function() {
-//     $(this).show();
-//   })
-//   .ajaxStop(function() {
-//     $(this).hide();
-//   })
-// ;
 
 $(document).ready(function() {
   $('#modalPendiente').modal('show');
 
 });
-
 
 // COPIAR LINK DE INVITACION
 function copiarLink(){
@@ -268,7 +258,6 @@ function copiarLink(){
 $("#copiado").html("Enlace de invitación copiado");
 }
 
-
 function cargarDatosModal(dni_emisor,id_operacion,monto){
   $.ajax({
     method:"get",
@@ -276,14 +265,11 @@ function cargarDatosModal(dni_emisor,id_operacion,monto){
     type:"json",
     success:function(response){
           $("#nombre-emisor").append(response[0].fields.nombres+" "+response[0].fields.apellido_paterno+" "+response[0].fields.apellido_materno);
-          // console.log(response[0].fields.nombres)
-
     }
   })
   $("#id-operacion").val(id_operacion);
   $("#id-usuario").val(dni_emisor);
   $("#monto-confirmacion").append(monto);
-
   $("#modalConfirmacionReceptor").modal("show");
 }
 
@@ -298,7 +284,6 @@ function confirmarOperacion(){
     },
     success:function(){
       location.reload();
-      
     }
 
   })

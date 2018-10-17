@@ -7,8 +7,9 @@ from apps.solicitud.models import  Solicitud
 
 class Operacion(models.Model):
     TIPO_MOVIMIENTO = (
-        ('retiro', 'Retiro'),
-        ('deposito', 'Depósito'),
+        ('Deposito', 'Depósito'),
+        ('Solicitud', 'Solicitud'),
+        ('Registro', 'Registro'),
     )
 
     monto = models.DecimalField(max_digits=10, decimal_places=2)
