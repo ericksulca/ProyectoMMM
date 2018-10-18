@@ -99,7 +99,6 @@
                     <input type="text" id="busqueda" name="busqueda" class="form-control-p" placeholder="Nombres del referente">
                   </div>
                   <div class="col-md-3">
-
                     {{ formUsuario.dni_referido }}
                   </div>
 
@@ -188,7 +187,8 @@ $( "#busqueda" ).autocomplete({
             $.each(data, function(i, val) {
                 suggestions.push({
                     label: val.fields.nombres+' '+val.fields.apellido_paterno+' '+val.fields.apellido_materno,
-                    zzz: val.fields.dni
+                    // zzz: val.fields.dni
+                    zzz: val.pk
                 });
             });
             add(suggestions);
@@ -220,9 +220,10 @@ $( "#busqueda" ).autocomplete({
 
 
     function cargarCardSeleccionado(dni) {
+      console.log(dni);
                 $.ajax({
                     type: "POST",
-                    url: "/Usuario/buscar-usuario/",
+                    url: "/Usuario/buscar-usuario-id/",
                     data: {
                         'busqueda': dni,
                         'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
@@ -235,20 +236,6 @@ $( "#busqueda" ).autocomplete({
 
     function searchSuccess(data, textStatus, jqXHR) {
       console.log(data);
-      // var datosAutocomplete=[]
-      // for (let i in data) {
-      //   // if(data[i].fields.nombres!=null){
-      //     datosAutocomplete.push(data[i].fields.nombres+' '+data[i].fields.apellido_paterno+' '+data[i].fields.apellido_materno)
-      //   // }
-      // }
-      // datosAutocomplete = $.grep(datosAutocomplete,function(n){
-      //   return(n);
-      // });
-      // $( "#busqueda" ).autocomplete({
-      //   source: datosAutocomplete
-      // });
-      //
-      // console.log(datosAutocomplete);
 
       $('#result-bsqd').html("")
 
@@ -262,7 +249,7 @@ $( "#busqueda" ).autocomplete({
                     '<div class="col-md-8 col-xs-8">'+
                       '<br>'+
                       '<p><b>Nombres: '+data[i].fields.nombres+' '+data[i].fields.apellido_paterno+' '+data[i].fields.apellido_materno+'</b></p>'+
-                      '<p><b>DNI: '+data[i].pk+'</b></p>'+
+                      '<p><b>DNI: '+data[i].fields.dni+'</b></p>'+
                     '</div>'+
                  '</div>'+
                 '</div>';
@@ -274,7 +261,8 @@ $( "#busqueda" ).autocomplete({
 
       }
       {% if dni_referido %}
-      $('#id_dni_referido_def')[0].value = {{dni_referido}};
+      // $('#id_dni_referido_def')[0].value = {{dni_referido}};
+      $('#id_dni_referido_def')[0].value = {{referido.id}};
       {% endif %}
     };
 

@@ -121,6 +121,12 @@ def registrar_usuario(request, dni_referido=''):
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
+        # try:
+        #     a=formUsuario.is_valid()
+        #     print (a)
+        # except
+
+        # and formUsuario.is_valid()
         if password1 == password2 and formUsuario.is_valid():
             try:
                 user = User.objects.create_user(username, email, password1)
@@ -166,6 +172,12 @@ def registrar_usuario(request, dni_referido=''):
             return redirect('usuario:registrar_usuario')
     else:
         formUsuario = NuevoUsuarioForm(initial={'dni_referido': dni_referido})
+        if dni_referido == '':
+            oReferido=''
+        else:
+            oReferido=Usuario.objects.get(dni=dni_referido)
+
+        # formUsuario = NuevoUsuarioForm(initial={'dni_referido': oReferido.id})
 
 
     banner = Banner.objects.all()
@@ -175,6 +187,8 @@ def registrar_usuario(request, dni_referido=''):
         'banner':banner,
         'testimonio':testimonio,
         'dni_referido':dni_referido,
+        'referido':oReferido,
+        # 'dni_referido':dni_referido,
     }
 
     return render(request, 'usuario/registrar/registrar.html', context=context)
@@ -193,7 +207,8 @@ def buscar_usuario(request):
                         Q(nombres__icontains = request.POST['busqueda']) |
                         Q(apellido_paterno__icontains = request.POST['busqueda']) |
                         Q(apellido_materno__icontains = request.POST['busqueda']) |
-                        Q(dni__icontains = request.POST['busqueda'])
+                        Q(dni__icontains= request.POST['busqueda'])
+                        # Q(id= request.POST['busqueda'])
                         )
         elif tamanio == 2:
             oUsuarios = Usuario.objects.filter(
@@ -215,6 +230,17 @@ def buscar_usuario(request):
     data = serializers.serialize(
                 'json',
                 oUsuarios
+            )
+    return HttpResponse(data, content_type='application/json')
+
+def buscar_usuario_id(request):
+    if request.method == 'POST':
+        oUsuario=Usuario.objects.filter(id=request.POST['busqueda'])
+    else:
+        oUsuario=''
+    data = serializers.serialize(
+                'json',
+                oUsuario
             )
     return HttpResponse(data, content_type='application/json')
 

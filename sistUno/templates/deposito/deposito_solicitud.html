@@ -75,9 +75,11 @@
 
   {%ifequal usuario.depositos_pendientes 0%}
   {%ifequal monto None%}
-  <p class="text-info"><b><input type="text" id="id_monto" value="El monto máximo requerido por todos los usuarios es de S/ 0" disabled class="form-control"></b> </p>
+  <label class="text-primary">El monto máximo requerido por todos los usuarios es de S/ 0" </label>
+  <input type="hidden" id="id_monto" value="0" disabled class="form-control">
   {%else%}
-  <p class="text-info"><b><input type="text" id="id_monto" value="El monto máximo requerido por todos los usuarios es de S/ {{monto}}" disabled class="form-control"> </b></p>
+  <label class="text-primary">El monto máximo requerido por todos los usuarios es de S/ {{monto}}</label>
+  <input type="hidden" id="id_monto" value="{{monto}}" disabled class="form-control">
   {%endifequal%}
   <form  method="POST" id="form-solicitud">
     <!-- action="{% url 'deposito:deposito_solicitud' %}" -->
@@ -149,7 +151,7 @@ $("#monto").keyup(function(){
   var monto_ingresado=parseFloat($("#monto").val());
   var monto_maximo=parseFloat($("#id_monto").val());
 
-  console.log(monto_ingresado+' '+monto_maximo);
+  // console.log(monto_ingresado+' '+monto_maximo);
 
   if(monto_ingresado>monto_maximo){
 

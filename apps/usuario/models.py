@@ -19,7 +19,8 @@ class Usuario(models.Model):
     #     MaxValueValidator(99999999)],
     #     )
 
-    dni=models.IntegerField(unique=True)
+    # dni=models.IntegerField(unique=True,validators=[MinValueValidator(10000000), MaxValueValidator(99999999)])
+    dni=models.CharField(unique=True,max_length=10)
     fecha = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     nombres = models.CharField(max_length=50)
     apellido_paterno = models.CharField(max_length=50)
