@@ -11,6 +11,7 @@ from apps.usuario.models import Usuario
 from apps.solicitud.models import Solicitud
 from apps.usuario.views import notificaciones_usuario
 from apps.usuario.views import cantidad_notificaciones
+from apps.pago.models import Pago
 # Create your views here.
 
 def index_solicitud(request):
@@ -68,6 +69,7 @@ def nueva_solicitud(request):
         form = NuevaSolicitudForm()
 
 
+    oPago=Pago.objects.filter(usuario_id=oUsuario, confirmado=0)
     now = timezone.now()
     fecha_usuario = oUsuario.fecha
     resultado = now - fecha_usuario
@@ -87,6 +89,7 @@ def nueva_solicitud(request):
         'form_habilitado':form_habilitado,
         'fecha_registro':fecha_usuario,
         'dias_restantes':dias_restantes,
+        'pago':oPago,
     }
 
 

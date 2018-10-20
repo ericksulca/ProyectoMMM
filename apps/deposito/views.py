@@ -12,6 +12,8 @@ from apps.usuario.models import Usuario
 from apps.notificacion.models import Notificacion
 # from apps.notificacion.models import Notificacion_depositar
 from apps.solicitud.models import Solicitud
+from apps.pago.models import Pago
+
 from .models import Operacion
 from .forms import  NuevoDeposito
 # Create your views here.
@@ -217,8 +219,6 @@ def deposito_solicitud(request):
 
     return render(request, 'deposito/deposito_solicitud.html', context)
 
-
-
 def operaciones_usuario(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     oOperaciones = Operacion.objects.filter(usuario_receptor=oUsuario).only('id','monto', 'fecha', 'tipo_movimiento', 'usuario_emisor', 'saldo_inicial', 'saldo_final','estado').order_by('-fecha')
@@ -258,7 +258,7 @@ def confirmar_deposito(request,id,dni_receptor):
 
     return HttpResponse(str("s"))
 
-def confirmar_deposito_emisor(request,id_operacion,id_usuario):
+def confirmar_deposito_receptor(request,id_operacion,id_usuario):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
 
     oOperacion=Operacion.objects.get(id=id_operacion)
@@ -279,5 +279,54 @@ def confirmar_deposito_emisor(request,id_operacion,id_usuario):
         confirmado=0
     )
     notificacion.save()
+
+    if oOperacion.tipo_movimiento=='Solicitud':
+        pago=Pago(
+            operacion=oOperacion,
+            tasa_interes=5,
+            monto_actual=oOperacion.monto,
+            usuario=oUsuario,
+            confirmado=0
+        )
+        pago.save()
+
     return HttpResponse(str("s"))
     # return redirect('usuario:principal')
+
+def confirmar_pago(request,id_operacion,id_usuario,monto):
+
+    oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    oUsuario_receptor=Usuario.objects.get(id=id_usuario)
+
+    ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=oUsuario_receptor).latest(field_name='fecha')
+    saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
+    saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + monto
+
+    operacion = Operacion(
+        monto = monto,
+        saldo_inicial = saldo_final_anterior_receptor,
+        saldo_final = saldo_final_operacion_receptor,
+        tipo_movimiento = 'Pago',
+        usuario_emisor = oUsuario,
+        usuario_receptor = oUsuario_receptor,
+        estado=1
+    )
+    operacion.save()
+
+    notificacion=Notificacion(
+        id_emisor_id=oUsuario.id,
+        id_receptor=id_usuario,
+        tipo='deposito_confirmado_receptor',
+        usuario_sesion=id_usuario,
+        estado=0,
+        monto=monto,
+        confirmado=0
+    )
+    notificacion.save()
+
+    pago=Pago.objects.get(id=id_operacion)
+    pago.confirmado=1
+    pago.save()
+
+    # return HttpResponse(str("s"))
+    return redirect("solicitud:nueva_solicitud")
