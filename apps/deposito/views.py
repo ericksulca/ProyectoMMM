@@ -8,11 +8,13 @@ from django.shortcuts import render, redirect
 from apps.solicitud.views import total_monto_solicitudes
 from apps.usuario.views import notificaciones_usuario
 from apps.usuario.views import cantidad_notificaciones
+from apps.usuario.views import plazo_horas
 from apps.usuario.models import Usuario
 from apps.notificacion.models import Notificacion
 # from apps.notificacion.models import Notificacion_depositar
 from apps.solicitud.models import Solicitud
 from apps.pago.models import Pago
+from apps.general.models import Tarifa
 
 from .models import Operacion
 from .forms import  NuevoDeposito
@@ -214,6 +216,7 @@ def deposito_solicitud(request):
         'monto': monto,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'horas':plazo_horas(request),
         'deposito_realizar':deposito_realizar
     }
 
@@ -260,6 +263,7 @@ def confirmar_deposito(request,id,dni_receptor):
 
 def confirmar_deposito_receptor(request,id_operacion,id_usuario):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
+    oTarifa=Tarifa.objects.get(id=1)
 
     oOperacion=Operacion.objects.get(id=id_operacion)
     oOperacion.estado=2
@@ -283,7 +287,8 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
     if oOperacion.tipo_movimiento=='Solicitud':
         pago=Pago(
             operacion=oOperacion,
-            tasa_interes=5,
+            # tasa_interes=5,
+            tasa_interes=oTarifa.tasa_interes,
             monto_actual=oOperacion.monto,
             usuario=oUsuario,
             confirmado=0

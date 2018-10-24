@@ -28,6 +28,10 @@ def notificaciones_usuario(request):
                 ).order_by('-id')
     return oNotificaciones
 
+def plazo_horas(request):
+    horas=General.objects.get(id=1)
+    return horas
+
 def cantidad_notificaciones(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     cNotificaciones=Notificacion.objects.filter(id_receptor=oUsuario.id,estado=0).count()
@@ -48,6 +52,7 @@ def principal_usuario(request):
         'cantidad_notificaciones':cantidad_notificaciones(request),
         'operaciones':oOperaciones,
         'deposito_realizar':deposito_realizar,
+        'horas':plazo_horas(request),
     }
 
     return render(request, 'usuario/principal.html',context)
@@ -80,6 +85,7 @@ def perfil_usuario(request):
         'formUsuario': formUsuario,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'horas':plazo_horas(request),
     }
     return render(request, 'usuario/perfil/perfil.html',context)
 
@@ -106,6 +112,7 @@ def cambio_contrasena(request):
         'form': form,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'horas':plazo_horas(request),
     }
 
     return render(request, 'usuario/perfil/cambio_contraseña.html', context)
@@ -139,7 +146,12 @@ def registrar_usuario(request, dni_referido=''):
 
             # usuario_admin=Usuario.objects.get(dni=37847637)
             # BUSCA EL USUARIO PERTENECIENTE AL USER ADMIN
+
+            #Nube
             usuario_admin=Usuario.objects.get(usuario_login_id=4)
+            #Local
+            # usuario_admin=Usuario.objects.get(usuario_login_id=1)
+
             saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Registro')
             saldo_usuario.save()
 

@@ -10,6 +10,7 @@ from .forms import NuevaSolicitudForm
 from apps.usuario.models import Usuario
 from apps.solicitud.models import Solicitud
 from apps.usuario.views import notificaciones_usuario
+from apps.usuario.views import plazo_horas
 from apps.usuario.views import cantidad_notificaciones
 from apps.pago.models import Pago
 # Create your views here.
@@ -21,6 +22,7 @@ def index_solicitud(request):
         'usuario': oUsuario,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'horas':plazo_horas(request),
     }
 
     return render(request, 'solicitud/index.html', context)
@@ -32,6 +34,7 @@ def editar_solicitud(request):
         'usuario': oUsuario,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'horas':plazo_horas(request),
     }
 
     return render(request, 'solicitud/editar.html', context)
@@ -86,6 +89,7 @@ def nueva_solicitud(request):
         'form': form,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'horas':plazo_horas(request),
         'form_habilitado':form_habilitado,
         'fecha_registro':fecha_usuario,
         'dias_restantes':dias_restantes,

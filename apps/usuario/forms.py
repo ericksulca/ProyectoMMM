@@ -72,7 +72,7 @@ class EditarPerfilForm(forms.ModelForm):
             'nombres': forms.TextInput(attrs={'class': 'form-control'}),
             'apellido_paterno': forms.TextInput(attrs={'class': 'form-control'}),
             'apellido_materno': forms.TextInput(attrs={'class': 'form-control'}),
-            'dni': forms.NumberInput(attrs={'class': 'form-control'}),
+            'dni': forms.NumberInput(attrs={'class': 'form-control','type':'hidden'}),
             'entidad_bancaria': forms.Select(attrs={'class': 'form-control'}),
-            'numero_cuenta': forms.NumberInput(attrs={'class': 'form-control'})
+            'numero_cuenta': forms.TextInput(attrs={'class': 'form-control'})
         }
