@@ -288,6 +288,7 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
         pago=Pago(
             operacion=oOperacion,
             # tasa_interes=5,
+            monto_solicitado=oOperacion.monto,
             tasa_interes=oTarifa.tasa_interes,
             monto_actual=oOperacion.monto,
             usuario=oUsuario,
