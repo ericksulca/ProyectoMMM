@@ -12,6 +12,8 @@ from apps.general.models import General
 from django.core.mail import EmailMessage
 from django.shortcuts import render_to_response
 
+from django.db.models import Q
+
 def baner_testimonio(request):
     if request.user.is_authenticated:
         oUsuario=Usuario.objects.get(usuario_login_id=request.user.id)
@@ -61,14 +63,17 @@ def index(request):
     else:
         oUsuario=''
 
-    oArticulo=Articulo.objects.all()[:4]
+    oArticulo_p=Articulo.objects.filter(categoria_id=1).order_by('-id')
+    oArticulo_s=Articulo.objects.filter(categoria_id=2).order_by('-id')[:3]
+
     video=General.objects.get(id=1)
     context={
         'mensaje':mensaje,
         'banner':banner,
         'usuario':oUsuario,
         'testimonio':testimonio,
-        'articulo':oArticulo,
+        'articulo_p':oArticulo_p,
+        'articulo_s':oArticulo_s,
         'video':video.enlace_youtube,
     }
 

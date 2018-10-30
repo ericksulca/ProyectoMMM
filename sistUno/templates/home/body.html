@@ -1,7 +1,7 @@
 
 <div class="box-body-content">
-{% if articulo %}
-  {% for arti in articulo%}
+{% if articulo_p %}
+  {% for arti in articulo_p%}
     {% ifequal arti.categoria_id 1 %}
     <div class="panel panel-primary">
     <div class="panel-heading">{{arti.titulo}} </div>
@@ -12,9 +12,11 @@
     {% endifequal %}
 
   {% endfor %}
-
+{% endif %}
     <div class="row">
-  {% for arti in articulo%}
+
+{% if articulo_s %}
+  {% for arti in articulo_s%}
 
     {% ifequal arti.categoria_id 2 %}
 
