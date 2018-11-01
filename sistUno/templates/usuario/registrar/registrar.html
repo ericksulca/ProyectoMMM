@@ -117,6 +117,7 @@
             </div>
             <hr>
               <div class="form-group col-md-12">
+                <input type="checkbox" name="politicas" id="id_politicas"> Acepto las <a href="" data-toggle="modal" data-target="#politicasModal">políticas de privacidad</a> <br>
                 <button id="boton" type="submit" class="btn btn-primary btn-sm" disabled>Guardar</button>
                 <a href="{% url 'home:index' %}">Ya tengo una cuenta</a>
               </div>
@@ -128,6 +129,34 @@
 </div>
 
 <input type="hidden" name="dni_referente_select" id="id_dni_referente_select" value="">
+
+
+
+<!-- POLITICAS DE PRIVACIDAD -->
+<div class="modal" tabindex="-1" role="dialog" id="politicasModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><b>Políticas de Privacidad</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body responsive">
+
+        <div class="content-politicas text-justify">
+            {% include 'usuario/registrar/politicas.html'%}
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary">Aceptar</button> -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 $(document).ready(function() {
@@ -303,11 +332,11 @@ $( "#busqueda" ).autocomplete({
     function validacionUsername(data, textStatus, jqXHR) {
       $('#mensaje-username').html(data);
       var msjUsername = $('#mensaje-username')[0].children[0].id;
-      if (msjUsername === "msj-username-libre") {
+      /*if (msjUsername === "msj-username-libre") {
         $('#boton')[0].disabled = false;
       } else {
         $('#boton')[0].disabled = true;
-      }
+      }*/
     };
 
     // Validación de email
@@ -333,12 +362,23 @@ $( "#busqueda" ).autocomplete({
     function validacionEmail(data, textStatus, jqXHR) {
       $('#mensaje-email').html(data);
       var msjEmail = $('#mensaje-email')[0].children[0].id;
-      if (msjEmail === 'msj-email-libre') {
+      /* if (msjEmail === 'msj-email-libre') {
         $('#boton')[0],disabled = false;
       } else {
         $('#boton')[0],disabled = true;
-      }
+      } */
     }
+
+
+    $("#id_politicas").on("change",function(){
+
+      if($('input:checkbox[name=politicas]:checked').val()=='on'){
+        $('#boton')[0].disabled = false;
+      }
+    else{
+        $('#boton')[0].disabled = true;
+      }
+    })
 
 </script>
 

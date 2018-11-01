@@ -104,7 +104,7 @@ def contactenos(request):
     if request.method=='POST':
         asunto='Mensaje desde formulario de contacto'
         mensaje='Email: '+request.POST['email']+'.\n Nombre: '+request.POST['nombre']+'.\n Mensaje: \n'+request.POST['mensaje']
-        mail=EmailMessage(asunto,mensaje,to=['smevy4lc3@gmail.com'])
+        mail=EmailMessage(asunto,mensaje,to=['fincomun.info@gmail.com'])
         mail.send()
         success='success'
 

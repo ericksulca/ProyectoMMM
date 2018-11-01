@@ -34,7 +34,13 @@ ul>li>a{
 
 }
 .box-body-content{
-  height: 444px;
+  height: 540px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.content-politicas{
+  height: 540px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -72,6 +78,15 @@ ul>li>a{
     font-size: 15px;
     text-align: justify;
     height: 300px;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.panel-body-sec {
+    padding: 15px;
+    font-size: 15px;
+    text-align: justify;
+    height: 100px;
     word-wrap: break-word;
     overflow: hidden;
 }
