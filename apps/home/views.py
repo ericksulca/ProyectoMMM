@@ -109,7 +109,7 @@ def contactenos(request):
         success='success'
 
         asunto2='Mensaje de contacto recibido'
-        mensaje2='Hola '+request.POST['nombre']+', su mensaje:\n'+request.POST['mensaje']+ '\n a localhost fue recibido con éxito, responderemos a su consulta en breve.'
+        mensaje2='Hola '+request.POST['nombre']+', su mensaje:\n'+request.POST['mensaje']+ '\n fue recibido con éxito, responderemos a su consulta en breve.'
         mail2=EmailMessage(asunto2,mensaje2,to=[request.POST['email']])
         mail2.send()
 
