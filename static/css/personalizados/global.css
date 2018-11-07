@@ -6,7 +6,7 @@ label, a{
   font-size: 12px;
 }
 ul>li>a{
-  font-size: 18px;
+  font-size: 20px;
 }
 
 /* .row{
@@ -117,6 +117,16 @@ ul>li>a{
 
 .panel-primary {
     border-color: #337ab7;
+}
+
+.panel-info>.panel-heading{
+    color: #fff;
+    background-color: #17A2B8;
+    border-color: #17A2B8;
+}
+
+.panel-info {
+    border-color: #17A2B8;
 }
 
 .testimonio-content{

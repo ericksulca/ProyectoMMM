@@ -3,7 +3,7 @@
 {% if articulo_p %}
   {% for arti in articulo_p%}
     {% ifequal arti.categoria_id 1 %}
-    <div class="panel panel-primary">
+    <div class="panel panel-info">
     <div class="panel-heading">{{arti.titulo}} </div>
    <div class="panel-body">
        {{arti.contenido|safe}} <!--<a href="#">... Ver más</a> -->
@@ -21,7 +21,7 @@
     {% ifequal arti.categoria_id 2 %}
 
     <div class="col-md-4">
-      <div class="panel panel-primary">
+      <div class="panel panel-info">
       <div class="panel-heading">{{arti.titulo}}</div>
      <div class="panel-body-sec">
        <a href="#">Leer todo</a><br>
@@ -74,7 +74,7 @@ $(document).ready(function() {
 
 
 
-    <!-- <div class="panel panel-primary">
+    <!-- <div class="panel panel-info">
          <div class="panel-heading">Lorem ipsum dolor</div>
         <div class="panel-body">
 
