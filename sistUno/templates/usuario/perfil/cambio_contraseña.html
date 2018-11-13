@@ -22,6 +22,28 @@
 {% csrf_token %}
     <div class="">
         <div class="col-md-12">
+          <ul class="text-warning-p">
+              <li>Su contraseña no puede asemejarse tanto a su otra información personal.</li>
+              <li>Su contraseña debe contener al menos 8 caracteres.</li>
+              <li>Su contraseña no puede ser una clave utilizada comunmente.</li>
+              <li>Su contraseña no puede ser completamente numérica.</li>
+          </ul>
+          {% if messages %}
+              {% ifequal messager 'success'%}
+              <div class="alert-success">
+                  {% for message in messages %}
+                      <li> Tu contraseña ha sido actualizada con éxito. </li>
+                  {% endfor %}
+              </div>
+              {% endifequal%}
+              {% ifequal messager 'error'%}
+              <div class="alert-danger">
+                  {% for message in messages %}
+                      <li>No se pudo cambiar tu contraseña, por favor intentelo nuevamente cumpliendo las condiciones listadas. </li>
+                  {% endfor %}
+              </div>
+              {% endifequal%}
+          {% endif %}
         <div class="">
             <label class="label-perfil" for="id_old_password">Contraseña actual:</label>
             {{ form.old_password }}
@@ -29,12 +51,7 @@
         <div class="">
             <label class="label-perfil" for="id_new_password1">Nueva contraseña:</label>
             {{ form.new_password1 }}
-            <ul>
-                <li>Su contraseña no puede asemejarse tanto a su otra información personal.</li>
-                <li>Su contraseña debe contener al menos 8 caracteres.</li>
-                <li>Su contraseña no puede ser una clave utilizada comunmente.</li>
-                <li>Su contraseña no puede ser completamente numérica.</li>
-            </ul>
+
         </div>
         <div class="">
             <label class="label-perfil" for="id_new_password2">Confirmar nueva contraseña:</label>

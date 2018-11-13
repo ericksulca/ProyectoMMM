@@ -6,6 +6,7 @@ from django.core import serializers
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
+from django.contrib import messages
 
 from apps.home.models import Banner
 from apps.testimonio.models import Testimonio
@@ -99,9 +100,11 @@ def cambio_contrasena(request):
             if form.is_valid():
                 form.save()
                 update_session_auth_hash(request, form.user)
-                return redirect('usuario:principal')
+                messages.add_message(request, messages.INFO, "success")
+                return redirect('usuario:cambio_contraseña')
 
             else:
+                messages.add_message(request, messages.INFO, "error")
                 return redirect('usuario:cambio_contraseña')
         else:
             form = PasswordChangeForm(user=oUser)
