@@ -74,8 +74,8 @@ def nueva_solicitud(request):
 
     oPago=Pago.objects.filter(usuario_id=oUsuario, confirmado=0)
 
-    if request.user.is_staff:
-        oPago=''
+    # if request.user.is_staff:
+    #     oPago=''
 
 
     now = timezone.now()

@@ -265,6 +265,9 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     oTarifa=Tarifa.objects.get(id=1)
 
+
+    oAdmin=Usuario.objects.get(usuario_login_id=1)
+
     oOperacion=Operacion.objects.get(id=id_operacion)
     oOperacion.estado=2
     oOperacion.save()
@@ -291,7 +294,8 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
             monto_solicitado=oOperacion.monto,
             tasa_interes=oTarifa.tasa_interes,
             monto_actual=oOperacion.monto,
-            usuario=oUsuario,
+            # usuario=oUsuario,
+            usuario=oAdmin,
             confirmado=0
         )
         pago.save()
@@ -303,7 +307,9 @@ def confirmar_pago(request,id_operacion,id_usuario,monto):
 
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     oUsuario_receptor=Usuario.objects.get(id=id_usuario)
+    oAdmin=Usuario.objects.get(usuario_login_id=1)
 
+    #ACTUALIZA SALDO DE RECEPTOR
     ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=oUsuario_receptor).latest(field_name='fecha')
     saldo_final_anterior_receptor = ultima_operacion_receptor.saldo_final
     saldo_final_operacion_receptor = ultima_operacion_receptor.saldo_final + monto
@@ -312,9 +318,25 @@ def confirmar_pago(request,id_operacion,id_usuario,monto):
         monto = monto,
         saldo_inicial = saldo_final_anterior_receptor,
         saldo_final = saldo_final_operacion_receptor,
-        tipo_movimiento = 'Pago',
+        tipo_movimiento = 'Pago por dar ayuda',
         usuario_emisor = oUsuario,
         usuario_receptor = oUsuario_receptor,
+        estado=1
+    )
+    operacion.save()
+
+    #ACTUALIZA SALDO DE EMISOR
+    ultima_operacion_emisor = Operacion.objects.filter(usuario_receptor=oAdmin).latest(field_name='fecha')
+    saldo_final_anterior_emisor = ultima_operacion_emisor.saldo_final
+    saldo_final_operacion_emisor = ultima_operacion_emisor.saldo_final - monto
+
+    operacion = Operacion(
+        monto = monto,
+        saldo_inicial = saldo_final_anterior_emisor,
+        saldo_final = saldo_final_operacion_emisor,
+        tipo_movimiento = 'Pago por dar ayuda',
+        usuario_emisor = oUsuario,
+        usuario_receptor = oAdmin,
         estado=1
     )
     operacion.save()

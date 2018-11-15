@@ -151,9 +151,9 @@ def registrar_usuario(request, dni_referido=''):
             # BUSCA EL USUARIO PERTENECIENTE AL USER ADMIN
 
             #Nube
-            usuario_admin=Usuario.objects.get(usuario_login_id=4)
+            # usuario_admin=Usuario.objects.get(usuario_login_id=4)
             #Local
-            # usuario_admin=Usuario.objects.get(usuario_login_id=1)
+            usuario_admin=Usuario.objects.get(usuario_login_id=1)
 
             saldo_usuario = Operacion(monto=0.00, saldo_inicial=0.00, saldo_final=0.00, usuario_emisor=usuario, usuario_receptor=usuario, tipo_movimiento='Registro')
             saldo_usuario.save()
