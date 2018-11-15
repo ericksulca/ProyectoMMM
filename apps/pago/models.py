@@ -20,3 +20,4 @@ class Pago(models.Model):
     fecha_actual = models.DateField(auto_now=True,null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, null=True)
     confirmado=models.IntegerField()
+    ganancia_referente=models.DecimalField(max_digits=10, decimal_places=2,null=True)

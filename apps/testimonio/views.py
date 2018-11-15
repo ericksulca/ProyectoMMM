@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from apps.testimonio.models import Testimonio
 from apps.usuario.models import Usuario
 from apps.usuario.views import notificaciones_usuario
+from apps.usuario.views import gestionar_usuarios
 from apps.usuario.views import cantidad_notificaciones
 
 def testimonio_registrar(request):
@@ -39,6 +40,7 @@ def testimonio_registrar(request):
         'respuesta':success,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'gestionar_usuarios':gestionar_usuarios(request),
     }
 
     return render(request, 'testimonio/crear.html',context)

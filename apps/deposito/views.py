@@ -200,6 +200,8 @@ def deposito_solicitud(request):
 
                 break
 
+    # else:
+    #
     monto = total_monto_solicitudes()
     # deposito_realizar=Notificacion.objects.filter(usuario_sesion=oUsuario.id, confirmado=0,tipo="deposito_realizado_emisor")
     deposito_realizar = Notificacion.objects.filter(
@@ -211,7 +213,7 @@ def deposito_solicitud(request):
     # depositos_pendientes=
     context = {
         'usuario': oUsuario,
-        'lista_receptores':lista_receptores,
+        # 'lista_receptores':lista_receptores,
         # 'monto_depositar':monto_depositar,
         'monto': monto,
         'notificaciones':notificaciones_usuario(request),

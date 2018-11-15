@@ -38,6 +38,14 @@ def cantidad_notificaciones(request):
     cNotificaciones=Notificacion.objects.filter(id_receptor=oUsuario.id,estado=0).count()
     return cNotificaciones
 
+def gestionar_usuarios(request):
+    if request.user.is_staff:
+        gestionar=True
+    else:
+        gestionar=False
+        
+    return gestionar
+
 def principal_usuario(request):
     if request.user.is_authenticated:
         oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
@@ -54,6 +62,7 @@ def principal_usuario(request):
         'operaciones':oOperaciones,
         'deposito_realizar':deposito_realizar,
         'horas':plazo_horas(request),
+        'gestionar_usuarios':gestionar_usuarios(request),
     }
 
     return render(request, 'usuario/principal.html',context)
@@ -115,6 +124,7 @@ def cambio_contrasena(request):
         'form': form,
         'notificaciones':notificaciones_usuario(request),
         'cantidad_notificaciones':cantidad_notificaciones(request),
+        'gestionar_usuarios':gestionar_usuarios(request),
         'horas':plazo_horas(request),
     }
 

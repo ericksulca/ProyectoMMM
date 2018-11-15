@@ -11,10 +11,18 @@
     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#linkModal">
       Compartir
     </button>
-
+  </div>
+  <div class="col-md-4">
+    {% if gestionar_usuarios%}
+      <label style="font-size:20px;"><b>Gestionar Usuarios</b></label>
+      <button type="button" name="button" class="btn btn-primary btn-sm">
+        +
+      </button>
+    {% endif %}
   </div>
 
 </div>
+<hr>
 <!-- Area Chart Example-->
 <div class="card mb-3">
   <div class="card-header" id="saldoActual">
