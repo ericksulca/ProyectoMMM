@@ -1,4 +1,4 @@
-*{
+body{
   font-family: 'calibri';
 
 }
@@ -37,6 +37,7 @@ ul>li>a{
   height: 540px;
   overflow-y: auto;
   overflow-x: hidden;
+  font-family: 'Pacifico', cursive;
 }
 
 .content-politicas{
