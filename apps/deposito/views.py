@@ -265,10 +265,22 @@ def confirmar_deposito(request,id,dni_receptor):
 
 def confirmar_deposito_receptor(request,id_operacion,id_usuario):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oTarifa=Tarifa.objects.get(id=1)
+    # oTarifa=Tarifa.objects.get(id=1)
+    oTarifa_ayuda=Tarifa.objects.get(nombre='Ayuda')
+    oTarifa_referencia=Tarifa.objects.get(nombre='Referencia')
 
 
-    oAdmin=Usuario.objects.get(usuario_login_id=1)
+    # LOCAL
+    # oAdmin=Usuario.objects.get(usuario_login_id=1)
+    # nube
+    oAdmin=Usuario.objects.get(usuario_login_id=4)
+
+    oUsuario_referido=Usuario.objects.get(id=oUsuario.id)
+
+    id_referente=oUsuario_referido.id
+
+    oReferente_beneficiado=Usuario.objects.get(id=id_referente)
+
 
     oOperacion=Operacion.objects.get(id=id_operacion)
     oOperacion.estado=2
@@ -294,11 +306,15 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
             operacion=oOperacion,
             # tasa_interes=5,
             monto_solicitado=oOperacion.monto,
-            tasa_interes=oTarifa.tasa_interes,
+            tasa_interes=oTarifa_ayuda.tasa_interes,
+            tasa_interes_referente=oTarifa_referencia.tasa_interes,
             monto_actual=oOperacion.monto,
             # usuario=oUsuario,
             usuario=oAdmin,
-            confirmado=0
+            confirmado=0,
+            confirmado_referente=0,
+            ganancia_referente=0,
+            referente_beneficiado=oReferente_beneficiado.id,
         )
         pago.save()
 
@@ -309,7 +325,8 @@ def confirmar_pago(request,id_operacion,id_usuario,monto):
 
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     oUsuario_receptor=Usuario.objects.get(id=id_usuario)
-    oAdmin=Usuario.objects.get(usuario_login_id=1)
+
+    oAdmin=Usuario.objects.get(usuario_login_id=4)
 
     #ACTUALIZA SALDO DE RECEPTOR
     ultima_operacion_receptor = Operacion.objects.filter(usuario_receptor=oUsuario_receptor).latest(field_name='fecha')

@@ -1,0 +1,160 @@
+{% extends 'base/base_login.html'%}
+{% load staticfiles %}
+
+{%block content%}
+
+<div class="row">
+  <div class="col-md-12 col-xs-12">
+    <h3>Pagos por ayuda realizadas</h3>
+
+    <div class="table-responsive">
+
+    <table class="table table-bordered table-hover small" id="">
+      <thead>
+        <tr class="text-center">
+          <td>FECHA ACTUAL</td>
+          <td>APELLIDOS Y NOMBRES</td>
+          <td>ENTIDAD BANCARIA</td>
+          <td>NÚMERO DE CUENTA</td>
+          <td>MONTO APORTADO</td>
+          <td>TASA DE INTERÉS (MENSUAL)</td>
+          <td>BENEFICIO</td>
+          <td>CONFIRMAR</td>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr class="text-center">
+          <td>FECHA ACTUAL</td>
+          <td>APELLIDOS Y NOMBRES</td>
+          <td>ENTIDAD BANCARIA</td>
+          <td>NÚMERO DE CUENTA</td>
+          <td>MONTO APORTADO</td>
+          <td>TASA DE INTERÉS (MENSUAL)</td>
+          <td>BENEFICIO</td>
+          <td>CONFIRMAR</td>
+        </tr>
+      </tfoot>
+      <tbody>
+        {% if pago %}
+        {% for item in pago%}
+        <tr>
+          <td>{{item.fecha_actual|date:"d-m-Y"}}</td>
+          <td>{{item.operacion.usuario_emisor.apellido_paterno}} {{item.operacion.usuario_emisor.apellido_materno}} {{item.operacion.usuario_emisor.nombres}}</td>
+          <td>{{item.operacion.usuario_emisor.entidad_bancaria}}</td>
+          <td>{{item.operacion.usuario_emisor.numero_cuenta}}</td>
+          <td>{{item.operacion.monto}}</td>
+          <td>{{item.tasa_interes}} %</td>
+          <td>{{item.monto_actual}}</td>
+          <td class="text-center"><button type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal({{item.id}},{{item.operacion.usuario_emisor.id}},{{item.monto_actual}})"> Confirmar </button> </td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+    </div>
+
+
+
+  </div>
+
+
+  <div class="col-md-12 col-xs-12">
+    <h3>Pagos por ganancias de usuarios referidos</h3>
+
+    <table class="table table-bordered table-hover small" >
+      <thead>
+        <tr>
+          <td>APELLIDOS Y NOMBRES</td>
+          <td>MONTO</td>
+          <td>TASA DE INTERES</td>
+          <td>MONTO ACTUAL</td>
+        </tr>
+
+      </thead>
+      <tfoot>
+        <tr>
+          <td>APELLIDOS Y NOMBRES</td>
+          <td>MONTO</td>
+          <td>TASA DE INTERES</td>
+          <td>MONTO ACTUAL</td>
+        </tr>
+      </tfoot>
+
+      <tbody>
+{% if pagos_referente %}
+          {% for item in pagos_referente%}
+            <tr>
+              <td>{{item.referente_beneficiado}}</td>
+              <td>{{item.ganancia_referente}}</td>
+              <td>{{item.tasa_interes_referente}}</td>
+              <td>{{item.ganancia_referente}}</td>
+            </tr>
+          {% endfor %}
+{% endif %}
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<!-- Modal de confirmacion-->
+<div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmacionModalLabel"><b>Confirmación de depósito</b></h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">La confirmación se realiza luego de depositar el dinero en la cuenta bancaria correspondiente, si ya lo hizo de click en "Aceptar".
+        <input type="hidden" name="" id="id_confirmacion_modal" value="">
+        <input type="hidden" name="" id="dni_receptor_confirmacion_modal" value="">
+        <input type="hidden" name="" id="monto_confirmacion_modal" value="">
+      </div>
+      <div class="modal-footer">
+
+
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" onclick="confirmarDeposito()">Aceptar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin modal de confirmacion -->
+
+<script type="text/javascript">
+
+  function confirmarDepositoModal(id,dni_receptor,monto){
+
+    $("#confirmacionModal").modal("show");
+    $("#id_confirmacion_modal").val(id);
+    $("#dni_receptor_confirmacion_modal").val(dni_receptor);
+    $("#monto_confirmacion_modal").val(monto);
+  }
+
+  function confirmarDeposito(){
+    $("#confirmacionModal").modal("hide");
+    var id=$("#id_confirmacion_modal").val();
+    var dni_receptor=$("#dni_receptor_confirmacion_modal").val();
+    var monto=$("#monto_confirmacion_modal").val();
+
+    $.ajax({
+      type: 'get',
+      url: "/Deposito/confirmar_pago/"+id+"/"+dni_receptor+"/"+monto,
+      beforeSend:function(objeto){
+                  $('#div_carga').css({display:'block'});
+      },
+      success:function(){
+        location.reload();
+      },
+      complete:function(){
+        $('#div_carga').css('display','none');
+      }
+    })
+  }
+
+</script>
+{% endblock %}

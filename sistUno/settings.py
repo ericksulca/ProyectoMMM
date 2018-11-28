@@ -89,20 +89,20 @@ WSGI_APPLICATION = 'sistUno.wsgi.application'
 DATABASES = {
     'default': {
         # nube
-        # 'ENGINE': 'mysql_cymysql',
-        # 'NAME': 'admin_ayudammm',
-        # 'USER': 'admin_ayudammm',
-        # 'PASSWORD': 'sQhhhzqrfu',
-        # 'HOST': '138.197.36.187',
-        # 'PORT': '3306'
+        'ENGINE': 'mysql_cymysql',
+        'NAME': 'admin_ayudammm',
+        'USER': 'admin_ayudammm',
+        'PASSWORD': 'sQhhhzqrfu',
+        'HOST': '138.197.36.187',
+        'PORT': '3306'
 
         # local
-        'ENGINE': 'mysql_cymysql',
-        'NAME': 'proyectodb',
-        'USER': 'usuario_proyecto',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        # 'ENGINE': 'mysql_cymysql',
+        # 'NAME': 'proyectodb',
+        # 'USER': 'usuario_proyecto',
+        # 'PASSWORD': '1234',
+        # 'HOST': 'localhost',
+        # 'PORT': '3306',
     }
 }
 
