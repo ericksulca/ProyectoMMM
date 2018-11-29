@@ -275,11 +275,11 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
     # nube
     oAdmin=Usuario.objects.get(usuario_login_id=4)
 
-    oUsuario_referido=Usuario.objects.get(id=oUsuario.id)
+    # oUsuario_referido=Usuario.objects.get(id=oUsuario.id)
 
-    id_referente=oUsuario_referido.id
+    # id_referente=oUsuario_referido.id
 
-    oReferente_beneficiado=Usuario.objects.get(id=id_referente)
+    # oReferente_beneficiado=Usuario.objects.get(id=id_referente)
 
 
     oOperacion=Operacion.objects.get(id=id_operacion)
@@ -289,6 +289,9 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
     usuario=Usuario.objects.get(id=id_usuario)
     usuario.depositos_pendientes-=1
     usuario.save()
+
+    # USUARIO BENEFICIADO
+    oBeneficiado=Usuario.objects.get(id=usuario.dni_referido_id)
 
     notificacion=Notificacion(
         id_emisor_id=oUsuario.id,
@@ -314,7 +317,7 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
             confirmado=0,
             confirmado_referente=0,
             ganancia_referente=0,
-            referente_beneficiado=oReferente_beneficiado.id,
+            referente_beneficiado=oBeneficiado.id,
         )
         pago.save()
 
