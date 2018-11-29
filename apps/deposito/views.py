@@ -291,7 +291,10 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
     usuario.save()
 
     # USUARIO BENEFICIADO
-    oBeneficiado=Usuario.objects.get(id=usuario.dni_referido_id)
+    if usuario.dni_referido_id is None:
+        oBeneficiado=''
+    else:
+        oBeneficiado=Usuario.objects.get(id=usuario.dni_referido_id)
 
     notificacion=Notificacion(
         id_emisor_id=oUsuario.id,
@@ -305,22 +308,38 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
     notificacion.save()
 
     if oOperacion.tipo_movimiento=='Solicitud':
-        pago=Pago(
-            operacion=oOperacion,
-            # tasa_interes=5,
-            monto_solicitado=oOperacion.monto,
-            tasa_interes=oTarifa_ayuda.tasa_interes,
-            tasa_interes_referente=oTarifa_referencia.tasa_interes,
-            monto_actual=oOperacion.monto,
-            # usuario=oAdmin,
-            usuario=oBeneficiado,
-            confirmado=0,
-            confirmado_referente=0,
-            ganancia_referente=0,
-            ganancia_referido=0,
-            # referente_beneficiado=oBeneficiado.id,
-        )
-        pago.save()
+        if oBeneficiado=='':
+            pago=Pago(
+                operacion=oOperacion,
+                # tasa_interes=5,
+                monto_solicitado=oOperacion.monto,
+                tasa_interes=oTarifa_ayuda.tasa_interes,
+                tasa_interes_referente=oTarifa_referencia.tasa_interes,
+                monto_actual=oOperacion.monto,
+                confirmado=0,
+                ganancia_referente=0,
+                ganancia_referido=0,
+                # referente_beneficiado=oBeneficiado.id,
+            )
+            pago.save()
+        else:
+            pago=Pago(
+                operacion=oOperacion,
+                # tasa_interes=5,
+                monto_solicitado=oOperacion.monto,
+                tasa_interes=oTarifa_ayuda.tasa_interes,
+                tasa_interes_referente=oTarifa_referencia.tasa_interes,
+                monto_actual=oOperacion.monto,
+                # usuario=oAdmin,
+                usuario=oBeneficiado,
+                confirmado=0,
+                confirmado_referente=0,
+                ganancia_referente=0,
+                ganancia_referido=0,
+                # referente_beneficiado=oBeneficiado.id,
+            )
+            pago.save()
+
 
     return HttpResponse(str("s"))
     # return redirect('usuario:principal')
