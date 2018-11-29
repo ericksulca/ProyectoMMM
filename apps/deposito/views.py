@@ -341,7 +341,7 @@ def confirmar_pago(request,id_operacion,id_usuario,monto,tipo):
         monto = monto,
         saldo_inicial = saldo_final_anterior_receptor,
         saldo_final = saldo_final_operacion_receptor,
-        tipo_movimiento = 'Pago por dar ayuda',
+        tipo_movimiento = 'Beneficio',
         usuario_emisor = oUsuario,
         usuario_receptor = oUsuario_receptor,
         estado=1
@@ -357,7 +357,7 @@ def confirmar_pago(request,id_operacion,id_usuario,monto,tipo):
         monto = monto,
         saldo_inicial = saldo_final_anterior_emisor,
         saldo_final = saldo_final_operacion_emisor,
-        tipo_movimiento = 'Pago por dar ayuda',
+        tipo_movimiento = 'Beneficio',
         usuario_emisor = oUsuario,
         usuario_receptor = oAdmin,
         estado=1
@@ -379,9 +379,14 @@ def confirmar_pago(request,id_operacion,id_usuario,monto,tipo):
         pago=Pago.objects.get(id=id_operacion)
         pago.confirmado=1
         pago.save()
+
+
+
     else:
         pago=Pago.objects.get(id=id_operacion)
         pago.confirmado_referente=1
         pago.save()
+
+
     # return HttpResponse(str("s"))
     return redirect("solicitud:nueva_solicitud")
