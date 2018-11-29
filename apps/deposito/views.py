@@ -312,19 +312,20 @@ def confirmar_deposito_receptor(request,id_operacion,id_usuario):
             tasa_interes=oTarifa_ayuda.tasa_interes,
             tasa_interes_referente=oTarifa_referencia.tasa_interes,
             monto_actual=oOperacion.monto,
-            # usuario=oUsuario,
-            usuario=oAdmin,
+            # usuario=oAdmin,
+            usuario=oBeneficiado,
             confirmado=0,
             confirmado_referente=0,
             ganancia_referente=0,
-            referente_beneficiado=oBeneficiado.id,
+            ganancia_referido=0,
+            # referente_beneficiado=oBeneficiado.id,
         )
         pago.save()
 
     return HttpResponse(str("s"))
     # return redirect('usuario:principal')
 
-def confirmar_pago(request,id_operacion,id_usuario,monto):
+def confirmar_pago(request,id_operacion,id_usuario,monto,tipo):
 
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
     oUsuario_receptor=Usuario.objects.get(id=id_usuario)
@@ -374,9 +375,13 @@ def confirmar_pago(request,id_operacion,id_usuario,monto):
     )
     notificacion.save()
 
-    pago=Pago.objects.get(id=id_operacion)
-    pago.confirmado=1
-    pago.save()
-
+    if tipo==1:
+        pago=Pago.objects.get(id=id_operacion)
+        pago.confirmado=1
+        pago.save()
+    else:
+        pago=Pago.objects.get(id=id_operacion)
+        pago.confirmado_referente=1
+        pago.save()
     # return HttpResponse(str("s"))
     return redirect("solicitud:nueva_solicitud")

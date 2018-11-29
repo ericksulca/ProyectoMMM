@@ -23,4 +23,5 @@ class Pago(models.Model):
     confirmado=models.IntegerField()
     confirmado_referente=models.IntegerField()
     ganancia_referente=models.DecimalField(max_digits=10, decimal_places=2,null=True)
-    referente_beneficiado = models.IntegerField()
+    ganancia_referido=models.DecimalField(max_digits=10, decimal_places=2,null=True)
+    # referente_beneficiado = models.IntegerField()

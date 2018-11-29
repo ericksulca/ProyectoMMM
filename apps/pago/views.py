@@ -19,8 +19,8 @@ def registrar_pago(request):
 
 def index(request):
     oUsuario = Usuario.objects.get(usuario_login_id=request.user.id)
-    oPago=Pago.objects.filter(usuario_id=oUsuario, confirmado=0)
-
+    # oPago=Pago.objects.filter(usuario_id=oUsuario, confirmado=0)
+    oPago=Pago.objects.filter(confirmado=0)
     oPagos_referente=Pago.objects.filter(confirmado_referente=0)
 
 

@@ -45,7 +45,7 @@
           <td>{{item.operacion.monto}}</td>
           <td>{{item.tasa_interes}} %</td>
           <td>{{item.monto_actual}}</td>
-          <td class="text-center"><button type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal({{item.id}},{{item.operacion.usuario_emisor.id}},{{item.monto_actual}})"> Confirmar </button> </td>
+          <td class="text-center"><button type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal(1,{{item.id}},{{item.operacion.usuario_emisor.id}},{{item.monto_actual}})"> Confirmar </button> </td>
         </tr>
         {% endfor %}
         {% endif %}
@@ -63,20 +63,28 @@
 
     <table class="table table-bordered table-hover small" >
       <thead>
-        <tr>
+        <tr class="text-center">
+          <td>FECHA ACTUAL</td>
           <td>APELLIDOS Y NOMBRES</td>
+          <td>ENTIDAD BANCARIA</td>
+          <td>NÚMERO DE CUENTA</td>
           <td>MONTO</td>
-          <td>TASA DE INTERES</td>
-          <td>MONTO ACTUAL</td>
+          <td>TASA DE INTERÉS (MENSUAL)</td>
+          <td>BENEFICIO</td>
+          <td>CONFIRMAR</td>
         </tr>
 
       </thead>
-      <tfoot>
+      <tfoot class="text-center">
         <tr>
+          <td>FECHA ACTUAL</td>
           <td>APELLIDOS Y NOMBRES</td>
+          <td>ENTIDAD BANCARIA</td>
+          <td>NÚMERO DE CUENTA</td>
           <td>MONTO</td>
-          <td>TASA DE INTERES</td>
-          <td>MONTO ACTUAL</td>
+          <td>TASA DE INTERÉS (MENSUAL)</td>
+          <td>BENEFICIO</td>
+          <td>CONFIRMAR</td>
         </tr>
       </tfoot>
 
@@ -84,10 +92,14 @@
 {% if pagos_referente %}
           {% for item in pagos_referente%}
             <tr>
-              <td>{{item.referente_beneficiado}}</td>
+              <td>{{item.fecha_actual|date:"d-m-Y"}}</td>
+              <td>{{item.usuario.apellido_paterno}} {{item.usuario.apellido_materno}} {{item.usuario.nombres}}</td>
+              <td>{{item.usuario.entidad_bancaria}}</td>
+                <td>{{item.usuario.numero_cuenta}}</td>
+              <td>{{item.ganancia_referido}}</td>
+              <td>{{item.tasa_interes_referente}} %</td>
               <td>{{item.ganancia_referente}}</td>
-              <td>{{item.tasa_interes_referente}}</td>
-              <td>{{item.ganancia_referente}}</td>
+              <td class="text-center"><button type="button" class="btn btn-primary btn-sm" name="button" onclick="confirmarDepositoModal(2,{{item.id}},{{item.usuario.id}},{{item.ganancia_referente}})"> Confirmar </button> </td>
             </tr>
           {% endfor %}
 {% endif %}
@@ -112,6 +124,7 @@
         <input type="hidden" name="" id="id_confirmacion_modal" value="">
         <input type="hidden" name="" id="dni_receptor_confirmacion_modal" value="">
         <input type="hidden" name="" id="monto_confirmacion_modal" value="">
+        <input type="hidden" name="" id="tipo" value="">
       </div>
       <div class="modal-footer">
 
@@ -127,12 +140,13 @@
 
 <script type="text/javascript">
 
-  function confirmarDepositoModal(id,dni_receptor,monto){
+  function confirmarDepositoModal(tipo,id,dni_receptor,monto){
 
     $("#confirmacionModal").modal("show");
     $("#id_confirmacion_modal").val(id);
     $("#dni_receptor_confirmacion_modal").val(dni_receptor);
     $("#monto_confirmacion_modal").val(monto);
+    $("#tipo").val(tipo);
   }
 
   function confirmarDeposito(){
@@ -140,10 +154,11 @@
     var id=$("#id_confirmacion_modal").val();
     var dni_receptor=$("#dni_receptor_confirmacion_modal").val();
     var monto=$("#monto_confirmacion_modal").val();
+    var tipo=$("#tipo").val();
 
     $.ajax({
       type: 'get',
-      url: "/Deposito/confirmar_pago/"+id+"/"+dni_receptor+"/"+monto,
+      url: "/Deposito/confirmar_pago/"+id+"/"+dni_receptor+"/"+monto+"/"+tipo,
       beforeSend:function(objeto){
                   $('#div_carga').css({display:'block'});
       },
