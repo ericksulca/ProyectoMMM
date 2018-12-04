@@ -22,7 +22,7 @@ def baner_testimonio(request):
 
     banner = Banner.objects.all()
     testimonio=Testimonio.objects.all()
-    legalidad=Articulo.objects.get(categoria_id=3)
+    legalidad=Articulo.objects.filter(categoria_id=3)
     quienes_somos=Articulo.objects.get(categoria_id=4)
     entidad_financiera=Articulo.objects.get(categoria_id=5)
     context={
