@@ -4,7 +4,7 @@ var español={
   "sZeroRecords":"No se encontraron resultados",
   "zEmptyTable":"Ningún dato disponible en esta sala",
   "sInfo":"Mostrando registros del _START_ al _END_ de _TOTAL_ registros",
-  "sInfoEmpty":"Mostrando registros del o al o de un total de 0 registros",
+  "sInfoEmpty":"Mostrando registros del 0 al 0 de un total de 0 registros",
   "sInfoFiltered":"(filtrando de un total de _MAX_ registros)",
   "sInfoPostFix":"",
   "sSearch":"Buscar...",
