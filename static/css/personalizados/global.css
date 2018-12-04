@@ -78,7 +78,7 @@ ul>li>a{
     padding: 15px;
     font-size: 15px;
     text-align: justify;
-    height: 300px;
+    height: 380px;
     word-wrap: break-word;
     overflow: hidden;
 }
@@ -279,6 +279,8 @@ input[type="file"]{
 
 .notificacion-leido{
   background-color: lightgray;
+  text-align: justify;
+
 }
 .notificacion-leido:hover{
   /* background-color: rgb(18, 94, 136); */
@@ -319,4 +321,14 @@ tfoot, thead{
 
 .text-warning-p{
   color: rgb(250,82,10);
+}
+
+.notification-cont{
+  border: 1px solid lightblue;
+  text-align: justify;
+  height: 80px;
+  word-wrap: break-word;
+  overflow: hidden;
+  width: 300px;
+
 }
